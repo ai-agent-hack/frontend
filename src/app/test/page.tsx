@@ -1,10 +1,10 @@
-import { Form } from "./form";
+import { ChatUI } from "./chat-ui";
  
 export default async function Page() {
   return (
     <>
-      <h1>Test</h1>
-      <Form />
+      <h1>Chat with Mastra Agent</h1>
+      <ChatUI />
     </>
   );
 }
