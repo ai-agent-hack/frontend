@@ -42,3 +42,6 @@ next-env.d.ts
 
 # mastra
 .mastra
+mastra.db
+mastra.db-shm
+mastra.db-wal
