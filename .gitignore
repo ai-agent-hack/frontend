@@ -45,3 +45,6 @@ next-env.d.ts
 mastra.db
 mastra.db-shm
 mastra.db-wal
+
+# google
+key.json

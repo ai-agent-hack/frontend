@@ -1,8 +1,17 @@
-import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
 import { LibSQLStore } from '@mastra/libsql';
 import { weatherTool } from '../tools/weather-tool';
+import { createVertex } from '@ai-sdk/google-vertex';
+import { openai } from '@ai-sdk/openai';
+
+const MASTRA_DEBUG = process.env.MASTRA_DEBUG === 'true';
+const storage_url = MASTRA_DEBUG ? 'file:../../mastra/mastra.db' : 'file:./mastra/mastra.db';
+
+const vertex = createVertex({
+  location: 'us-central1',
+  project: process.env.GOOGLE_PROJECT_ID,
+});
 
 export const weatherAgent = new Agent({
   name: 'Weather Agent',
@@ -22,7 +31,7 @@ export const weatherAgent = new Agent({
   tools: { weatherTool },
   memory: new Memory({
     storage: new LibSQLStore({
-      url: 'file:./mastra/mastra.db', // path is relative to the .mastra/output directory
+      url: storage_url,
     }),
   }),
 });
