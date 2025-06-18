@@ -48,3 +48,6 @@ mastra.db-wal
 
 # google
 key.json
+
+# repomix
+repomix-output.xml

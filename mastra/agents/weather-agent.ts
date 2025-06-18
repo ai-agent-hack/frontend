@@ -3,7 +3,6 @@ import { Memory } from '@mastra/memory';
 import { LibSQLStore } from '@mastra/libsql';
 import { weatherTool } from '../tools/weather-tool';
 import { createVertex } from '@ai-sdk/google-vertex';
-import { openai } from '@ai-sdk/openai';
 
 const MASTRA_DEBUG = process.env.MASTRA_DEBUG === 'true';
 const storage_url = MASTRA_DEBUG ? 'file:../../mastra/mastra.db' : 'file:./mastra/mastra.db';
@@ -27,7 +26,7 @@ export const weatherAgent = new Agent({
 
       Use the weatherTool to fetch current weather data.
 `,
-  model: openai('gpt-4o-mini'),
+  model: vertex('gemini-2.0-flash'),
   tools: { weatherTool },
   memory: new Memory({
     storage: new LibSQLStore({
