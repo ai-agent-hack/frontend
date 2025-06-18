@@ -1,8 +1,4 @@
-# Next.js Project Template
-
-## Description
-
-This is the best template for Next.js + TypeScript project to start coding as soon as possible.
+# AI Agent Hackathon Frontend
 
 ## Requirements
 
@@ -12,10 +8,6 @@ This is the best template for Next.js + TypeScript project to start coding as so
 - [nvm](https://github.com/nvm-sh/nvm)
 - [bun](https://github.com/oven-sh/bun)
 
-## Library
-
-Here are libraries already added in [`package.json`](./package.json).
-
 ## Setup
 
 1. Clone this repository.
@@ -24,16 +16,27 @@ Here are libraries already added in [`package.json`](./package.json).
     git clone https://github.com/taka-2120/nextjs-template
     ```
 
-2. Run setup command.
+2. Create .env file
+
+    Create .env file and copy these keys.
+
+    ```
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE
+    GOOGLE_PROJECT_ID=ai-agent-hack
+    MASTRA_DEBUG=false
+    GOOGLE_APPLICATION_CREDENTIALS=/Users/yu/dev/ai-hackathon/key.json
+    ```
+
+3. Run setup command.
 
     ```bash
     make setup
     ```
 
-3. Build and start development localhost.
+4. Build and start development localhost.
 
     ```bash
     make dev
     ```
 
-4. Start Coding!
+5. Start Coding!
