@@ -1,6 +1,6 @@
 # Google Maps Integration Setup
 
-This project includes a Google Maps integration with interactive pins. Follow these steps to set it up:
+This project includes a Google Maps integration with interactive pins using `@react-google-maps/api`. Follow these steps to set it up:
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ This project includes a Google Maps integration with interactive pins. Follow th
 
 1. **Install Dependencies** (already done):
    ```bash
-   bun add @googlemaps/js-api-loader
+   bun add @react-google-maps/api
    bun add -D @types/google.maps
    ```
 
@@ -35,12 +35,25 @@ This project includes a Google Maps integration with interactive pins. Follow th
 
 ## Features
 
-- **Interactive Map**: Displays a Google Map centered on the United States
-- **Multiple Pins**: Shows 8 different locations across the US
+- **Interactive Map**: Displays a Google Map using `@react-google-maps/api` React wrapper
+- **Multiple Pins**: Shows 8 different locations across the US with custom styled markers
 - **Info Windows**: Click on any pin to see details about the location
 - **Responsive Design**: Map adapts to different screen sizes
-- **Error Handling**: Graceful error handling for API issues
+- **Error Handling**: Graceful error handling for API issues and missing keys
 - **Loading State**: Shows loading indicator while map initializes
+- **Modern React**: Uses React hooks and functional components
+- **TypeScript Support**: Full type safety with Google Maps types
+
+## Why @react-google-maps/api?
+
+This implementation uses `@react-google-maps/api` instead of the vanilla Google Maps JavaScript API because:
+
+- **React-friendly**: Designed specifically for React applications
+- **Component-based**: Uses familiar React component patterns
+- **Better performance**: Optimized for React's rendering cycle
+- **Easier state management**: Integrates seamlessly with React state
+- **TypeScript support**: Better type definitions and developer experience
+- **Declarative**: Write maps the React way with JSX
 
 ## Customization
 
