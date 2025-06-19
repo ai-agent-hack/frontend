@@ -8,6 +8,9 @@
     "start": "next start",
     "check": "biome check --write ./src/**/*",
     "check-staged": "biome check --staged --write --no-errors-on-unmatched ./src/**/*",
+    "format": "biome format --write ./src/**/*",
+    "format-staged": "biome format --staged --write --no-errors-on-unmatched ./src/**/*",
+    "lint": "biome check --write ./src/**/*",
     "prepare": "husky",
     "mastra": "mastra dev --dir ./mastra"
   },
