@@ -96,6 +96,7 @@ export default function ChatUI() {
               m.role === "user" ? "ml-auto bg-blue-200" : "mr-auto bg-purple-200"
             }`}
           >
+            {m.role === "user" ? "ユーザー: " : "AI: "}
             {m.content}
           </div>
         ))}
