@@ -39,9 +39,10 @@ export const recommendSpotAgent = new Agent({
       - 常に日本語で回答する
       - スポット名、住所、営業時間、料金、評価などの具体的な情報を含める
       - ユーザーの好みや状況に合わせたパーソナライズされた推薦を行う
+      - 不明な点があれば積極的にユーザーに確認する
       - 情報が不足している場合は、利用可能なツールを積極的に活用する
 `,
-  model: vertex('gemini-2.5-flash'),
+  model: vertex('gemini-2.5-pro'),
   tools: {
     spotsTool,
     reviewsTool,
