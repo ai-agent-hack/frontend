@@ -7,7 +7,7 @@ import { patchTool } from '../tools/patch-tool';
 import { createVertex } from '@ai-sdk/google-vertex';
 
 const MASTRA_DEBUG = process.env.MASTRA_DEBUG === 'true';
-const storage_url = MASTRA_DEBUG ? 'file:../../mastra/mastra.db' : 'file:./mastra/mastra.db';
+const storage_url = MASTRA_DEBUG ? 'file:../../src/mastra/mastra.db' : 'file:./src/mastra/mastra.db';
 
 const vertex = createVertex({
   location: 'us-central1',

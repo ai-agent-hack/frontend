@@ -1,4 +1,4 @@
-import { mastra } from '../../../../mastra';
+import { mastra } from '@/mastra';
 import { z } from 'zod';
 import { outputSchema, recommendSpotInputSchema } from '../../../../common/type';
 

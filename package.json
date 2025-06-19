@@ -9,7 +9,7 @@
     "check": "biome check --write ./src/**/*",
     "check-staged": "biome check --staged --write --no-errors-on-unmatched ./src/**/*",
     "prepare": "husky",
-    "mastra": "mastra dev --dir ./mastra"
+    "mastra": "mastra dev --dir ./src/mastra"
   },
   "dependencies": {
     "@ai-sdk/google-vertex": "^2.2.24",

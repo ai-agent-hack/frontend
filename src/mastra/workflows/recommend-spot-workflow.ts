@@ -1,5 +1,5 @@
 import { createWorkflow, createStep } from '@mastra/core';
-import { outputSchema, recommendSpotInputSchema, MessageSchema } from '../../common/type';
+import { outputSchema, recommendSpotInputSchema, MessageSchema } from '../../../common/type';
 import { z } from 'zod';
 
 import { Message } from '@ai-sdk/ui-utils';
