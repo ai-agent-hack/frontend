@@ -1,7 +1,5 @@
 import { mastra } from '../../../../mastra';
 
-export const runtime = 'edge';
-
 export async function POST(req: Request) {
   const { messages } = await req.json();
 
