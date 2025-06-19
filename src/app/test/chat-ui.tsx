@@ -1,65 +1,170 @@
 "use client";
 
-import { useChat } from 'ai/react';
+import { experimental_useObject as useObject } from "@ai-sdk/react";
+import { z } from "zod";
+import { useState, useEffect, useRef } from "react";
 
-export function ChatUI() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    api: '/api/chat',
+// ---------------------------------------------------------
+// 1. 返却 JSON スキーマ
+// ---------------------------------------------------------
+const recommendSpotSchema = z.object({
+  name: z.string(),
+  lat: z.number(),
+  lng: z.number(),
+  bestTime: z.string(),
+  description: z.string(),
+  reason: z.string(),
+});
+
+const outputSchema = z.object({
+  message: z.string().optional(), // ストリーミング途中は undefined の可能性がある
+  recommendSpotObject: recommendSpotSchema.optional(),
+});
+
+type Message = {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+};
+
+// ---------------------------------------------------------
+// 2. Chat UI コンポーネント
+// ---------------------------------------------------------
+export default function ChatUI() {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const endRef = useRef<HTMLDivElement>(null);
+
+  // --- Mastra へのストリーム接続 -----------------------------------
+  const { object, submit, isLoading, error } = useObject({
+    api: "/api/chat", // エンドポイントは適宜変更
+    schema: outputSchema,
   });
 
+  // スクロールを常に最下部へ
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // ストリーミングで message が更新されるたびに表示を反映
+  useEffect(() => {
+    if (!object?.message) return; // message が undefined の時は何もしない
+
+    setMessages((prev): Message[] => {
+      const last = prev[prev.length - 1];
+
+      // 直前の assistant バブルをインクリメンタルに更新
+      if (last && last.role === "assistant") {
+        return [
+          ...prev.slice(0, -1),
+          { ...last, content: object.message! }, // ここで ! で undefined 排除
+        ];
+      }
+
+      // 新規 assistant バブルを追加
+      const assistantMsg: Message = {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        content: object.message!, // 同じく !
+      };
+      return [...prev, assistantMsg];
+    });
+  }, [object?.message]);
+
+  //-------------------------------------------------------------------
+  // フォーム送信
+  //-------------------------------------------------------------------
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    const userMsg: Message = {
+      id: crypto.randomUUID(),
+      role: "user",
+      content: input.trim(),
+    };
+
+    // 1) 画面に即時反映
+    const nextMessages = [...messages, userMsg];
+    setMessages(nextMessages);
+    setInput("");
+
+    // 2) Mastra に送信
+    try {
+      await submit({
+        messages: nextMessages.map(({ role, content }) => ({ role, content })),
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // ---------------------------------------------------------
+  // 3. 画面描画
+  // ---------------------------------------------------------
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-      <div style={{ 
-        height: '400px', 
-        overflowY: 'auto', 
-        border: '1px solid #ccc', 
-        padding: '10px', 
-        marginBottom: '10px',
-        backgroundColor: '#f9f9f9'
-      }}>
-        {messages.map((message) => (
+    <div className="mx-auto max-w-xl space-y-4 p-4">
+      {/* チャットログ */}
+      <div className="h-96 overflow-y-auto rounded border bg-gray-50 p-3">
+        {messages.map((m) => (
           <div
-            key={message.id}
-            style={{
-              marginBottom: '10px',
-              padding: '8px',
-              backgroundColor: message.role === 'user' ? '#e3f2fd' : '#f3e5f5',
-              borderRadius: '8px',
-              alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start'
-            }}
+            key={m.id}
+            className={`mb-2 w-fit max-w-[80%] rounded-lg px-3 py-2 text-sm ${
+              m.role === "user" ? "ml-auto bg-blue-200" : "mr-auto bg-purple-200"
+            }`}
           >
-            <strong>{message.role === 'user' ? 'You' : 'Assistant'}:</strong>
-            <div style={{ marginTop: '4px' }}>{message.content}</div>
+            {m.content}
           </div>
         ))}
+
+        {/* 送信中インジケータ */}
+        {isLoading && (
+          <div className="mr-auto mb-2 w-fit max-w-[80%] animate-pulse rounded-lg bg-purple-200 px-3 py-2 text-sm">
+            …
+          </div>
+        )}
+        <div ref={endRef} />
       </div>
-      
-      <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px' }}>
+
+      {/* スポットカード */}
+      {object?.recommendSpotObject && (
+        <div className="rounded-lg border p-4 shadow">
+          <h3 className="mb-2 text-lg font-semibold">
+            {object.recommendSpotObject.name}
+          </h3>
+          <p className="mb-1 text-sm text-gray-600">
+            ベストタイム: {object.recommendSpotObject.bestTime}
+          </p>
+          <p className="mb-2 text-sm text-gray-700">
+            {object.recommendSpotObject.description}
+          </p>
+          <p className="text-sm text-gray-500">
+            理由: {object.recommendSpotObject.reason}
+          </p>
+          <p className="mt-2 text-xs text-gray-400">
+            ({object.recommendSpotObject.lat}, {object.recommendSpotObject.lng})
+          </p>
+        </div>
+      )}
+
+      {/* 入力フォーム */}
+      <form onSubmit={handleSubmit} className="flex gap-2">
         <input
+          className="flex-1 rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="気になる場所を聞いてみよう…"
           value={input}
-          onChange={handleInputChange}
-          placeholder="Type your message..."
-          style={{
-            flex: 1,
-            padding: '10px',
-            border: '1px solid #ccc',
-            borderRadius: '4px'
-          }}
+          onChange={(e) => setInput(e.target.value)}
         />
         <button
           type="submit"
-          style={{
-            padding: '10px 20px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
+          className="rounded bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
+          disabled={isLoading}
         >
-          Send
+          送信
         </button>
       </form>
+
+      {error && <p className="text-sm text-red-500">{String(error)}</p>}
     </div>
   );
 }
