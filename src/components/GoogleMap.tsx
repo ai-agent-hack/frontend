@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { GoogleMap as ReactGoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 
-interface MapPin {
+export interface MapPin {
   id: string;
   position: { lat: number; lng: number };
   title: string;
