@@ -3,6 +3,7 @@
 import { experimental_useObject as useObject } from "@ai-sdk/react";
 import { useState, useEffect, useRef } from "react";
 import { outputSchema, recommendSpotInputSchema } from "../../../common/type";
+import { MarkdownRenderer } from "../../components/markdown-renderer";
 
 type Message = {
   role: "user" | "assistant";
@@ -96,8 +97,14 @@ export default function ChatUI() {
               m.role === "user" ? "ml-auto bg-blue-200" : "mr-auto bg-purple-200"
             }`}
           >
-            {m.role === "user" ? "ユーザー: " : "AI: "}
-            {m.content}
+            <div className="font-medium mb-1">
+              {m.role === "user" ? "ユーザー: " : "AI: "}
+            </div>
+            {m.role === "assistant" ? (
+              <MarkdownRenderer content={m.content} />
+            ) : (
+              <div>{m.content}</div>
+            )}
           </div>
         ))}
 
