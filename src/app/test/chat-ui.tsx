@@ -1,28 +1,10 @@
 "use client";
 
 import { experimental_useObject as useObject } from "@ai-sdk/react";
-import { z } from "zod";
 import { useState, useEffect, useRef } from "react";
-
-// ---------------------------------------------------------
-// 1. 返却 JSON スキーマ
-// ---------------------------------------------------------
-const recommendSpotSchema = z.object({
-  name: z.string(),
-  lat: z.number(),
-  lng: z.number(),
-  bestTime: z.string(),
-  description: z.string(),
-  reason: z.string(),
-});
-
-const outputSchema = z.object({
-  message: z.string().optional(), // ストリーミング途中は undefined の可能性がある
-  recommendSpotObject: recommendSpotSchema.optional(),
-});
+import { outputSchema, recommendSpotInputSchema } from "../../../common/type";
 
 type Message = {
-  id: string;
   role: "user" | "assistant";
   content: string;
 };
@@ -63,7 +45,6 @@ export default function ChatUI() {
 
       // 新規 assistant バブルを追加
       const assistantMsg: Message = {
-        id: crypto.randomUUID(),
         role: "assistant",
         content: object.message!, // 同じく !
       };
@@ -79,7 +60,6 @@ export default function ChatUI() {
     if (!input.trim()) return;
 
     const userMsg: Message = {
-      id: crypto.randomUUID(),
       role: "user",
       content: input.trim(),
     };
@@ -89,11 +69,14 @@ export default function ChatUI() {
     setMessages(nextMessages);
     setInput("");
 
+    const requestData = recommendSpotInputSchema.parse({
+      messages: nextMessages.map(({ role, content }) => ({ role, content })),
+      recommendSpotObject: object?.recommendSpotObject,
+    });
+
     // 2) Mastra に送信
     try {
-      await submit({
-        messages: nextMessages.map(({ role, content }) => ({ role, content })),
-      });
+      await submit(requestData);
     } catch (err) {
       console.error(err);
     }
@@ -108,7 +91,7 @@ export default function ChatUI() {
       <div className="h-96 overflow-y-auto rounded border bg-gray-50 p-3">
         {messages.map((m) => (
           <div
-            key={m.id}
+            key={m.content}
             className={`mb-2 w-fit max-w-[80%] rounded-lg px-3 py-2 text-sm ${
               m.role === "user" ? "ml-auto bg-blue-200" : "mr-auto bg-purple-200"
             }`}
