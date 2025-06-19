@@ -110,6 +110,33 @@ export default function ChatUI() {
         <div ref={endRef} />
       </div>
 
+      <br />
+
+      {/* 入力フォーム */}
+      <form onSubmit={handleSubmit} className="flex gap-2">
+        <input
+          className="flex-1 rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="気になる場所を聞いてみよう…"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
+        <button
+          type="submit"
+          className="rounded bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
+          disabled={isLoading}
+        >
+          送信
+        </button>
+      </form>
+
+      {error && <p className="text-sm text-red-500">{String(error)}</p>}
+
+      <br />
+
+      <div>
+        <h2>おすすめスポットオブジェクト</h2>
+      </div>
+
       {/* スポットカード */}
       {object?.recommendSpotObject && (
         <div className="rounded-lg border p-4 shadow">
@@ -131,24 +158,7 @@ export default function ChatUI() {
         </div>
       )}
 
-      {/* 入力フォーム */}
-      <form onSubmit={handleSubmit} className="flex gap-2">
-        <input
-          className="flex-1 rounded border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="気になる場所を聞いてみよう…"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <button
-          type="submit"
-          className="rounded bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
-          disabled={isLoading}
-        >
-          送信
-        </button>
-      </form>
-
-      {error && <p className="text-sm text-red-500">{String(error)}</p>}
+      
     </div>
   );
 }
