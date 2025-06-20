@@ -7,9 +7,9 @@
 		"build": "next build",
 		"start": "next start",
 		"check": "biome check --write ./src/**/*",
-		"check-staged": "biome check --staged --write --no-errors-on-unmatched ./src/**/*",
+		"check-staged": "biome check --staged --write --no-errors-on-unmatched",
 		"format": "biome format --write ./src/**/*",
-		"format-staged": "biome format --staged --write --no-errors-on-unmatched ./src/**/*",
+		"format-staged": "biome format --staged --write --no-errors-on-unmatched",
 		"lint": "biome check --write ./src/**/*",
 		"prepare": "husky",
 		"mastra": "mastra dev --dir ./mastra"
@@ -36,7 +36,7 @@
 		"zod": "^3.25.67"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.0.2",
+		"@biomejs/biome": "2.0.0",
 		"@types/google.maps": "^3.58.1",
 		"@types/node": "^22.0.0",
 		"@types/react": "^19",
