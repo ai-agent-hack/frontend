@@ -4,4 +4,7 @@ setup:
 dev:
 	bun run dev
 
+format:
+	bun run format
+
 .PHONY: setup dev
