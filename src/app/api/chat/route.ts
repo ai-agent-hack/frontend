@@ -1,9 +1,8 @@
+/** biome-ignore lint/suspicious/noExplicitAny: Needed for handling untyped response from Mastra API */
 import { mastra } from "@/mastra";
-import { z } from "zod";
-import {
-	outputSchema,
-	recommendSpotInputSchema,
-} from "@/mastra/schema/recommend-spot";
+import type { z } from "zod";
+import { recommendSpotInputSchema } from "@/mastra/schema/recommend-spot";
+import { outputSchema } from "@/mastra/schema/output";
 
 export async function POST(req: Request) {
 	const requestData = await req.json();
@@ -20,12 +19,10 @@ export async function POST(req: Request) {
 			(result as any)?.message ??
 			"No response";
 
-		// mastraの結果からrecommendSpotObjectを抽出
 		const recommendSpotData =
 			(result as any)?.result?.recommendSpotObject ||
 			(result as any)?.recommendSpotObject;
 
-		// outputSchemaに従ったレスポンスを構築
 		const responseData: z.infer<typeof outputSchema> = {
 			message: text,
 			recommendSpotObject: recommendSpotData
@@ -40,9 +37,7 @@ export async function POST(req: Request) {
 				: undefined,
 		};
 
-		// outputSchemaでバリデーション
 		const validatedResponse = outputSchema.parse(responseData);
-
 		return new Response(JSON.stringify(validatedResponse), {
 			headers: {
 				"Content-Type": "application/json",
@@ -50,7 +45,6 @@ export async function POST(req: Request) {
 		});
 	} catch (err) {
 		console.error("chat API error:", err);
-		// エラーストリームを即返却
 		return new Response(JSON.stringify({ error: "Internal Server Error" }), {
 			status: 500,
 			headers: {
