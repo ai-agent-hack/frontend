@@ -4,4 +4,13 @@ setup:
 dev:
 	bun run dev
 
-.PHONY: setup dev
+format:
+	bun run format
+
+lint:
+	bun run lint
+
+mastra:
+	bun run mastra
+
+.PHONY: setup dev format lint mastra
