@@ -20,13 +20,27 @@ export const TimeOfDayPicker: React.FC<TimeOfDayPickerProps> = ({
 				<Button
 					key={option}
 					onClick={() => onTimeChange(option)}
-					colorScheme={selectedTime === option ? "blue" : "gray"}
 					variant={selectedTime === option ? "solid" : "outline"}
 					flex={1}
-					// 修正点: ボタンのサイズを大きくする
 					size="lg"
-					// 高さを他の入力欄と合わせる
 					h="60px"
+					fontSize="lg"
+					fontWeight="semibold"
+					rounded="xl"
+					borderWidth="2px"
+					bg={selectedTime === option ? "blue.500" : "gray.50"}
+					color={selectedTime === option ? "white" : "gray.700"}
+					borderColor={selectedTime === option ? "blue.500" : "gray.300"}
+					_hover={{
+						bg: selectedTime === option ? "blue.600" : "white",
+						borderColor: selectedTime === option ? "blue.600" : "blue.400",
+						transform: "translateY(-2px)",
+						shadow: "md"
+					}}
+					_active={{
+						transform: "translateY(0px)"
+					}}
+					transition="all 0.2s ease"
 				>
 					{option}
 				</Button>

@@ -22,9 +22,17 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
 	onDateChange,
 }) => {
 	return (
-		<HStack gap={4} align="flex-start" w="full">
+		<HStack gap={6} align="flex-start" w="full">
 			<Box flex={1}>
-				<Text as="label" htmlContent="startDate" display="block" mb={2}>
+				<Text 
+					as="label" 
+					htmlContent="startDate" 
+					display="block" 
+					mb={2}
+					fontSize="sm"
+					fontWeight="medium"
+					color="gray.600"
+				>
 					開始日
 				</Text>
 				<Input
@@ -38,13 +46,36 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
 						)
 					}
 					size="lg"
-					// 修正点: 高さとフォントサイズを大きくする
 					h="60px"
 					fontSize="lg"
+					borderColor="gray.300"
+					borderWidth="2px"
+					rounded="xl"
+					bg="gray.50"
+					_hover={{ 
+						borderColor: "blue.400",
+						bg: "white",
+						shadow: "md"
+					}}
+					_focus={{
+						borderColor: "blue.500",
+						bg: "white",
+						shadow: "lg",
+						transform: "scale(1.01)"
+					}}
+					transition="all 0.2s ease"
 				/>
 			</Box>
 			<Box flex={1}>
-				<Text as="label" htmlContent="endDate" display="block" mb={2}>
+				<Text 
+					as="label" 
+					htmlContent="endDate" 
+					display="block" 
+					mb={2}
+					fontSize="sm"
+					fontWeight="medium"
+					color="gray.600"
+				>
 					終了日
 				</Text>
 				<Input
@@ -58,9 +89,24 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
 						)
 					}
 					size="lg"
-					// 修正点: 高さとフォントサイズを大きくする
 					h="60px"
 					fontSize="lg"
+					borderColor="gray.300"
+					borderWidth="2px"
+					rounded="xl"
+					bg="gray.50"
+					_hover={{ 
+						borderColor: "blue.400",
+						bg: "white",
+						shadow: "md"
+					}}
+					_focus={{
+						borderColor: "blue.500",
+						bg: "white",
+						shadow: "lg",
+						transform: "scale(1.01)"
+					}}
+					transition="all 0.2s ease"
 				/>
 			</Box>
 		</HStack>
