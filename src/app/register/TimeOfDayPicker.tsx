@@ -1,5 +1,7 @@
-// src/components/TimeOfDayPicker.tsx
+"use client";
+
 import React from 'react';
+import { Button, HStack } from '@chakra-ui/react';
 
 interface TimeOfDayPickerProps {
   selectedTime: string;
@@ -7,20 +9,23 @@ interface TimeOfDayPickerProps {
 }
 
 export const TimeOfDayPicker: React.FC<TimeOfDayPickerProps> = ({ selectedTime, onTimeChange }) => {
+  const options = ['午前', '午後', '終日', '夜間'];
+
   return (
-    <select
-      id="timeOfDay"
-      name="timeOfDay"
-      value={selectedTime}
-      onChange={(e) => onTimeChange(e.target.value)}
-      required
-      className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base transition duration-150 ease-in-out"
-    >
-      <option value="" disabled>時間帯を選択してください</option>
-      <option value="午前">午前</option>
-      <option value="午後">午後</option>
-      <option value="終日">終日</option>
-      <option value="夜間">夜間</option>
-    </select>
+    <HStack spaceX={4} spaceY={4} align="center" width="100%">
+      {options.map((option) => (
+        <Button
+          key={option}
+          // ボタンがクリックされたら、そのボタンの値を親コンポーネントに渡す
+          onClick={() => onTimeChange(option)}
+          // 選択されているボタンのスタイルを変更する
+          colorScheme={selectedTime === option ? 'blue' : 'gray'}
+          variant={selectedTime === option ? 'solid' : 'outline'}
+          flex={1} // ボタンが均等に幅を占めるようにする
+        >
+          {option}
+        </Button>
+      ))}
+    </HStack>
   );
 };

@@ -1,5 +1,7 @@
-// src/components/DateRangePicker.tsx
+"use client";
+
 import React from 'react';
+import { Input, HStack, Box, Text } from '@chakra-ui/react';
 
 interface DateRangePickerProps {
   startDate: Date | null;
@@ -7,33 +9,45 @@ interface DateRangePickerProps {
   onDateChange: (start: Date | null, end: Date | null) => void;
 }
 
+const formatDate = (date: Date | null): string => {
+    if (!date) return '';
+    // タイムゾーンのオフセットを考慮
+    const tzOffset = date.getTimezoneOffset() * 60000;
+    const localDate = new Date(date.getTime() - tzOffset);
+    return localDate.toISOString().split('T')[0];
+};
+
 export const DateRangePicker: React.FC<DateRangePickerProps> = ({ startDate, endDate, onDateChange }) => {
   return (
-    <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-      <div className="flex-1">
-        <label htmlFor="startDate" className="block text-xs font-medium text-gray-600 mb-1">初日</label>
-        <input
+    <HStack spaceX={4} spaceY={4} align="flex-end">
+      <Box flex={1}>
+        {/* FormLabelの代わりにTextをlabelとして使用 */}
+        <Text as="label" htmlContent="startDate" fontSize="md" mb={2} display="block">
+          開始日 *
+        </Text>
+        <Input
           type="date"
           id="startDate"
           name="startDate"
-          value={startDate ? startDate.toISOString().split('T')[0] : ''}
+          value={formatDate(startDate)}
           onChange={(e) => onDateChange(e.target.value ? new Date(e.target.value) : null, endDate)}
-          required
-          className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base transition duration-150 ease-in-out"
+          size="lg"
         />
-      </div>
-      <div className="flex-1">
-        <label htmlFor="endDate" className="block text-xs font-medium text-gray-600 mb-1">終日</label>
-        <input
+      </Box>
+      <Box flex={1}>
+        {/* FormLabelの代わりにTextをlabelとして使用 */}
+        <Text as="label" htmlContent="endDate" fontSize="md" mb={2} display="block">
+          終了日 *
+        </Text>
+        <Input
           type="date"
           id="endDate"
           name="endDate"
-          value={endDate ? endDate.toISOString().split('T')[0] : ''}
+          value={formatDate(endDate)}
           onChange={(e) => onDateChange(startDate, e.target.value ? new Date(e.target.value) : null)}
-          required
-          className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base transition duration-150 ease-in-out"
+          size="lg"
         />
-      </div>
-    </div>
+      </Box>
+    </HStack>
   );
 };

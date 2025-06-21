@@ -1,6 +1,16 @@
 "use client";
-// src/components/TravelPlanFormReducer.tsx
+
 import React, { useReducer } from 'react';
+import {
+  Box,
+  Button,
+  Center,
+  Heading,
+  Input,
+  Text,
+  Textarea,
+  VStack,
+} from '@chakra-ui/react';
 import { DateRangePicker } from './DateRangePicker';
 import { TimeOfDayPicker } from './TimeOfDayPicker';
 
@@ -47,7 +57,7 @@ const TravelPlanFormReducer: React.FC<TravelPlanFormProps> = ({ onSubmit }) => {
     region: '',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     dispatch({
       type: 'SET_FIELD',
@@ -65,119 +75,125 @@ const TravelPlanFormReducer: React.FC<TravelPlanFormProps> = ({ onSubmit }) => {
     onSubmit(formData);
   };
 
+  // 必須マーク用のコンポーネント
+  const RequiredMark = () => <Text as="span" color="red.500" ml={1}>*</Text>;
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-2xl">
-        <h2 className="text-3xl font-extrabold text-center text-gray-900">
-          旅行計画の入力
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          あなたの理想の旅を教えてください
-        </p>
+    <Center
+      minH="100vh"
+      bgGradient="linear(to-br, indigo.50, purple.100)"
+      py={12}
+      px={{ base: 4, sm: 6, lg: 8 }}
+    >
+      <form onSubmit={handleSubmit}>
+        <Box>
+          {/* VStackのpropsを修正 (spaceX/Y → spacing) */}
+          <VStack spaceX={6} spaceY={6} align="stretch">
+            <Box textAlign="center">
+              <Heading as="h2" size="xl" fontWeight="extrabold">
+                旅行計画の入力
+              </Heading>
+              <Text mt={2} fontSize="sm" color="gray.600">
+                あなたの理想の旅を教えてください
+              </Text>
+            </Box>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {/* 出発地 */}
-          <div>
-            <label htmlFor="departureLocation" className="block text-sm font-medium text-gray-700 mb-1">
-              出発地 <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="departureLocation"
-              name="departureLocation"
-              value={formData.departureLocation}
-              onChange={handleChange}
-              required
-              className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base transition duration-150 ease-in-out"
-              placeholder="例: 東京、大阪"
-            />
-          </div>
+            <VStack spaceX={6} spaceY={6} align="stretch">
+              {/* 出発地 */}
 
-          {/* 期間 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              期間 (何泊何日) <span className="text-red-500">*</span>
-            </label>
-            <DateRangePicker
-              startDate={formData.startDate}
-              endDate={formData.endDate}
-              onDateChange={handleDateChange}
-            />
-          </div>
+              <Box>
+                <Text as="label" htmlContent="departureLocation" display="block" mb={2}>出発地<RequiredMark /></Text>
+                <Input
+                  id="departureLocation"
+                  name="departureLocation"
+                  value={formData.departureLocation}
+                  onChange={handleChange}
+                  placeholder="例: 東京、大阪"
+                  size="lg"
+                />
+              </Box>
+              {/* 期間 */}
+              <Box>
+                <Text as="label" display="block" mb={2}>期間 (何泊何日)<RequiredMark /></Text>
+                <DateRangePicker
+                  startDate={formData.startDate}
+                  endDate={formData.endDate}
+                  onDateChange={handleDateChange}
+                />
+              </Box>
 
-          {/* 時間帯 */}
-          <div>
-            <label htmlFor="timeOfDay" className="block text-sm font-medium text-gray-700 mb-1">
-              旅行する時間帯 <span className="text-red-500">*</span>
-            </label>
-            <TimeOfDayPicker
-              selectedTime={formData.timeOfDay}
-              onTimeChange={(value) => dispatch({ type: 'SET_FIELD', field: 'timeOfDay', value })}
-            />
-          </div>
+              {/* 時間帯 */}
+              <Box>
+                <Text as="label" display="block" mb={2}>旅行する時間帯<RequiredMark /></Text>
+                <TimeOfDayPicker
+                  selectedTime={formData.timeOfDay}
+                  onTimeChange={(value) => dispatch({ type: 'SET_FIELD', field: 'timeOfDay', value })}
+                />
+              </Box>
 
-          {/* 旅行の雰囲気 */}
-          <div>
-            <label htmlFor="travelAtmosphere" className="block text-sm font-medium text-gray-700 mb-1">
-              旅行の雰囲気 (自由記述)
-            </label>
-            <textarea
-              id="travelAtmosphere"
-              name="travelAtmosphere"
-              rows={4}
-              value={formData.travelAtmosphere}
-              onChange={handleChange}
-              className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base transition duration-150 ease-in-out"
-              placeholder="例: 自然を満喫したい、歴史的な場所を巡りたい、賑やかな街が好き、家族向け、一人旅"
-            ></textarea>
-          </div>
+              {/* 旅行の雰囲気 */}
+              <Box>
+                <Text as="label" htmlContent="travelAtmosphere" display="block" mb={2}>旅行の雰囲気 (自由記述)</Text>
+                <Textarea
+                  id="travelAtmosphere"
+                  name="travelAtmosphere"
+                  value={formData.travelAtmosphere}
+                  onChange={handleChange}
+                  placeholder="例: 自然を満喫したい、歴史的な場所を巡りたい"
+                  rows={4}
+                  size="lg"
+                />
+              </Box>
 
-          {/* 予算 */}
-          <div>
-            <label htmlFor="budget" className="block text-sm font-medium text-gray-700 mb-1">
-              予算 (円)
-            </label>
-            <input
-              type="number"
-              id="budget"
-              name="budget"
-              value={formData.budget}
-              onChange={handleChange}
-              min="0"
-              className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base transition duration-150 ease-in-out"
-              placeholder="例: 50000"
-            />
-          </div>
+              {/* 予算 */}
+              <Box>
+                <Text as="label" htmlContent="budget" display="block" mb={2}>予算 (円)</Text>
+                <Input
+                  type="number"
+                  id="budget"
+                  name="budget"
+                  value={formData.budget}
+                  onChange={handleChange}
+                  min={0}
+                  placeholder="例: 50000"
+                  size="lg"
+                />
+              </Box>
 
-          {/* 地域 */}
-          <div>
-            <label htmlFor="region" className="block text-sm font-medium text-gray-700 mb-1">
-              地域 <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="region"
-              name="region"
-              value={formData.region}
-              onChange={handleChange}
-              required
-              className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-base transition duration-150 ease-in-out"
-              placeholder="例: 北海道、沖縄、京都"
-            />
-          </div>
+              {/* 地域 */}
+              <Box>
+                <Text as="label" htmlContent="region" display="block" mb={2}>地域<RequiredMark /></Text>
+                <Input
+                  id="region"
+                  name="region"
+                  value={formData.region}
+                  onChange={handleChange}
+                  placeholder="例: 北海道、沖縄、京都"
+                  size="lg"
+                />
+              </Box>
 
-          {/* 送信ボタン */}
-          <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out shadow-lg transform hover:scale-105"
-            >
-              旅行計画を送信
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+              {/* 送信ボタン */}
+              <Button
+                type="submit"
+                colorScheme="indigo"
+                size="lg"
+                fontSize="lg"
+                w="full"
+                py={6}
+                mt={4}
+                shadow="lg"
+                transform="auto"
+                _hover={{ _dark: { bg: "indigo.500" }, bg: 'indigo.700', transform: "scale(1.02)" }}
+                transition="all 0.15s ease-in-out"
+              >
+                旅行計画を送信
+              </Button>
+            </VStack>
+          </VStack>
+        </Box>
+      </form>
+    </Center>
   );
 };
 
