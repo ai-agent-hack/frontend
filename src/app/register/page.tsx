@@ -88,7 +88,13 @@ const RegisterPage: React.FC = () => {
 		setApiResponse(null);
 
 		// バリデーション
-		if (!formData.departureLocation || !formData.region || !formData.startDate || !formData.endDate || !formData.atmosphere) {
+		if (
+			!formData.departureLocation ||
+			!formData.region ||
+			!formData.startDate ||
+			!formData.endDate ||
+			!formData.atmosphere
+		) {
 			setError("必須項目をすべて入力してください。");
 			setIsLoading(false);
 			return;
@@ -101,20 +107,23 @@ const RegisterPage: React.FC = () => {
 				start_date: formData.startDate.toISOString(),
 				end_date: formData.endDate.toISOString(),
 				atmosphere: formData.atmosphere, // atmosphereをtime_of_dayとして送信
-				budget: typeof formData.budget === 'number' ? formData.budget : 0,
-				region: formData.region
+				budget: typeof formData.budget === "number" ? formData.budget : 0,
+				region: formData.region,
 			};
 
-      console.log("Sending request:", requestBody); // デバッグ用ログ
+			console.log("Sending request:", requestBody); // デバッグ用ログ
 
-			const response = await fetch("http://localhost:8000/api/v1/pre_info/register", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
+			const response = await fetch(
+				"http://localhost:8000/api/v1/pre_info/register",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+
+					body: JSON.stringify(requestBody),
 				},
-
-				body: JSON.stringify(requestBody),
-			});
+			);
 			const result = await response.json();
 
 			if (!response.ok) {
@@ -290,7 +299,7 @@ const RegisterPage: React.FC = () => {
 									onDateChange={handleDateChange}
 								/>
 							</Box>
-							
+
 							<Box>
 								<Text
 									as="label"
