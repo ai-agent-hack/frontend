@@ -2,8 +2,8 @@
 
 import { experimental_useObject as useObject } from "@ai-sdk/react";
 import { useState, useEffect, useRef } from "react";
-import { recommendSpotInputSchema } from "@/mastra/schema/recommend-spot";
-import { outputSchema } from "@/mastra/schema/output";
+import { recommendSpotInputSchema } from "../../../mastra/schema/recommend-spot";
+import { outputSchema } from "../../../mastra/schema/output";
 
 type Message = {
 	role: "user" | "assistant";
