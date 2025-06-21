@@ -1,12 +1,10 @@
 import { createWorkflow, createStep } from "@mastra/core";
+import type { messageSchema } from "../schema/message";
+import { recommendSpotInputSchema } from "../schema/recommend-spot";
+import { outputSchema } from "../schema/output";
 import type { z } from "zod";
 
 import type { Message } from "@ai-sdk/ui-utils";
-import {
-	type messageSchema,
-	recommendSpotInputSchema,
-} from "../schema/message";
-import { outputSchema } from "../schema/output";
 
 function convertMessages(messages: z.infer<typeof messageSchema>[]): Message[] {
 	return messages.map((message) => ({

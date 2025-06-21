@@ -1,8 +1,8 @@
 /** biome-ignore lint/suspicious/noExplicitAny: Needed for handling untyped response from Mastra API */
-import { mastra } from "@/mastra";
+import { mastra } from "../../../../mastra";
 import type { z } from "zod";
-import { recommendSpotInputSchema } from "@/mastra/schema/recommend-spot";
-import { outputSchema } from "@/mastra/schema/output";
+import { recommendSpotInputSchema } from "../../../../mastra/schema/recommend-spot";
+import { outputSchema } from "../../../../mastra/schema/output";
 
 export async function POST(req: Request) {
 	const requestData = await req.json();
