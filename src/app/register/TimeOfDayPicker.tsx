@@ -35,10 +35,10 @@ export const TimeOfDayPicker: React.FC<TimeOfDayPickerProps> = ({
 						bg: selectedTime === option ? "blue.600" : "white",
 						borderColor: selectedTime === option ? "blue.600" : "blue.400",
 						transform: "translateY(-2px)",
-						shadow: "md"
+						shadow: "md",
 					}}
 					_active={{
-						transform: "translateY(0px)"
+						transform: "translateY(0px)",
 					}}
 					transition="all 0.2s ease"
 				>

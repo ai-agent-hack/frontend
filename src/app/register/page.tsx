@@ -16,15 +16,13 @@ import {
 	Code,
 } from "@chakra-ui/react";
 import { DateRangePicker } from "./DateRangePicker"; // パスは適宜調整
-import { TimeOfDayPicker } from "./TimeOfDayPicker"; // パスは適宜調整
 
 // フォームのデータを定義するインターフェース
 interface TravelPlanFormData {
 	departureLocation: string;
 	startDate: Date | null;
 	endDate: Date | null;
-	timeOfDay: string;
-	travelAtmosphere: string;
+	atmosphere: string;
 	budget: number | string;
 	region: string;
 }
@@ -56,8 +54,7 @@ const RegisterPage: React.FC = () => {
 		departureLocation: "",
 		startDate: null,
 		endDate: null,
-		timeOfDay: "",
-		travelAtmosphere: "",
+		atmosphere: "",
 		budget: "",
 		region: "",
 	});
@@ -90,15 +87,34 @@ const RegisterPage: React.FC = () => {
 		setError(null); // 送信時に過去のエラーをクリア
 		setApiResponse(null);
 
+		// バリデーション
+		if (!formData.departureLocation || !formData.region || !formData.startDate || !formData.endDate || !formData.atmosphere) {
+			setError("必須項目をすべて入力してください。");
+			setIsLoading(false);
+			return;
+		}
+
 		try {
-			const response = await fetch("/api/generate-travel-plan", {
+			// APIスキーマに合わせてデータを変換
+			const requestBody = {
+				departure_location: formData.departureLocation,
+				start_date: formData.startDate.toISOString(),
+				end_date: formData.endDate.toISOString(),
+				atmosphere: formData.atmosphere, // atmosphereをtime_of_dayとして送信
+				budget: typeof formData.budget === 'number' ? formData.budget : 0,
+				region: formData.region
+			};
+
+      console.log("Sending request:", requestBody); // デバッグ用ログ
+
+			const response = await fetch("http://localhost:8000/api/v1/pre_info/register", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(formData),
-			});
 
+				body: JSON.stringify(requestBody),
+			});
 			const result = await response.json();
 
 			if (!response.ok) {
@@ -122,10 +138,10 @@ const RegisterPage: React.FC = () => {
 
 	return (
 		<Box>
-			<Center 
-				minH="100vh" 
-				bgGradient="linear(to-br, blue.50, purple.50, pink.50)" 
-				py={12} 
+			<Center
+				minH="100vh"
+				bgGradient="linear(to-br, blue.50, purple.50, pink.50)"
+				py={12}
 				px={{ base: 4, sm: 6, lg: 8 }}
 			>
 				{/* フォーム部分のBox */}
@@ -156,9 +172,9 @@ const RegisterPage: React.FC = () => {
 					<form onSubmit={handleSubmit}>
 						<VStack gap={10} align="stretch">
 							<Box textAlign="center" mb={2}>
-								<Heading 
-									as="h1" 
-									size="2xl" 
+								<Heading
+									as="h1"
+									size="2xl"
 									fontWeight="bold"
 									bgGradient="linear(to-r, blue.600, purple.600, pink.600)"
 									bgClip="text"
@@ -199,26 +215,26 @@ const RegisterPage: React.FC = () => {
 										borderWidth="2px"
 										rounded="xl"
 										bg="gray.50"
-										_hover={{ 
+										_hover={{
 											borderColor: "blue.400",
 											bg: "white",
-											shadow: "md"
+											shadow: "md",
 										}}
 										_focus={{
 											borderColor: "blue.500",
 											bg: "white",
 											shadow: "lg",
-											transform: "scale(1.01)"
+											transform: "scale(1.01)",
 										}}
 										_placeholder={{ color: "gray.400" }}
 										transition="all 0.2s ease"
 									/>
 								</Box>
 								<Box>
-									<Text 
-										as="label" 
-										htmlContent="region" 
-										display="block" 
+									<Text
+										as="label"
+										htmlContent="region"
+										display="block"
 										mb={3}
 										fontSize="md"
 										fontWeight="semibold"
@@ -240,16 +256,16 @@ const RegisterPage: React.FC = () => {
 										borderWidth="2px"
 										rounded="xl"
 										bg="gray.50"
-										_hover={{ 
+										_hover={{
 											borderColor: "blue.400",
 											bg: "white",
-											shadow: "md"
+											shadow: "md",
 										}}
 										_focus={{
 											borderColor: "blue.500",
 											bg: "white",
 											shadow: "lg",
-											transform: "scale(1.01)"
+											transform: "scale(1.01)",
 										}}
 										_placeholder={{ color: "gray.400" }}
 										transition="all 0.2s ease"
@@ -257,9 +273,9 @@ const RegisterPage: React.FC = () => {
 								</Box>
 							</SimpleGrid>
 							<Box>
-								<Text 
-									as="label" 
-									display="block" 
+								<Text
+									as="label"
+									display="block"
 									mb={3}
 									fontSize="md"
 									fontWeight="semibold"
@@ -274,87 +290,69 @@ const RegisterPage: React.FC = () => {
 									onDateChange={handleDateChange}
 								/>
 							</Box>
-							<SimpleGrid columns={{ base: 1, md: 2 }} gap={8}>
-								<Box>
-									<Text 
-										as="label" 
-										htmlContent="budget" 
-										display="block" 
-										mb={3}
-										fontSize="md"
-										fontWeight="semibold"
-										color="gray.700"
-									>
-										💰 予算 (円)
-									</Text>
-									<Input
-										type="number"
-										id="budget"
-										name="budget"
-										value={formData.budget}
-										onChange={handleChange}
-										min={0}
-										placeholder="例: 50000"
-										size="lg"
-										h="60px"
-										fontSize="lg"
-										borderColor="gray.300"
-										borderWidth="2px"
-										rounded="xl"
-										bg="gray.50"
-										_hover={{ 
-											borderColor: "blue.400",
-											bg: "white",
-											shadow: "md"
-										}}
-										_focus={{
-											borderColor: "blue.500",
-											bg: "white",
-											shadow: "lg",
-											transform: "scale(1.01)"
-										}}
-										_placeholder={{ color: "gray.400" }}
-										transition="all 0.2s ease"
-									/>
-								</Box>
-								<Box>
-									<Text 
-										as="label" 
-										display="block" 
-										mb={3}
-										fontSize="md"
-										fontWeight="semibold"
-										color="gray.700"
-									>
-										🕐 旅行する時間帯
-										<RequiredMark />
-									</Text>
-									<TimeOfDayPicker
-										selectedTime={formData.timeOfDay}
-										onTimeChange={(value) =>
-											dispatch({ type: "SET_FIELD", field: "timeOfDay", value })
-										}
-									/>
-								</Box>
-							</SimpleGrid>
+							
 							<Box>
 								<Text
 									as="label"
-									htmlContent="travelAtmosphere"
+									htmlContent="budget"
 									display="block"
 									mb={3}
 									fontSize="md"
 									fontWeight="semibold"
 									color="gray.700"
 								>
-									🌟 旅行の雰囲気 (自由記述)
+									💰 予算 (円)
+								</Text>
+								<Input
+									type="number"
+									id="budget"
+									name="budget"
+									value={formData.budget}
+									onChange={handleChange}
+									min={0}
+									placeholder="例: 50000"
+									size="lg"
+									h="60px"
+									fontSize="lg"
+									borderColor="gray.300"
+									borderWidth="2px"
+									rounded="xl"
+									bg="gray.50"
+									_hover={{
+										borderColor: "blue.400",
+										bg: "white",
+										shadow: "md",
+									}}
+									_focus={{
+										borderColor: "blue.500",
+										bg: "white",
+										shadow: "lg",
+										transform: "scale(1.01)",
+									}}
+									_placeholder={{ color: "gray.400" }}
+									transition="all 0.2s ease"
+								/>
+							</Box>
+
+							<Box>
+								<Text
+									as="label"
+									htmlContent="atmosphere"
+									display="block"
+									mb={3}
+									fontSize="md"
+									fontWeight="semibold"
+									color="gray.700"
+								>
+									🌟 旅行の雰囲気
+									<RequiredMark />
 								</Text>
 								<Textarea
-									id="travelAtmosphere"
-									name="travelAtmosphere"
-									value={formData.travelAtmosphere}
+									id="atmosphere"
+									name="atmosphere"
+									value={formData.atmosphere}
 									onChange={handleChange}
-									placeholder="例: 自然を満喫したい、歴史的な場所を巡りたい、グルメを楽しみたい..."
+									placeholder="例: 自然を満喫したい、歴史的な場所を巡りたい、グルメを楽しみたい、のんびりリラックスしたい..."
 									rows={4}
 									size="lg"
 									fontSize="lg"
@@ -362,16 +360,16 @@ const RegisterPage: React.FC = () => {
 									borderWidth="2px"
 									rounded="xl"
 									bg="gray.50"
-									_hover={{ 
+									_hover={{
 										borderColor: "blue.400",
 										bg: "white",
-										shadow: "md"
+										shadow: "md",
 									}}
 									_focus={{
 										borderColor: "blue.500",
 										bg: "white",
 										shadow: "lg",
-										transform: "scale(1.01)"
+										transform: "scale(1.01)",
 									}}
 									_placeholder={{ color: "gray.400" }}
 									transition="all 0.2s ease"
@@ -394,11 +392,11 @@ const RegisterPage: React.FC = () => {
 								_hover={{
 									bgGradient: "linear(to-r, blue.600, purple.600, pink.600)",
 									transform: "translateY(-2px)",
-									shadow: "2xl"
+									shadow: "2xl",
 								}}
 								_active={{
 									transform: "translateY(0px)",
-									shadow: "lg"
+									shadow: "lg",
 								}}
 								transition="all 0.2s ease"
 							>
@@ -413,11 +411,11 @@ const RegisterPage: React.FC = () => {
 			<Box maxW="4xl" mx="auto" my={10} p={8}>
 				{/* ローディング表示 */}
 				{isLoading && (
-					<Box 
-						textAlign="center" 
-						bg="white" 
-						p={12} 
-						rounded="3xl" 
+					<Box
+						textAlign="center"
+						bg="white"
+						p={12}
+						rounded="3xl"
 						shadow="xl"
 						border="1px"
 						borderColor="gray.200"
@@ -433,15 +431,17 @@ const RegisterPage: React.FC = () => {
 				)}
 				{/* エラーメッセージ表示 */}
 				{error && (
-					<Box 
-						bg="red.50" 
-						border="2px" 
-						borderColor="red.200" 
-						p={6} 
+					<Box
+						bg="red.50"
+						border="2px"
+						borderColor="red.200"
+						p={6}
 						rounded="xl"
 						textAlign="center"
 					>
-						<Text fontSize="xl" mb={2}>❌</Text>
+						<Text fontSize="xl" mb={2}>
+							❌
+						</Text>
 						<Text fontWeight="semibold" color="red.700">
 							エラーが発生しました
 						</Text>
@@ -452,16 +452,18 @@ const RegisterPage: React.FC = () => {
 				)}
 				{/* 成功レスポンス表示 */}
 				{apiResponse && (
-					<Box 
-						bg="white" 
-						border="2px" 
-						borderColor="green.200" 
-						rounded="3xl" 
+					<Box
+						bg="white"
+						border="2px"
+						borderColor="green.200"
+						rounded="3xl"
 						shadow="xl"
 						overflow="hidden"
 					>
 						<Box bg="green.50" p={6} borderBottom="2px" borderColor="green.200">
-							<Text fontSize="2xl" mb={2} textAlign="center">🎉</Text>
+							<Text fontSize="2xl" mb={2} textAlign="center">
+								🎉
+							</Text>
 							<Heading size="xl" mb={2} textAlign="center" color="green.700">
 								生成されたプラン
 							</Heading>

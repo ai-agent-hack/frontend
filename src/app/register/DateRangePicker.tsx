@@ -24,10 +24,10 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
 	return (
 		<HStack gap={6} align="flex-start" w="full">
 			<Box flex={1}>
-				<Text 
-					as="label" 
-					htmlContent="startDate" 
-					display="block" 
+				<Text
+					as="label"
+					htmlContent="startDate"
+					display="block"
 					mb={2}
 					fontSize="sm"
 					fontWeight="medium"
@@ -52,25 +52,25 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
 					borderWidth="2px"
 					rounded="xl"
 					bg="gray.50"
-					_hover={{ 
+					_hover={{
 						borderColor: "blue.400",
 						bg: "white",
-						shadow: "md"
+						shadow: "md",
 					}}
 					_focus={{
 						borderColor: "blue.500",
 						bg: "white",
 						shadow: "lg",
-						transform: "scale(1.01)"
+						transform: "scale(1.01)",
 					}}
 					transition="all 0.2s ease"
 				/>
 			</Box>
 			<Box flex={1}>
-				<Text 
-					as="label" 
-					htmlContent="endDate" 
-					display="block" 
+				<Text
+					as="label"
+					htmlContent="endDate"
+					display="block"
 					mb={2}
 					fontSize="sm"
 					fontWeight="medium"
@@ -95,16 +95,16 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
 					borderWidth="2px"
 					rounded="xl"
 					bg="gray.50"
-					_hover={{ 
+					_hover={{
 						borderColor: "blue.400",
 						bg: "white",
-						shadow: "md"
+						shadow: "md",
 					}}
 					_focus={{
 						borderColor: "blue.500",
 						bg: "white",
 						shadow: "lg",
-						transform: "scale(1.01)"
+						transform: "scale(1.01)",
 					}}
 					transition="all 0.2s ease"
 				/>
