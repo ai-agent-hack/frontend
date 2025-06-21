@@ -27,10 +27,7 @@ export default function Planning() {
 	return (
 		<HStack>
 			<VStack width={"calc(100% - 400px)"} height="100vh" padding="4">
-				<GoogleMap
-					apiKey={GOOGLE_MAPS_API_KEY}
-					pins={mapPins}
-				/>
+				<GoogleMap apiKey={GOOGLE_MAPS_API_KEY} pins={mapPins} />
 			</VStack>
 
 			<VStack width={"400px"} height="100vh" padding="4">
