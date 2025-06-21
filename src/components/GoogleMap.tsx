@@ -143,14 +143,16 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
 									}),
 							}}
 						>
-              <VStack padding={2} align="start" maxWidth="250px">
-                <Text fontSize="16px" fontWeight="bold" color="#333" mb="2">
-                  {selectedPin.title}
-                </Text>
+							<VStack padding={2} align="start" maxWidth="250px">
+								<Text fontSize="16px" fontWeight="bold" color="#333" mb="2">
+									{selectedPin.title}
+								</Text>
 								{selectedPin.description && (
-                  <Text fontSize="14px" color="#666" lineHeight="1.4">{selectedPin.description}</Text>
+									<Text fontSize="14px" color="#666" lineHeight="1.4">
+										{selectedPin.description}
+									</Text>
 								)}
-              </VStack>
+							</VStack>
 						</InfoWindow>
 					)}
 				</ReactGoogleMap>

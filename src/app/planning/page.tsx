@@ -1,9 +1,9 @@
 "use client";
 
-import GoogleMap, { type MapPin } from "@/components/GoogleMap";
-import { useEffect, useState } from "react";
-import { getInitialRecommendedSpots } from "./action";
 import { HStack, Text, VStack } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import GoogleMap, { type MapPin } from "@/components/GoogleMap";
+import { getInitialRecommendedSpots } from "./action";
 
 export default function Planning() {
 	const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
@@ -37,7 +37,9 @@ export default function Planning() {
 			</VStack>
 
 			<VStack width={"400px"} height="100vh" padding="4">
-				<Text fontWeight={"bold"} fontSize={"2xl"}>Chat</Text>
+				<Text fontWeight={"bold"} fontSize={"2xl"}>
+					Chat
+				</Text>
 			</VStack>
 		</HStack>
 	);
