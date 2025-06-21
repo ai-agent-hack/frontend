@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import {
-	GoogleMap as ReactGoogleMap,
-	LoadScript,
-	Marker,
-	InfoWindow,
-} from "@react-google-maps/api";
 import { Center, Stack, Text, VStack } from "@chakra-ui/react";
+import {
+	AdvancedMarker,
+	APIProvider,
+	InfoWindow,
+	// biome-ignore lint/suspicious/noShadowRestrictedNames: Map is a reserved name in this context
+	Map,
+	Pin,
+} from "@vis.gl/react-google-maps";
+import { useCallback, useEffect, useState } from "react";
 
 export interface MapPin {
 	id: string;
@@ -18,10 +20,7 @@ export interface MapPin {
 
 interface GoogleMapProps {
 	apiKey: string;
-	center?: { lat: number; lng: number };
-	zoom?: number;
 	pins?: MapPin[];
-	className?: string;
 }
 
 const mapContainerStyle = {
@@ -29,38 +28,38 @@ const mapContainerStyle = {
 	height: "100%",
 };
 
-const mapOptions = {
-	disableDefaultUI: false,
-	zoomControl: true,
-	streetViewControl: false,
-	mapTypeControl: true,
-	fullscreenControl: false,
-	styles: [
-		{
-			featureType: "poi",
-			elementType: "labels",
-			stylers: [{ visibility: "on" }],
+const calculateAveragePosition = (
+	pins: MapPin[],
+): { lat: number; lng: number } => {
+	if (pins.length === 0) {
+		return {
+			lat: 35.652832,
+			lng: 139.839478,
+		};
+	}
+
+	const sum = pins.reduce(
+		(acc, pin) => {
+			return {
+				lat: acc.lat + pin.position.lat,
+				lng: acc.lng + pin.position.lng,
+			};
 		},
-	],
+		{ lat: 0, lng: 0 },
+	);
+
+	return {
+		lat: sum.lat / pins.length,
+		lng: sum.lng / pins.length,
+	};
 };
 
-const GoogleMap: React.FC<GoogleMapProps> = ({
-	apiKey,
-	center,
-	zoom = 10,
-	pins = [],
-	className = "",
-}) => {
+const GoogleMap: React.FC<GoogleMapProps> = ({ apiKey, pins = [] }) => {
 	const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
-	const [isLoaded, setIsLoaded] = useState(false);
-
-	const onLoad = useCallback(() => {
-		setIsLoaded(true);
-	}, []);
-
-	const onError = useCallback((error: Error) => {
-		console.error("Error loading Google Maps:", error);
-	}, []);
+	const [zoom, setZoom] = useState(10);
+	const [center, setCenter] = useState<{ lat: number; lng: number }>(
+		calculateAveragePosition(pins),
+	);
 
 	const handleMarkerClick = useCallback((pin: MapPin) => {
 		setSelectedPin(pin);
@@ -70,78 +69,63 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
 		setSelectedPin(null);
 	}, []);
 
+	useEffect(() => {
+		if (pins.length > 0) {
+			setCenter(calculateAveragePosition(pins));
+		}
+	}, [pins]);
+
+	useEffect(() => {
+		setCenter(calculateAveragePosition(pins));
+	}, [pins]);
+
 	if (!apiKey) {
 		return (
-			<div
-				className={`flex items-center justify-center bg-gray-100 border border-gray-300 rounded-lg ${className}`}
-			>
-				<div className="text-center p-8">
-					<h3 className="text-lg font-semibold text-red-600 mb-2">
-						Map Configuration Required
-					</h3>
-					<p className="text-gray-600 mb-4">
-						Please add your Google Maps API key to the environment variables.
-					</p>
-					<div className="text-sm text-gray-500">
-						<p>1. Copy .env.local.example to .env.local</p>
-						<p>2. Add your Google Maps API key</p>
-						<p>3. Restart the development server</p>
-					</div>
-				</div>
-			</div>
+			<Center w={"100%"} h="100%">
+				<Text color="red.500" fontSize="xl">
+					Google Maps API key is not provided.
+				</Text>
+			</Center>
 		);
 	}
 
 	return (
 		<Stack w={"100%"} h="100%" position="relative">
-			<LoadScript
-				googleMapsApiKey={apiKey}
-				libraries={["places"]}
-				onLoad={onLoad}
-				onError={onError}
-				loadingElement={<Center>Loading...</Center>}
-			>
-				<ReactGoogleMap
-					mapContainerStyle={mapContainerStyle}
-					center={center}
+			<APIProvider apiKey={apiKey}>
+				<Map
+					mapId={"DEMO_MAP_ID"}
+					style={mapContainerStyle}
+					streetViewControl={false}
+					zoomControl
 					zoom={zoom}
-					options={mapOptions}
+					onZoomChanged={(e) => setZoom(e.detail.zoom)}
+					onCenterChanged={(e) => setCenter(e.detail.center)}
+					center={center}
+					defaultZoom={10}
 				>
 					{pins.map((pin) => {
-						const iconConfig = {
-							path: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z",
-							fillColor: "#FF6B6B",
-							fillOpacity: 1,
-							strokeColor: "#FFFFFF",
-							strokeWeight: 2,
-							scale: 1.5,
-							...(typeof window !== "undefined" &&
-								window.google?.maps?.Point && {
-									anchor: new window.google.maps.Point(12, 24),
-								}),
-						};
-
 						return (
-							<AdvancedMarkerElement
+							<AdvancedMarker
 								key={pin.id}
 								position={pin.position}
 								title={pin.title}
 								onClick={() => handleMarkerClick(pin)}
-								icon={iconConfig}
-							/>
+							>
+								<Pin
+									background={"#0f9d58"}
+									borderColor={"#006425"}
+									glyphColor={"#60d98f"}
+								/>
+							</AdvancedMarker>
 						);
 					})}
 
 					{selectedPin && (
 						<InfoWindow
 							position={selectedPin.position}
+							pixelOffset={[0, -40]}
+							shouldFocus
 							onCloseClick={handleInfoWindowClose}
-							options={{
-								...(typeof window !== "undefined" &&
-									window.google?.maps?.Size && {
-										pixelOffset: new window.google.maps.Size(0, -30),
-									}),
-							}}
 						>
 							<VStack padding={2} align="start" maxWidth="250px">
 								<Text fontSize="16px" fontWeight="bold" color="#333" mb="2">
@@ -155,8 +139,8 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
 							</VStack>
 						</InfoWindow>
 					)}
-				</ReactGoogleMap>
-			</LoadScript>
+				</Map>
+			</APIProvider>
 		</Stack>
 	);
 };

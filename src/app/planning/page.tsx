@@ -7,7 +7,6 @@ import { getInitialRecommendedSpots } from "./action";
 
 export default function Planning() {
 	const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
-	const tokyoLatLng = { lat: 35.652832, lng: 139.839478 };
 	const [mapPins, setMapPins] = useState<MapPin[]>([]);
 
 	useEffect(() => {
@@ -30,8 +29,6 @@ export default function Planning() {
 			<VStack width={"calc(100% - 400px)"} height="100vh" padding="4">
 				<GoogleMap
 					apiKey={GOOGLE_MAPS_API_KEY}
-					center={tokyoLatLng}
-					zoom={4}
 					pins={mapPins}
 				/>
 			</VStack>
