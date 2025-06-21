@@ -64,7 +64,9 @@ export default function AuthPage() {
         await signIn(email, password);
       }
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "不明なエラーが発生しました");
+      setError(
+        error instanceof Error ? error.message : "不明なエラーが発生しました",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -163,7 +165,9 @@ export default function AuthPage() {
 
           <HStack>
             <Text color="gray.600">
-            {isSignUp ? "アカウントをお持ちですか?" : "アカウントをお持ちでないですか?"}
+              {isSignUp
+                ? "アカウントをお持ちですか?"
+                : "アカウントをお持ちでないですか?"}
             </Text>
             <Button
               variant="ghost"
