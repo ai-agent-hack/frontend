@@ -1,9 +1,9 @@
 "use client";
 
 import { experimental_useObject as useObject } from "@ai-sdk/react";
-import { useState, useEffect, useRef } from "react";
-import { recommendSpotInputSchema } from "../../../mastra/schema/recommend-spot";
+import { useEffect, useRef, useState } from "react";
 import { outputSchema } from "../../../mastra/schema/output";
+import { recommendSpotInputSchema } from "../../../mastra/schema/recommend-spot";
 
 type Message = {
 	role: "user" | "assistant";
@@ -20,7 +20,7 @@ export default function ChatUI() {
 		schema: outputSchema,
 	});
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: scroll to bottom on messages updated
 	useEffect(() => {
 		endRef.current?.scrollIntoView({ behavior: "smooth" });
 	}, [messages]);

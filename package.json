@@ -9,6 +9,7 @@
     "format": "biome format --write",
     "format-staged": "biome format --staged --write --no-errors-on-unmatched",
     "lint": "biome check --write",
+    "lint-staged": "biome check --staged --write --no-errors-on-unmatched",
     "mastra": "mastra dev --dir mastra"
   },
   "dependencies": {
