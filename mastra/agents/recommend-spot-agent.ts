@@ -1,24 +1,23 @@
-import { Agent } from "@mastra/core/agent";
-import { Memory } from "@mastra/memory";
-import { LibSQLStore } from "@mastra/libsql";
-import { spotsTool } from "../tools/spots-tool";
-import { reviewsTool } from "../tools/reviews-tool";
-import { patchTool } from "../tools/patch-tool";
-import { createVertex } from "@ai-sdk/google-vertex";
+import { Agent } from '@mastra/core/agent';
+import { Memory } from '@mastra/memory';
+import { LibSQLStore } from '@mastra/libsql';
+import { spotsTool } from '../tools/spots-tool';
+import { reviewsTool } from '../tools/reviews-tool';
+import { patchTool } from '../tools/patch-tool';
+import { createVertex } from '@ai-sdk/google-vertex';
 
-const MASTRA_DEBUG = process.env.MASTRA_DEBUG === "true";
-const storage_url = MASTRA_DEBUG
-	? "file:../mastra/mastra.db"
-	: "file:mastra.db";
+const MASTRA_DEBUG = process.env.MASTRA_DEBUG === 'true';
+const storage_url = MASTRA_DEBUG ? 'file:../../mastra/mastra.db' : 'file:./mastra/mastra.db';
 
 const vertex = createVertex({
-	location: "us-central1",
-	project: process.env.GOOGLE_PROJECT_ID,
+  location: 'us-central1',
+  project: process.env.GOOGLE_PROJECT_ID,
 });
 
+
 export const recommendSpotAgent = new Agent({
-	name: "Recommend Spot Agent",
-	instructions: `
+  name: 'Recommend Spot Agent',
+  instructions: `
       あなたは日本語で正確なスポット情報を提供する親切なスポット推薦アシスタントです。
       追加の質問がある場合も、まず何か提案してから質問してください。
 
@@ -43,15 +42,15 @@ export const recommendSpotAgent = new Agent({
       - 不明な点があれば積極的にユーザーに確認する
       - 情報が不足している場合は、利用可能なツールを積極的に活用する
 `,
-	model: vertex("gemini-2.5-pro"),
-	tools: {
-		spotsTool,
-		reviewsTool,
-		patchTool,
-	},
-	memory: new Memory({
-		storage: new LibSQLStore({
-			url: storage_url,
-		}),
-	}),
+  model: vertex('gemini-2.5-pro'),
+  tools: {
+    spotsTool,
+    reviewsTool,
+    patchTool,
+  },
+  memory: new Memory({
+    storage: new LibSQLStore({
+      url: storage_url,
+    }),
+  }),
 });

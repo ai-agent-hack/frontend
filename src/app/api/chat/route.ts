@@ -1,5 +1,4 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: Needed for handling untyped response from Mastra API */
-
+/** biome-ignore-all lint/suspicious/noExplicitAny: Receive mastra results as any */
 import type { z } from "zod";
 import { mastra } from "../../../../mastra";
 import { outputSchema } from "../../../../mastra/schema/output";
@@ -38,7 +37,9 @@ export async function POST(req: Request) {
         : undefined,
     };
 
+    // outputSchemaでバリデーション
     const validatedResponse = outputSchema.parse(responseData);
+
     return new Response(JSON.stringify(validatedResponse), {
       headers: {
         "Content-Type": "application/json",
@@ -46,6 +47,7 @@ export async function POST(req: Request) {
     });
   } catch (err) {
     console.error("chat API error:", err);
+    // エラーストリームを即返却
     return new Response(JSON.stringify({ error: "Internal Server Error" }), {
       status: 500,
       headers: {
