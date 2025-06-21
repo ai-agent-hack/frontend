@@ -24,7 +24,7 @@
     NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE
     GOOGLE_PROJECT_ID=ai-agent-hack
     MASTRA_DEBUG=false
-    GOOGLE_APPLICATION_CREDENTIALS=/Users/yu/dev/ai-hackathon/key.json
+    GOOGLE_APPLICATION_CREDENTIALS=/Users/{project_path}/key.json
     ```
 
 3. Run setup command.
