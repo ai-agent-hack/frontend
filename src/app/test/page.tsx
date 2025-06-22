@@ -1,5 +1,5 @@
 import ChatUI from "./chat-ui";
- 
+
 export default async function Page() {
   return (
     <>
