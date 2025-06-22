@@ -3,12 +3,9 @@ import type { RecommendedSpots } from "@/types/recommended-spots";
 export const getInitialRecommendedSpots =
   async (): Promise<RecommendedSpots> => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/spot/pre_info`,
+      `${process.env.NEXT_PUBLIC_API_URL}/pre_info/?skip=0&limit=100`,
       {
-        method: "POST",
-        body: JSON.stringify({
-          pre_info_id: "1234567890",
-        }),
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
