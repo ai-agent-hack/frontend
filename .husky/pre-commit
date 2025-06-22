@@ -1,1 +1,2 @@
 bun run format-staged
+bun run lint-staged
