@@ -12,11 +12,12 @@ export default function Home() {
     <ProtectedRoute>
       <Box p={8}>
         <HStack justify="space-between" mb={8}>
-          <Heading size="lg">Welcome to the App</Heading>
+          <Heading size="lg">Index</Heading>
           {user && <UserMenu />}
         </HStack>
         <VStack gap={4}>
-          <a href="/premise">Premise</a>
+          <a href="/auth">Auth</a>
+          <a href="/register">Register</a>
           <a href="/planning">Planning</a>
         </VStack>
       </Box>
