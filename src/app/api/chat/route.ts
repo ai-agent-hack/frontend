@@ -1,13 +1,15 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: Receive mastra results as any */
-import type { z } from "zod";
+
+import type { OutputSchema, RecommendSpotInputSchema } from "@/types/mastra";
 import { mastra } from "../../../../mastra";
+import { recommendSpotInputSchema } from "../../../../mastra/schema/message";
 import { outputSchema } from "../../../../mastra/schema/output";
-import { recommendSpotInputSchema } from "../../../../mastra/schema/recommend-spot";
 
 export async function POST(req: Request) {
   const requestData = await req.json();
 
-  const validatedRequestData = recommendSpotInputSchema.parse(requestData);
+  const validatedRequestData: RecommendSpotInputSchema =
+    recommendSpotInputSchema.parse(requestData);
 
   try {
     const workflow = mastra.getWorkflow("recommendSpotWorkflow");
@@ -23,18 +25,9 @@ export async function POST(req: Request) {
       (result as any)?.result?.recommendSpotObject ||
       (result as any)?.recommendSpotObject;
 
-    const responseData: z.infer<typeof outputSchema> = {
+    const responseData: OutputSchema = {
       message: text,
-      recommendSpotObject: recommendSpotData
-        ? {
-            name: recommendSpotData.name || "",
-            lat: recommendSpotData.lat || 0,
-            lng: recommendSpotData.lng || 0,
-            bestTime: recommendSpotData.bestTime || "",
-            description: recommendSpotData.description || "",
-            reason: recommendSpotData.reason || "",
-          }
-        : undefined,
+      recommendSpotObject: recommendSpotData || undefined,
     };
 
     // outputSchemaでバリデーション
