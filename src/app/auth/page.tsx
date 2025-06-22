@@ -27,7 +27,7 @@ export default function AuthPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { user, signIn, signUp, initializing } = useAuth();
+  const { user, login, signup, initializing } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -59,9 +59,9 @@ export default function AuthPage() {
 
     try {
       if (isSignUp) {
-        await signUp(email, password, username);
+        await signup(email, password, username);
       } else {
-        await signIn(email, password);
+        await login(email, password);
       }
     } catch (error: unknown) {
       setError(

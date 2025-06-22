@@ -16,7 +16,7 @@ export interface User {
   updated_at: string;
 }
 
-export async function firebaseSignup(
+export async function apiSignup(
   firebaseToken: string,
   username: string,
 ): Promise<User> {
@@ -31,6 +31,7 @@ export async function firebaseSignup(
         firebase_token: firebaseToken,
         username,
       } as FirebaseUserCreate),
+      credentials: "include",
     },
   );
 
@@ -44,20 +45,20 @@ export async function firebaseSignup(
     );
   }
 
-  return response.json() as Promise<User>;
+  const json = await response.json();
+  return json.user as User;
 }
 
-export async function firebaseLogin(firebaseToken: string): Promise<User> {
+export async function apiLogin(firebaseToken: string): Promise<User> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/firebase-auth/login`,
     {
       method: "POST",
       headers: {
+        "Firebase-Token": firebaseToken,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        firebase_token: firebaseToken,
-      } as FirebaseAuth),
+      credentials: "include",
     },
   );
 
@@ -69,23 +70,16 @@ export async function firebaseLogin(firebaseToken: string): Promise<User> {
     );
   }
 
-  return response.json() as Promise<User>;
+  const json = await response.json();
+  return json.user as User;
 }
 
-export async function getCurrentUserInfo(
-  firebaseToken?: string,
-): Promise<User> {
-  const headers: Record<string, string> = {};
-
-  if (firebaseToken) {
-    headers["Firebase-Token"] = firebaseToken;
-  }
-
+export async function getAPIUser(): Promise<User> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/firebase-auth/me`,
     {
       method: "GET",
-      headers,
+      credentials: "include",
     },
   );
 
@@ -97,22 +91,19 @@ export async function getCurrentUserInfo(
     );
   }
 
-  return response.json() as Promise<User>;
+  const json = await response.json();
+  return json.user as User;
 }
 
-export async function firebaseSessionLogin(
-  firebaseToken: string,
-): Promise<User> {
+export async function apiSessionLogin(firebaseToken: string): Promise<User> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/firebase-auth/session-login`,
     {
       method: "POST",
       headers: {
+        "Firebase-Token": firebaseToken,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        firebase_token: firebaseToken,
-      } as FirebaseAuth),
       credentials: "include",
     },
   );
@@ -125,10 +116,11 @@ export async function firebaseSessionLogin(
     );
   }
 
-  return response.json() as Promise<User>;
+  const json = await response.json();
+  return json.user as User;
 }
 
-export async function firebaseSessionLogout(): Promise<void> {
+export async function apiLogout(): Promise<void> {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/firebase-auth/logout`,
     {

@@ -10,11 +10,11 @@ import {
 import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import {
+  apiLogin,
+  apiLogout,
+  apiSessionLogin,
+  apiSignup,
   type User as BackendUser,
-  firebaseSessionLogin,
-  firebaseSessionLogout,
-  firebaseSignup,
-  getCurrentUserInfo,
 } from "@/contexts/auth/action";
 import { auth } from "@/lib/firebase";
 
@@ -24,9 +24,9 @@ interface AuthContextType {
   loading: boolean;
   initializing: boolean;
 
-  signUp: (email: string, password: string, username: string) => Promise<void>;
-  signIn: (email: string, password: string) => Promise<void>;
-  signOut: () => Promise<void>;
+  signup: (email: string, password: string, username: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -52,7 +52,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (firebaseUser) {
         try {
           const firebaseToken = await firebaseUser.getIdToken();
-          const backendUser = await getCurrentUserInfo(firebaseToken);
+          const backendUser = await apiSessionLogin(firebaseToken);
+
           setUser(backendUser);
         } catch (error) {
           console.error("Failed to sync with backend:", error);
@@ -67,7 +68,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return unsubscribe;
   }, []);
 
-  const signUp = async (email: string, password: string, username: string) => {
+  const signup = async (email: string, password: string, username: string) => {
     setLoading(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -76,7 +77,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         password,
       );
       const firebaseToken = await userCredential.user.getIdToken();
-      const backendUser = await firebaseSignup(firebaseToken, username);
+      await apiSignup(firebaseToken, username);
+      const backendUser = await apiSessionLogin(firebaseToken);
+
       setUser(backendUser);
     } catch (error) {
       console.error("Signup failed:", error);
@@ -86,7 +89,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signIn = async (email: string, password: string) => {
+  const login = async (email: string, password: string) => {
     setLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -95,8 +98,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         password,
       );
       const firebaseToken = await userCredential.user.getIdToken();
+      await apiLogin(firebaseToken);
+      const backendUser = await apiSessionLogin(firebaseToken);
 
-      const backendUser = await firebaseSessionLogin(firebaseToken);
       setUser(backendUser);
     } catch (error) {
       console.error("Login failed:", error);
@@ -106,12 +110,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signOut = async () => {
+  const logout = async () => {
     setLoading(true);
     try {
       await firebaseSignOut(auth);
       try {
-        await firebaseSessionLogout();
+        await apiLogout();
       } catch (error) {
         console.error("Failed to clear backend session:", error);
       }
@@ -130,9 +134,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     user,
     loading,
     initializing,
-    signUp,
-    signIn,
-    signOut,
+    signup,
+    login,
+    logout,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

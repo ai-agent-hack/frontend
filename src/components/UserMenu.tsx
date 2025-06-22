@@ -4,15 +4,15 @@ import { Button, HStack, Text, VStack } from "@chakra-ui/react";
 import { useAuth } from "@/contexts/auth/AuthContext";
 
 export default function UserMenu() {
-  const { user, signOut } = useAuth();
+  const { user, logout } = useAuth();
 
   if (!user) return null;
 
-  const handleSignOut = async () => {
+  const handleLogout = async () => {
     try {
-      await signOut();
+      await logout();
     } catch (error) {
-      console.error("Error signing out:", error);
+      console.error("Error logging out:", error);
     }
   };
 
@@ -20,11 +20,11 @@ export default function UserMenu() {
     <HStack gap={4}>
       <VStack align="start" gap={0}>
         <Text fontSize="sm" fontWeight="medium">
-          {user.username || "未登録"}さん
+          {user.username ?? "未登録"}さん
         </Text>
       </VStack>
       <Button
-        onClick={handleSignOut}
+        onClick={handleLogout}
         variant="outline"
         size="sm"
         colorScheme="red"
