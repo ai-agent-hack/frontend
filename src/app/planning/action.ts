@@ -10,6 +10,7 @@ export const getInitialRecommendedSpots =
           "Content-Type": "application/json",
           Accept: "application/json",
         },
+        credentials: "include",
       },
     );
     if (!response.ok)
