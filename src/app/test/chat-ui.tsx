@@ -27,6 +27,7 @@ export default function ChatUI() {
 
   useEffect(() => {
     setMessages((prev): Message[] => {
+      if (!object?.message) return prev;
       const last = prev[prev.length - 1];
 
       if (last && last.role === "assistant") {
