@@ -12,10 +12,12 @@ import {
   Textarea,
   VStack,
 } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import type React from "react";
 import { useState } from "react";
 import Header from "@/components/header";
 import { formatDate } from "@/utils/format-date";
+import { registerPreInfo } from "./action";
 
 const RequiredMark = () => (
   <Text as="span" color="red.500" ml={1} fontSize="lg">
@@ -32,6 +34,7 @@ const RegisterPage: React.FC = () => {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [budget, setBudget] = useState<number>(0);
   const [atmosphere, setAtmosphere] = useState<string>("");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -49,27 +52,18 @@ const RegisterPage: React.FC = () => {
         departure_location: departure,
         start_date: startDate.toISOString(),
         end_date: endDate.toISOString(),
+        participants_count: 1, // TODO: Change this to the actual number of participants
         atmosphere: atmosphere,
         budget: budget,
         region: destination,
       };
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/pre_info/register`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-          credentials: "include",
-        },
-      );
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || "APIリクエストに失敗しました。");
+      const preInfo = await registerPreInfo(requestBody);
+      if (!preInfo) {
+        setError("旅行計画の登録に失敗しました。");
+        return;
       }
+      router.push(`/planning?pre_info_id=${preInfo.id}`);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message || "不明なエラーです。");
