@@ -1,10 +1,11 @@
 "use client";
 
-import { HStack, Text, VStack } from "@chakra-ui/react";
+import { HStack, VStack } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import GoogleMap, { type MapPin } from "@/components/google-map";
 import { getInitialRecommendedSpots } from "./action";
+import ChatPane from "./chat-pane";
 
 export default function Planning() {
   const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
@@ -30,6 +31,12 @@ export default function Planning() {
     })();
   }, [preInfoId]);
 
+  const handleRecommendSpotUpdate = (recommendSpotObject: unknown) => {
+    // Handle the updated recommend spot object
+    // You can update the map pins here if needed
+    console.log("Recommend spot object updated:", recommendSpotObject);
+  };
+
   return (
     <HStack height="100%">
       <VStack width={"calc(100% - 400px)"} height="100%">
@@ -37,9 +44,7 @@ export default function Planning() {
       </VStack>
 
       <VStack width={"400px"} height="100%">
-        <Text fontWeight={"bold"} fontSize={"2xl"}>
-          Chat
-        </Text>
+        <ChatPane onRecommendSpotUpdate={handleRecommendSpotUpdate} />
       </VStack>
     </HStack>
   );
