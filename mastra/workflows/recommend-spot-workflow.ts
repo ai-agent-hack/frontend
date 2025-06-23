@@ -4,6 +4,8 @@ import { z } from 'zod';
 import { Message } from '@ai-sdk/ui-utils';
 import { messageSchema, recommendSpotInputSchema } from '../schema/message';
 import { outputSchema } from '../schema/output';
+import type { RecommendedSpots } from '../../src/types/mastra';
+import { setInitialRecommendSpots, getRecommendSpots } from '../tools/manage-recommend-spots-tool';
 
 function convertMessages(messages: z.infer<typeof messageSchema>[]): Message[] {
   return messages.map(message => ({
@@ -18,27 +20,33 @@ const callRecommendSpotAgentStep = createStep({
   inputSchema: recommendSpotInputSchema,
   outputSchema: outputSchema,
   execute: async ({ inputData, mastra }) => {
-    const { messages } = inputData;
+    const { messages, recommendSpotObject } = inputData;
     
     if (!messages) {
       throw new Error('No messages provided');
     }
 
     const agent = mastra.getAgent('recommendSpotAgent');
+    
+    // recommendSpotsがある場合は、共有ストアに設定
+    if (recommendSpotObject) {
+      setInitialRecommendSpots(recommendSpotObject);
+    }
+    
     const result = await agent.generate(convertMessages(messages));
     
-    const mockRecommendSpot = {
-      name: "東京タワー",
-      lat: 35.6586,
-      lng: 139.7454,
-      bestTime: "夕方〜夜",
-      description: "東京のシンボル的な電波塔で、夜景が美しい観光スポットです。",
-      reason: "東京の夜景を楽しむのに最適で、特に夕方から夜にかけての時間帯がおすすめです。"
-    };
+    // Agentが処理した後の更新されたデータを取得
+    const updatedRecommendSpots = getRecommendSpots();
+    const finalRecommendSpots: RecommendedSpots = updatedRecommendSpots
+      ? updatedRecommendSpots
+      : {
+          recommend_spot_id: "",
+          recommend_spots: [],
+        };
 
     return {
       message: result.text,
-      recommendSpotObject: mockRecommendSpot
+      recommendSpotObject: finalRecommendSpots
     };
   },
 });
