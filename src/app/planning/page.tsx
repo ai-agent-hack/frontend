@@ -2,7 +2,7 @@
 
 import { HStack, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import GoogleMap, { type MapPin } from "@/components/GoogleMap";
+import GoogleMap, { type MapPin } from "@/components/google-map";
 import { getInitialRecommendedSpots } from "./action";
 
 export default function Planning() {
@@ -25,12 +25,12 @@ export default function Planning() {
   }, []);
 
   return (
-    <HStack>
-      <VStack width={"calc(100% - 400px)"} height="100vh" padding="4">
+    <HStack minH="100%">
+      <VStack width={"calc(100% - 400px)"} minH="100%" padding="4">
         <GoogleMap apiKey={GOOGLE_MAPS_API_KEY} pins={mapPins} />
       </VStack>
 
-      <VStack width={"400px"} height="100vh" padding="4">
+      <VStack width={"400px"} minH="100%" padding="4">
         <Text fontWeight={"bold"} fontSize={"2xl"}>
           Chat
         </Text>

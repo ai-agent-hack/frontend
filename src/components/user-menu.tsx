@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, HStack, Text, VStack } from "@chakra-ui/react";
-import { useAuth } from "@/contexts/auth/AuthContext";
+import { useAuth } from "@/contexts/auth/auth-context";
 
 export default function UserMenu() {
   const { user, logout } = useAuth();

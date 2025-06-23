@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useAuth } from "@/contexts/auth/AuthContext";
+import { useAuth } from "@/contexts/auth/auth-context";
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -74,7 +74,7 @@ export default function AuthPage() {
 
   if (initializing) {
     return (
-      <Center h="100vh">
+      <Center h="100%">
         <Spinner size="xl" />
       </Center>
     );
@@ -82,14 +82,14 @@ export default function AuthPage() {
 
   if (user) {
     return (
-      <Center h="100vh">
+      <Center h="100%">
         <Spinner size="xl" />
       </Center>
     );
   }
 
   return (
-    <Center minH="100vh" p={4}>
+    <Center minH="100%" p={4}>
       <Card.Root maxW="md" w="full" p={8}>
         <VStack gap={6}>
           <VStack gap={2}>
