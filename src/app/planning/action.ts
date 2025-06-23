@@ -1,4 +1,4 @@
-import type { RecommendedSpots } from "@/types/recommended-spots";
+import type { RecommendedSpots } from "@/types/mastra";
 
 export const getInitialRecommendedSpots =
   async (): Promise<RecommendedSpots> => {

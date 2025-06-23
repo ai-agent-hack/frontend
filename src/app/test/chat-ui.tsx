@@ -3,7 +3,6 @@
 import { experimental_useObject as useObject } from "@ai-sdk/react";
 import { useEffect, useRef, useState } from "react";
 import { outputSchema } from "../../../mastra/schema/output";
-import { recommendSpotInputSchema } from "../../../mastra/schema/recommend-spot";
 
 type Message = {
   role: "user" | "assistant";
@@ -58,13 +57,15 @@ export default function ChatUI() {
     setMessages(nextMessages);
     setInput("");
 
-    const requestData = recommendSpotInputSchema.parse({
+    const requestData = {
       messages: nextMessages.map(({ role, content }) => ({ role, content })),
-      recommendSpotObject: object?.recommendSpotObject,
-    });
+      ...(object?.recommendSpotObject && {
+        recommendSpotObject: object.recommendSpotObject,
+      }),
+    };
 
     try {
-      await submit(requestData);
+      submit(requestData);
     } catch (err) {
       console.error(err);
     }
@@ -123,21 +124,33 @@ export default function ChatUI() {
 
       {object?.recommendSpotObject && (
         <div className="rounded-lg border p-4 shadow">
-          <h3 className="mb-2 text-lg font-semibold">
-            {object.recommendSpotObject.name}
+          <h3 className="mb-3 text-lg font-semibold">
+            推薦ID: {object.recommendSpotObject.recommend_spot_id}
           </h3>
-          <p className="mb-1 text-sm text-gray-600">
-            ベストタイム: {object.recommendSpotObject.bestTime}
-          </p>
-          <p className="mb-2 text-sm text-gray-700">
-            {object.recommendSpotObject.description}
-          </p>
-          <p className="text-sm text-gray-500">
-            理由: {object.recommendSpotObject.reason}
-          </p>
-          <p className="mt-2 text-xs text-gray-400">
-            ({object.recommendSpotObject.lat}, {object.recommendSpotObject.lng})
-          </p>
+          {object.recommendSpotObject.recommend_spots?.map((timeSlot) => (
+            <div key={timeSlot?.time_slot} className="mb-4">
+              <h4 className="mb-2 text-md font-medium text-blue-600">
+                {timeSlot?.time_slot}
+              </h4>
+              {timeSlot?.spots?.map((spot) => (
+                <div
+                  key={spot?.spot_id}
+                  className="mb-2 ml-4 border-l-2 border-gray-300 pl-3"
+                >
+                  <p className="font-semibold">{spot?.details?.name}</p>
+                  <p className="text-sm text-gray-600">
+                    料金: ¥{spot?.details?.price?.toLocaleString() || "0"}
+                  </p>
+                  <p className="text-sm text-gray-700">
+                    {spot?.recommendation_reason}
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    ({spot?.latitude}, {spot?.longitude})
+                  </p>
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       )}
     </div>

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { recommendedSpotsSchema } from "./recommended-spots";
 
 export const messageSchema = z.object({
 	role: z.string(),
@@ -16,5 +17,5 @@ export const recommendSpotSchema = z.object({
 
 export const recommendSpotInputSchema = z.object({
 	messages: z.array(messageSchema),
-	recommendSpotObject: recommendSpotSchema.optional(),
+	recommendSpotObject: recommendedSpotsSchema.optional(),
 });
