@@ -90,7 +90,7 @@ export default function AuthPage() {
   }
 
   return (
-    <VStack h="100%" gap={0}>
+    <VStack h="100%" gap={0} p={4}>
       <Header />
       <Center p={4}>
         <Card.Root maxW="md" w="full" p={8}>

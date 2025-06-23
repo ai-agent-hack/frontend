@@ -25,12 +25,12 @@ export default function Planning() {
   }, []);
 
   return (
-    <HStack minH="100%">
-      <VStack width={"calc(100% - 400px)"} minH="100%" padding="4">
+    <HStack height="100%">
+      <VStack width={"calc(100% - 400px)"} height="100%">
         <GoogleMap apiKey={GOOGLE_MAPS_API_KEY} pins={mapPins} />
       </VStack>
 
-      <VStack width={"400px"} minH="100%" padding="4">
+      <VStack width={"400px"} height="100%">
         <Text fontWeight={"bold"} fontSize={"2xl"}>
           Chat
         </Text>

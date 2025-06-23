@@ -82,7 +82,7 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <VStack h="100%" gap={0}>
+    <VStack h="100%" gap={0} p={4}>
       <Header />
       <Center
         w="100%"

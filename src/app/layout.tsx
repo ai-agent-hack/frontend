@@ -20,7 +20,7 @@ export default function RootLayout({
         <AuthProvider>
           <Provider>
             <ProtectedRoute>
-              <Box minH={"100vh"} w={"100vw"} p={4} top={0}>
+              <Box minH={"100vh"} w={"100vw"} top={0}>
                 {children}
               </Box>
             </ProtectedRoute>
