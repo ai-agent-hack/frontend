@@ -21,7 +21,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (loading || initializing) {
     return (
-      <Center h="100%">
+      <Center h="100vh">
         <Spinner size="xl" />
       </Center>
     );
@@ -29,7 +29,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (!user) {
     return (
-      <Center h="100%">
+      <Center h="100vh">
         <Spinner size="xl" />
       </Center>
     );

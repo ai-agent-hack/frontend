@@ -1,6 +1,5 @@
 import { Box } from "@chakra-ui/react";
 import type { Metadata } from "next";
-import Header from "@/components/header";
 import ProtectedRoute from "@/components/protected-route";
 import { Provider } from "@/components/ui/provider";
 import { AuthProvider } from "@/contexts/auth/auth-context";
@@ -21,8 +20,7 @@ export default function RootLayout({
         <AuthProvider>
           <Provider>
             <ProtectedRoute>
-              <Box minH={"calc(100vh - 64px)"} h={"100%"} p={4} top={0}>
-                <Header />
+              <Box minH={"100vh"} w={"100vw"} p={4} top={0}>
                 {children}
               </Box>
             </ProtectedRoute>

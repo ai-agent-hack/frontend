@@ -8,7 +8,7 @@ const Header: React.FC = () => {
   const { user } = useAuth();
 
   return (
-    <HStack justify="space-between" m={4}>
+    <HStack w={"100%"} justify="space-between" mb={4}>
       <Heading size="lg">
         <a href="/">Trip Agent</a>
       </Heading>
