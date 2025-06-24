@@ -25,6 +25,8 @@ export default function Planning() {
           position: { lat: spot.latitude, lng: spot.longitude },
           title: spot.details.name,
           description: spot.recommendation_reason,
+          imageUrl: spot.google_map_image_url,
+          websiteUrl: spot.website_url,
         })),
       );
       setMapPins(pins);
