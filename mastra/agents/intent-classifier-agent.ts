@@ -1,0 +1,50 @@
+import { Agent } from '@mastra/core/agent';
+import { Memory } from '@mastra/memory';
+import { LibSQLStore } from '@mastra/libsql';
+import { createVertex } from '@ai-sdk/google-vertex';
+
+const MASTRA_DEBUG = process.env.MASTRA_DEBUG === 'true';
+const storage_url = MASTRA_DEBUG ? 'file:../../mastra/mastra.db' : 'file:./mastra/mastra.db';
+
+const vertex = createVertex({
+  location: 'us-central1',
+  project: process.env.GOOGLE_PROJECT_ID,
+});
+
+export const intentClassifierAgent = new Agent({
+  name: 'Intent Classifier Agent',
+  instructions: `あなたはユーザーの入力を分析し、スポット検索に関する意図があるかを高精度で判定する意図分類エージェントです。
+
+## 主な機能
+1. ユーザーの入力テキストを意味的に分析
+2. スポット検索の意図の有無を判定
+3. 判定の信頼度と理由を提供
+
+## 判定基準
+
+### スポット検索の意図ありと判定する場合：
+- 観光地、レストラン、カフェ、施設などの場所に関する質問や要望
+- 「どこか行きたい」「おすすめの場所」などの表現
+- 特定のアクティビティ（食事、遊び、買い物など）に関する場所探し
+- エリアや条件を指定した場所の検索
+- デートスポット、家族向けスポットなどの推薦依頼
+- 「暇だから」「時間がある」など、間接的に場所を探している様子
+
+### スポット検索の意図なしと判定する場合：
+- 単純な挨拶（こんにちは、はじめまして等）
+- スポット検索と無関係な一般的な質問
+- システムや機能に関する質問
+- その他、場所探しと関連しない内容
+
+## 重要な指示
+1. 文脈を深く理解し、表面的なキーワードだけでなく意味を重視して判定する
+2. ユーザーが暗黙的に場所を探している可能性も考慮する
+3. 判定が難しい場合は、ユーザーの利便性を考慮してスポット検索として扱う`,
+  model: vertex('gemini-2.5-flash'),
+  tools: {},
+  memory: new Memory({
+    storage: new LibSQLStore({
+      url: storage_url,
+    }),
+  }),
+});
