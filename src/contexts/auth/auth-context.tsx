@@ -51,8 +51,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (firebaseUser) {
         try {
-          const firebaseToken = await firebaseUser.getIdToken();
+          const firebaseToken = await firebaseUser.getIdToken(true);
           const backendUser = await apiSessionLogin(firebaseToken);
+          console.log("Backend user:", backendUser);
 
           setUser(backendUser);
         } catch (error) {

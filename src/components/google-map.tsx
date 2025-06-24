@@ -90,7 +90,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ apiKey, pins = [] }) => {
   }
 
   return (
-    <Stack w={"100%"} h="100%" position="relative">
+    <Stack w={"100%"} h="100vh" position="relative">
       <APIProvider apiKey={apiKey}>
         <Map
           mapId={"DEMO_MAP_ID"}
