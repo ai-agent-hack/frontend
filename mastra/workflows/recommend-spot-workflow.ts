@@ -5,7 +5,8 @@ import { Message } from '@ai-sdk/ui-utils';
 import { messageSchema, recommendSpotInputSchema } from '../schema/message';
 import { outputSchema } from '../schema/output';
 import type { RecommendedSpots } from '../../src/types/mastra';
-import { setInitialRecommendSpots, getRecommendSpots } from '../tools/manage-recommend-spots-tool';
+import { setInitialRecommendSpots, getRecommendSpots, addRecommendSpots } from '../tools/manage-recommend-spots-tool';
+import { searchSpots } from '../tools/spots-tool';
 
 function convertMessages(messages: z.infer<typeof messageSchema>[]): Message[] {
   return messages.map(message => ({
@@ -125,34 +126,19 @@ const spotSearchChain = createStep({
   outputSchema: outputSchema,
   execute: async ({ inputData, mastra }) => {
     const { messages, recommendSpotObject } = inputData;
-    
-    // Step 1: スポット推薦エージェントを呼び出す
-    const spotRecommenderAgent = mastra.getAgent('spotRecommenderAgent');
+
+    console.log("recommendSpotObject", recommendSpotObject);
     
     if (recommendSpotObject) {
       setInitialRecommendSpots(recommendSpotObject);
     }
     
-    const spotResult = await spotRecommenderAgent.generate(convertMessages(messages));
+    const query = "東京のお勧めスポットも増やして"
+    const location = "東京";
     
-    // Step 2: データ管理エージェントを呼び出す
-    const dataManagerAgent = mastra.getAgent('dataManagerAgent');
+    const spotResult = await searchSpots(query, location);
     
-    const dataManagerMessages = [
-      ...convertMessages(messages),
-      {
-        id: crypto.randomUUID(),
-        role: 'assistant' as const,
-        content: spotResult.text,
-      },
-      {
-        id: crypto.randomUUID(),
-        role: 'user' as const,
-        content: '上記の推薦結果をrecommend_spotsデータに反映してください。',
-      }
-    ];
-    
-    const dataManagerResult = await dataManagerAgent.generate(dataManagerMessages);
+    addRecommendSpots(spotResult);
     
     // 更新されたデータを取得
     const updatedRecommendSpots = getRecommendSpots();
@@ -162,9 +148,11 @@ const spotSearchChain = createStep({
           recommend_spot_id: "",
           recommend_spots: [],
         };
+      
+    console.log(finalRecommendSpots);
 
     // 両エージェントの応答を結合
-    const combinedMessage = `${dataManagerResult.text}`;
+    const combinedMessage = `更新しました！`;
 
     return {
       message: combinedMessage,

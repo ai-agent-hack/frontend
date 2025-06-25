@@ -1,36 +1,11 @@
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
+import { RecommendedSpots } from "../../src/types/mastra";
 
-export const spotsTool = createTool({
-	id: "spots",
-	description: "Search for spots with detailed information included in results",
-	inputSchema: z.object({
-		query: z.string().describe("Search query for spots"),
-		location: z
-			.string()
-			.optional()
-			.describe("Location to search in (optional)"),
-	}),
-	outputSchema: z.object({
-		spots: z.array(
-			z.object({
-				id: z.string(),
-				name: z.string(),
-				address: z.string(),
-				phone: z.string().optional(),
-				website: z.string().optional(),
-				rating: z.number().optional(),
-				priceLevel: z.number().optional(),
-				hours: z.array(z.string()).optional(),
-				photos: z.array(z.string()).optional(),
-				types: z.array(z.string()).optional(),
-				description: z.string().optional(),
-			}),
-		),
-	}),
-	execute: async ({ context: _ }) => {
-		// TODO: Implement actual search functionality with detailed information
-		const mockSpots = [
+// 独立した検索関数として切り出し
+export async function searchSpots(query: string, location?: string): Promise<RecommendedSpots> {
+	// TODO: Implement actual search functionality with detailed information
+	const mockSpots = [
 			{
 				id: "shibuya_sky_1",
 				name: "SHIBUYA SKY",
@@ -135,10 +110,96 @@ export const spotsTool = createTool({
 			},
 		];
 
-		// Return 3-4 random spots to simulate search results
-		const shuffled = mockSpots.sort(() => 0.5 - Math.random());
-		return {
-			spots: shuffled.slice(0, Math.min(4, mockSpots.length)),
-		};
+	// Return 3-4 random spots to simulate search results
+	const shuffled = mockSpots.sort(() => 0.5 - Math.random());
+	const selectedSpots = shuffled.slice(0, Math.min(4, mockSpots.length));
+
+	// RecommendedSpots形式に変換
+	const spots = selectedSpots.map((spot, index) => ({
+		spot_id: `${spot.id}_${Date.now()}_${index}`, // ユニークなIDを生成
+		latitude: 35.6762 + (Math.random() - 0.5) * 0.1, // 東京周辺のランダムな座標
+		longitude: 139.6503 + (Math.random() - 0.5) * 0.1,
+		recommendation_reason: `${query}に関するおすすめスポットです。${spot.description}`,
+		selected: false,
+		details: {
+			name: spot.name,
+			business_hours: {
+				MONDAY: { open_time: "09:00", close_time: "18:00" },
+				TUESDAY: { open_time: "09:00", close_time: "18:00" },
+				WEDNESDAY: { open_time: "09:00", close_time: "18:00" },
+				THURSDAY: { open_time: "09:00", close_time: "18:00" },
+				FRIDAY: { open_time: "09:00", close_time: "18:00" },
+				SATURDAY: { open_time: "09:00", close_time: "18:00" },
+				SUNDAY: { open_time: "09:00", close_time: "18:00" },
+				HOLIDAY: { open_time: "09:00", close_time: "18:00" },
+			},
+			congestion: [1, 2, 3, 4, 5], // 混雑度の配列
+			price: spot.priceLevel || 2,
+		},
+		google_map_image_url: spot.photos?.[0],
+		website_url: spot.website,
+	}));
+
+	return {
+		recommend_spot_id: `search_${Date.now()}`,
+		recommend_spots: [
+			{
+				time_slot: "午前",
+				spots: spots.slice(0, 2),
+			},
+			{
+				time_slot: "午後",
+				spots: spots.slice(2),
+			},
+		],
+	};
+}
+
+export const spotsTool = createTool({
+	id: "spots",
+	description: "Search for spots with detailed information included in results",
+	inputSchema: z.object({
+		query: z.string().describe("Search query for spots"),
+		location: z
+			.string()
+			.optional()
+			.describe("Location to search in (optional)"),
+	}),
+	outputSchema: z.object({
+		recommend_spot_id: z.string(),
+		recommend_spots: z.array(
+			z.object({
+				time_slot: z.enum(["午前", "午後", "夜"]),
+				spots: z.array(
+					z.object({
+						spot_id: z.string(),
+						latitude: z.number(),
+						longitude: z.number(),
+						recommendation_reason: z.string(),
+						selected: z.boolean(),
+						details: z.object({
+							name: z.string(),
+							business_hours: z.object({
+								MONDAY: z.object({ open_time: z.string(), close_time: z.string() }),
+								TUESDAY: z.object({ open_time: z.string(), close_time: z.string() }),
+								WEDNESDAY: z.object({ open_time: z.string(), close_time: z.string() }),
+								THURSDAY: z.object({ open_time: z.string(), close_time: z.string() }),
+								FRIDAY: z.object({ open_time: z.string(), close_time: z.string() }),
+								SATURDAY: z.object({ open_time: z.string(), close_time: z.string() }),
+								SUNDAY: z.object({ open_time: z.string(), close_time: z.string() }),
+								HOLIDAY: z.object({ open_time: z.string(), close_time: z.string() }),
+							}),
+							congestion: z.array(z.number()),
+							price: z.number(),
+						}),
+						google_map_image_url: z.string().optional(),
+						website_url: z.string().optional(),
+					}),
+				),
+			}),
+		),
+	}),
+	execute: async ({ context }) => {
+		return searchSpots(context.query, context.location);
 	},
 });
