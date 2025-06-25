@@ -2,7 +2,7 @@
 
 import { Box, HStack, Text, VStack } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import GoogleMap, { type MapPin } from "@/components/google-map";
 import type { RecommendedSpots } from "@/types/mastra";
 import { getInitialRecommendedSpots, getPreInfo } from "./action";
@@ -61,19 +61,22 @@ export default function Planning() {
     })();
   }, [preInfoId]);
 
-  const handleRecommendSpotUpdate = (recommendSpot: RecommendedSpots) => {
-    setRecommendedSpots(recommendSpot);
+  const handleRecommendSpotUpdate = useCallback(
+    (recommendSpot: RecommendedSpots) => {
+      setRecommendedSpots(recommendSpot);
 
-    const pins: MapPin[] = recommendSpot.recommend_spots.flatMap((timeSlot) =>
-      timeSlot.spots.map((spot, index) => ({
-        id: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
-        position: { lat: spot.latitude, lng: spot.longitude },
-        title: spot.details.name,
-        description: spot.recommendation_reason,
-      })),
-    );
-    setMapPins(pins);
-  };
+      const pins: MapPin[] = recommendSpot.recommend_spots.flatMap((timeSlot) =>
+        timeSlot.spots.map((spot, index) => ({
+          id: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
+          position: { lat: spot.latitude, lng: spot.longitude },
+          title: spot.details.name,
+          description: spot.recommendation_reason,
+        })),
+      );
+      setMapPins(pins);
+    },
+    [],
+  );
 
   return (
     <HStack height="100vh" gap={0} position="relative">

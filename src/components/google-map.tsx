@@ -39,37 +39,39 @@ const mapContainerStyle = {
   height: "100%",
 };
 
-const calculateAveragePosition = (
-  pins: MapPin[],
-): { lat: number; lng: number } => {
-  if (pins.length === 0) {
-    return {
-      lat: 35.652832,
-      lng: 139.839478,
-    };
-  }
-
-  const sum = pins.reduce(
-    (acc, pin) => {
-      return {
-        lat: acc.lat + pin.position.lat,
-        lng: acc.lng + pin.position.lng,
-      };
-    },
-    { lat: 0, lng: 0 },
-  );
-
-  return {
-    lat: sum.lat / pins.length,
-    lng: sum.lng / pins.length,
-  };
-};
-
 const GoogleMap: React.FC<GoogleMapProps> = ({ apiKey, pins = [] }) => {
   const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
   const [zoom, setZoom] = useState(10);
-  const [center, setCenter] = useState<{ lat: number; lng: number }>(
-    calculateAveragePosition(pins),
+  const [center, setCenter] = useState<{ lat: number; lng: number }>({
+    lat: 35.652832,
+    lng: 139.839478,
+  });
+
+  const calculateAveragePosition = useCallback(
+    (pins: MapPin[]): { lat: number; lng: number } => {
+      if (pins.length === 0) {
+        return {
+          lat: 35.652832,
+          lng: 139.839478,
+        };
+      }
+
+      const sum = pins.reduce(
+        (acc, pin) => {
+          return {
+            lat: acc.lat + pin.position.lat,
+            lng: acc.lng + pin.position.lng,
+          };
+        },
+        { lat: 0, lng: 0 },
+      );
+
+      return {
+        lat: sum.lat / pins.length,
+        lng: sum.lng / pins.length,
+      };
+    },
+    [],
   );
 
   const handleMarkerClick = useCallback((pin: MapPin) => {
@@ -82,13 +84,10 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ apiKey, pins = [] }) => {
 
   useEffect(() => {
     if (pins.length > 0) {
-      setCenter(calculateAveragePosition(pins));
+      const newCenter = calculateAveragePosition(pins);
+      setCenter(newCenter);
     }
-  }, [pins]);
-
-  useEffect(() => {
-    setCenter(calculateAveragePosition(pins));
-  }, [pins]);
+  }, [pins, calculateAveragePosition]);
 
   if (!apiKey) {
     return (
