@@ -12,6 +12,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
+import type { RecommendedSpots } from "@/types/mastra";
 import { outputSchema } from "../../../mastra/schema/output";
 
 type Message = {
@@ -134,7 +135,7 @@ export default function ChatPane({
 
   useEffect(() => {
     if (object?.recommendSpotObject && onRecommendSpotUpdate) {
-      onRecommendSpotUpdate(object.recommendSpotObject);
+      onRecommendSpotUpdate(object.recommendSpotObject as RecommendedSpots);
     }
   }, [object?.recommendSpotObject, onRecommendSpotUpdate]);
 
@@ -167,12 +168,8 @@ export default function ChatPane({
 
   return (
     <VStack height="100%" width="100%" p={4} gap={4}>
-      <Text fontWeight="bold" fontSize="2xl">
-        Chat
-      </Text>
-
       <Box flex="1" height="100%" width="100%" overflowY="auto" p={3}>
-        <VStack gap={2} align="stretch">
+        <VStack gap={2} align="stretch" height="100%">
           {messages.map((m, index) => (
             <Flex
               key={`${m.content}-${index}`}
@@ -238,71 +235,6 @@ export default function ChatPane({
           </Button>
         </HStack>
       </Box>
-
-      {/* {error && (
-        <Box
-          width="100%"
-          bg="red.50"
-          border="1px solid"
-          borderColor="red.200"
-          borderRadius="md"
-          p={3}
-        >
-          <Text fontSize="sm" color="red.600">
-            {String(error)}
-          </Text>
-        </Box>
-      )}
-
-      {object?.recommendSpotObject && (
-        <Box
-          width="100%"
-          border="1px solid"
-          borderColor="gray.200"
-          borderRadius="lg"
-          p={4}
-          bg="white"
-          boxShadow="sm"
-          maxH="200px"
-          overflowY="auto"
-        >
-          <Text fontSize="md" fontWeight="semibold" mb={3}>
-            推薦ID: {object.recommendSpotObject.recommend_spot_id}
-          </Text>
-          <VStack gap={3} align="stretch">
-            {object.recommendSpotObject.recommend_spots?.map((timeSlot) => (
-              <Box key={timeSlot?.time_slot}>
-                <Text fontSize="sm" fontWeight="medium" color="blue.600" mb={2}>
-                  {timeSlot?.time_slot}
-                </Text>
-                <VStack gap={2} align="stretch" pl={4}>
-                  {timeSlot?.spots?.map((spot) => (
-                    <Box
-                      key={spot?.spot_id}
-                      borderLeft="2px solid"
-                      borderColor="gray.300"
-                      pl={3}
-                    >
-                      <Text fontSize="sm" fontWeight="semibold">
-                        {spot?.details?.name}
-                      </Text>
-                      <Text fontSize="xs" color="gray.600">
-                        料金: ¥{spot?.details?.price?.toLocaleString() || "0"}
-                      </Text>
-                      <Text fontSize="xs" color="gray.700">
-                        {spot?.recommendation_reason}
-                      </Text>
-                      <Text fontSize="xs" color="gray.400">
-                        ({spot?.latitude}, {spot?.longitude})
-                      </Text>
-                    </Box>
-                  ))}
-                </VStack>
-              </Box>
-            ))}
-          </VStack>
-        </Box>
-      )} */}
     </VStack>
   );
 }
