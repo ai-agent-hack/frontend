@@ -16,14 +16,16 @@ export async function POST(req: Request) {
     const run = workflow.createRun();
     const result = await run.start({ inputData: validatedRequestData });
 
+    console.log("result", result);
+
     const text =
-      (result as any)?.result?.message ??
-      (result as any)?.message ??
+      (result as any)?.result?.nonSpotResponse?.message ??
+      (result as any)?.result?.spotSearchChain?.message ??
       "No response";
 
     const recommendSpotData =
-      (result as any)?.result?.recommendSpotObject ||
-      (result as any)?.recommendSpotObject;
+      (result as any)?.result?.nonSpotResponse?.recommendSpotObject ||
+      (result as any)?.result?.spotSearchChain?.recommendSpotObject;
 
     const responseData: OutputSchema = {
       message: text,

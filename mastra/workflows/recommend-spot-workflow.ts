@@ -164,7 +164,7 @@ const spotSearchChain = createStep({
         };
 
     // 両エージェントの応答を結合
-    const combinedMessage = `${spotResult.text}\n\n${dataManagerResult.text}`;
+    const combinedMessage = `${dataManagerResult.text}`;
 
     return {
       message: combinedMessage,
