@@ -1,4 +1,5 @@
 import type { RecommendedSpots } from "@/types/mastra";
+import type { PreInfo } from "@/types/pre-info";
 
 export interface GetInitialRecommendedSpotsInput {
   pre_info_id: string;
@@ -22,4 +23,24 @@ export const getInitialRecommendedSpots = async (
     throw new Error(result.message || "APIリクエストに失敗しました。");
 
   return result as RecommendedSpots;
+};
+
+export const getPreInfo = async (preInfoId: string): Promise<PreInfo> => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/pre_info/${preInfoId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    },
+  );
+
+  const result = await response.json();
+
+  if (!response.ok)
+    throw new Error(result.message || "事前情報の取得に失敗しました。");
+
+  return result as PreInfo;
 };
