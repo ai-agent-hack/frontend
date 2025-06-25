@@ -4,14 +4,15 @@ import { Box, HStack, Text, VStack } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import GoogleMap, { type MapPin } from "@/components/google-map";
+import { getInitialRecommendedSpots, getPreInfo } from "./action";
 import type { RecommendedSpots } from "@/types/mastra";
-import { getInitialRecommendedSpots } from "./action";
 import ChatPane from "./chat-pane";
 import DetailPane from "./detail-pane";
 
 export default function Planning() {
   const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
   const [mapPins, setMapPins] = useState<MapPin[]>([]);
+  const [initialMessage, setInitialMessage] = useState<string>("");
   const [recommendedSpots, setRecommendedSpots] =
     useState<RecommendedSpots | null>(null);
   const preInfoId = useSearchParams().get("pre_info_id");
@@ -20,19 +21,43 @@ export default function Planning() {
     (async () => {
       if (!preInfoId) return;
 
-      const spots = await getInitialRecommendedSpots({
-        pre_info_id: preInfoId,
-      });
-      setRecommendedSpots(spots);
-      const pins: MapPin[] = spots.recommend_spots.flatMap((timeSlot) =>
-        timeSlot.spots.map((spot, index) => ({
-          id: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
-          position: { lat: spot.latitude, lng: spot.longitude },
-          title: spot.details.name,
-          description: spot.recommendation_reason,
-        })),
-      );
-      setMapPins(pins);
+      try {
+        // Fetch pre-info data
+        const preInfo = await getPreInfo(preInfoId);
+
+        // Create initial message from preInfo
+        const message = `以下の情報を元にお勧めスポットを調べますね！
+
+出発地: ${preInfo.departure_location}
+期間: ${preInfo.start_date} 〜 ${preInfo.end_date}
+雰囲気: ${preInfo.atmosphere}
+予算: ¥${preInfo.budget.toLocaleString()}
+人数: ${preInfo.participants_count}人
+地域: ${preInfo.region}
+
+素敵な場所をお探ししますね！
+少々お待ちください！`;
+
+        setInitialMessage(message);
+
+        // Fetch initial spots
+        const spots = await getInitialRecommendedSpots({
+          pre_info_id: preInfoId,
+        });
+        const pins: MapPin[] = spots.recommend_spots.flatMap((timeSlot) =>
+          timeSlot.spots.map((spot, index) => ({
+            id: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
+            position: { lat: spot.latitude, lng: spot.longitude },
+            title: spot.details.name,
+            description: spot.recommendation_reason,
+            imageUrl: spot.google_map_image_url,
+            websiteUrl: spot.website_url,
+          })),
+        );
+        setMapPins(pins);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
     })();
   }, [preInfoId]);
 
@@ -78,7 +103,10 @@ export default function Planning() {
           </Text>
         </HStack>
         <Box width="100%" flex="1">
-          <ChatPane onRecommendSpotUpdate={handleRecommendSpotUpdate} />
+        <ChatPane
+          onRecommendSpotUpdate={handleRecommendSpotUpdate}
+          initialMessage={initialMessage}
+        />
         </Box>
       </VStack>
     </HStack>

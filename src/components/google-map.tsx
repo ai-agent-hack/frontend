@@ -1,6 +1,14 @@
 "use client";
 
-import { Center, Stack, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Image,
+  Link,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import {
   AdvancedMarker,
   APIProvider,
@@ -10,12 +18,15 @@ import {
   Pin,
 } from "@vis.gl/react-google-maps";
 import { useCallback, useEffect, useState } from "react";
+import { LuExternalLink } from "react-icons/lu";
 
 export interface MapPin {
   id: string;
   position: { lat: number; lng: number };
   title: string;
   description?: string;
+  imageUrl?: string;
+  websiteUrl?: string;
 }
 
 interface GoogleMapProps {
@@ -127,16 +138,85 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ apiKey, pins = [] }) => {
               shouldFocus
               onCloseClick={handleInfoWindowClose}
             >
-              <VStack padding={2} align="start" maxWidth="250px">
-                <Text fontSize="16px" fontWeight="bold" color="#333" mb="2">
-                  {selectedPin.title}
-                </Text>
-                {selectedPin.description && (
-                  <Text fontSize="14px" color="#666" lineHeight="1.4">
-                    {selectedPin.description}
-                  </Text>
+              <Box
+                maxWidth="300px"
+                minWidth="250px"
+                bg="white"
+                borderRadius="lg"
+                overflow="hidden"
+                boxShadow="lg"
+              >
+                {selectedPin.imageUrl && (
+                  <Box position="relative" height="150px" overflow="hidden">
+                    <Image
+                      src={selectedPin.imageUrl}
+                      alt={selectedPin.title}
+                      objectFit="cover"
+                      width="100%"
+                      height="100%"
+                    />
+                  </Box>
                 )}
-              </VStack>
+
+                <VStack align="stretch" gap={3} p={4}>
+                  <Box>
+                    <Text
+                      fontSize="lg"
+                      fontWeight="bold"
+                      color="gray.800"
+                      lineHeight="1.2"
+                      overflow="hidden"
+                      display="-webkit-box"
+                      css={{
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                      }}
+                    >
+                      {selectedPin.title}
+                    </Text>
+                  </Box>
+
+                  {selectedPin.description && (
+                    <>
+                      <Box borderTop="1px solid" borderColor="gray.200" />
+                      <Text
+                        fontSize="sm"
+                        color="gray.600"
+                        lineHeight="1.5"
+                        overflow="hidden"
+                        display="-webkit-box"
+                        css={{
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                        }}
+                      >
+                        {selectedPin.description}
+                      </Text>
+                    </>
+                  )}
+
+                  {selectedPin.websiteUrl && (
+                    <Box pt={2}>
+                      <Link
+                        href={selectedPin.websiteUrl}
+                        target="_blank"
+                        display="inline-flex"
+                        alignItems="center"
+                        color="blue.500"
+                        fontSize="sm"
+                        fontWeight="medium"
+                        _hover={{
+                          color: "blue.600",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        <Text mr={1}>ウェブサイトを見る</Text>
+                        <LuExternalLink size={12} />
+                      </Link>
+                    </Box>
+                  )}
+                </VStack>
+              </Box>
             </InfoWindow>
           )}
         </Map>

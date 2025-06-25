@@ -21,16 +21,20 @@ type Message = {
 };
 
 interface ChatPaneProps {
-  onRecommendSpotUpdate?: (recommendSpotObject: RecommendedSpots) => void;
+  onRecommendSpotUpdate?: (recommendSpotObject: unknown) => void;
+  initialMessage?: string;
 }
 
-export default function ChatPane({ onRecommendSpotUpdate }: ChatPaneProps) {
+export default function ChatPane({
+  onRecommendSpotUpdate,
+  initialMessage,
+}: ChatPaneProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
 
-  // biome-ignore lint/correctness/noUnusedVariables: tmp
-  const { object, submit, isLoading, error } = useObject({
+  const { object, submit, isLoading } = useObject({
     api: "/api/chat",
     schema: outputSchema,
   });
@@ -39,6 +43,75 @@ export default function ChatPane({ onRecommendSpotUpdate }: ChatPaneProps) {
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: tmp
+  useEffect(() => {
+    if (initialMessage && messages.length === 0) {
+      setIsTyping(true);
+      setMessages([
+        {
+          role: "assistant",
+          content: "",
+        },
+      ]);
+
+      // Wait 0.5 seconds before starting typewriter effect
+      const delayTimeout = setTimeout(() => {
+        // Typewriter effect with variable speed
+        let currentIndex = 0;
+
+        const typeNextChar = () => {
+          if (currentIndex < initialMessage.length) {
+            setMessages((prev) => {
+              const newMessages = [...prev];
+              if (newMessages[0]) {
+                newMessages[0].content = initialMessage.slice(
+                  0,
+                  currentIndex + 1,
+                );
+              }
+              return newMessages;
+            });
+            currentIndex++;
+
+            // Variable typing speed
+            let nextDelay = 13; // base speed
+            const currentChar = initialMessage[currentIndex - 1];
+            const nextChar = initialMessage[currentIndex];
+
+            // Add delays for more natural typing
+            if (
+              currentChar === "。" ||
+              currentChar === "！" ||
+              currentChar === "？"
+            ) {
+              nextDelay = 200 + Math.random() * 200; // Pause after sentence
+            } else if (currentChar === "、" || currentChar === ":") {
+              nextDelay = 100 + Math.random() * 100; // Small pause after comma
+            } else if (currentChar === "\n") {
+              nextDelay = 150 + Math.random() * 150; // Pause at line breaks
+            } else if (nextChar === " " || currentChar === " ") {
+              nextDelay = 50 + Math.random() * 30; // Quick for spaces
+            } else {
+              // Random variation for normal characters
+              nextDelay = 15 + Math.random() * 40;
+            }
+
+            setTimeout(typeNextChar, nextDelay);
+          } else {
+            setIsTyping(false);
+          }
+        };
+
+        typeNextChar();
+      }, 500); // 0.5 second delay
+
+      return () => {
+        clearTimeout(delayTimeout);
+        setIsTyping(false);
+      };
+    }
+  }, [initialMessage]);
 
   useEffect(() => {
     setMessages((prev): Message[] => {
@@ -113,7 +186,9 @@ export default function ChatPane({ onRecommendSpotUpdate }: ChatPaneProps) {
                 <Text fontWeight="medium" color="gray.600" fontSize="xs">
                   {m.role === "user" ? "ユーザー" : "AI"}
                 </Text>
-                <Text color="gray.600">{m.content}</Text>
+                <Text color="gray.600" whiteSpace="pre-line">
+                  {m.content}
+                </Text>
               </Box>
             </Flex>
           ))}
@@ -154,7 +229,7 @@ export default function ChatPane({ onRecommendSpotUpdate }: ChatPaneProps) {
             colorScheme="blue"
             size="sm"
             loading={isLoading}
-            disabled={isLoading}
+            disabled={isLoading || isTyping}
           >
             送信
           </Button>
