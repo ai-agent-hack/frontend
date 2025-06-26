@@ -1,14 +1,17 @@
 import { Box, SegmentGroup, Separator, Text, VStack } from "@chakra-ui/react";
-import { useState } from "react";
 import type { RecommendedSpots } from "@/types/mastra";
 
 interface DetailPaneProps {
   recommendedSpots: RecommendedSpots;
+  selectedTimeSlot: "午前" | "午後" | "夜";
+  onTimeSlotChange: (timeSlot: "午前" | "午後" | "夜") => void;
 }
 
-const DetailPane = ({ recommendedSpots }: DetailPaneProps) => {
-  const [spotKind, setSpotKind] = useState<"午前" | "午後" | "夜">("午前");
-
+const DetailPane = ({
+  recommendedSpots,
+  selectedTimeSlot,
+  onTimeSlotChange,
+}: DetailPaneProps) => {
   return (
     <VStack>
       <VStack>
@@ -21,8 +24,9 @@ const DetailPane = ({ recommendedSpots }: DetailPaneProps) => {
 
       <VStack width="100%" gap={3}>
         <SegmentGroup.Root
+          value={selectedTimeSlot}
           onValueChange={(e) => {
-            setSpotKind(e.value as "午前" | "午後" | "夜");
+            onTimeSlotChange(e.value as "午前" | "午後" | "夜");
           }}
         >
           <SegmentGroup.Indicator />
@@ -30,7 +34,7 @@ const DetailPane = ({ recommendedSpots }: DetailPaneProps) => {
         </SegmentGroup.Root>
 
         {recommendedSpots.recommend_spots
-          .filter((spot) => spot.time_slot === spotKind)
+          .filter((spot) => spot.time_slot === selectedTimeSlot)
           .flatMap((spot) => spot.spots)
           .map((pin) => (
             <Box

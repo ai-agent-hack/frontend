@@ -16,6 +16,9 @@ export default function Planning() {
   const [recommendedSpots, setRecommendedSpots] =
     useState<RecommendedSpots | null>(null);
   const [planId, setPlanId] = useState<string>("");
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState<
+    "午前" | "午後" | "夜"
+  >("午前");
   const preInfoId = useSearchParams().get("pre_info_id");
 
   useEffect(() => {
@@ -140,7 +143,7 @@ export default function Planning() {
         >
           <GoogleMap
             apiKey={GOOGLE_MAPS_API_KEY}
-            pins={mapPins}
+            pins={mapPins.filter((pin) => pin.id.startsWith(selectedTimeSlot))}
             onSpotSelect={handleSpotSelect}
           />
         </Box>
@@ -170,7 +173,11 @@ export default function Planning() {
           </Box>
           <Box width="100%" flex="1" overflowY="auto">
             {recommendedSpots ? (
-              <DetailPane recommendedSpots={recommendedSpots} />
+              <DetailPane
+                recommendedSpots={recommendedSpots}
+                selectedTimeSlot={selectedTimeSlot}
+                onTimeSlotChange={setSelectedTimeSlot}
+              />
             ) : (
               <Box p={4}>
                 <Text color="gray.500">No details available</Text>
