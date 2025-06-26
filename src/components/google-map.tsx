@@ -19,6 +19,7 @@ import {
 } from "@vis.gl/react-google-maps";
 import { useCallback, useEffect, useState } from "react";
 import { LuExternalLink } from "react-icons/lu";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export interface MapPin {
   id: string;
@@ -27,11 +28,13 @@ export interface MapPin {
   description?: string;
   imageUrl?: string;
   websiteUrl?: string;
+  selected?: boolean;
 }
 
 interface GoogleMapProps {
   apiKey: string;
   pins?: MapPin[];
+  onSpotSelect?: (spotId: string, isSelected: boolean) => void;
 }
 
 const mapContainerStyle = {
@@ -39,7 +42,11 @@ const mapContainerStyle = {
   height: "100%",
 };
 
-const GoogleMap: React.FC<GoogleMapProps> = ({ apiKey, pins = [] }) => {
+const GoogleMap: React.FC<GoogleMapProps> = ({
+  apiKey,
+  pins = [],
+  onSpotSelect,
+}) => {
   const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
   const [zoom, setZoom] = useState(10);
   const [center, setCenter] = useState<{ lat: number; lng: number }>({
@@ -77,6 +84,16 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ apiKey, pins = [] }) => {
   const handleMarkerClick = useCallback((pin: MapPin) => {
     setSelectedPin(pin);
   }, []);
+
+  // Update selectedPin when pins change
+  useEffect(() => {
+    if (selectedPin && pins.length > 0) {
+      const updatedPin = pins.find((pin) => pin.id === selectedPin.id);
+      if (updatedPin) {
+        setSelectedPin(updatedPin);
+      }
+    }
+  }, [pins, selectedPin]);
 
   const handleInfoWindowClose = useCallback(() => {
     setSelectedPin(null);
@@ -132,6 +149,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ apiKey, pins = [] }) => {
 
           {selectedPin && (
             <InfoWindow
+              key={`${selectedPin.id}-${selectedPin.selected}`}
               position={selectedPin.position}
               pixelOffset={[0, -40]}
               shouldFocus
@@ -212,6 +230,22 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ apiKey, pins = [] }) => {
                         <Text mr={1}>ウェブサイトを見る</Text>
                         <LuExternalLink size={12} />
                       </Link>
+                    </Box>
+                  )}
+
+                  {onSpotSelect && (
+                    <Box pt={2} borderTop="1px solid" borderColor="gray.200">
+                      <Checkbox
+                        checked={selectedPin.selected || false}
+                        onCheckedChange={(
+                          checked: boolean | "indeterminate",
+                        ) => {
+                          onSpotSelect(selectedPin.id, checked === true);
+                        }}
+                        size="sm"
+                      >
+                        このスポットを選択する
+                      </Checkbox>
                     </Box>
                   )}
                 </VStack>
