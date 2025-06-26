@@ -19,7 +19,7 @@ const DetailPane = ({ recommendedSpots }: DetailPaneProps) => {
 
       <Separator />
 
-      <VStack>
+      <VStack width="100%" gap={3}>
         <SegmentGroup.Root
           onValueChange={(e) => {
             setSpotKind(e.value as "午前" | "午後" | "夜");
@@ -41,6 +41,8 @@ const DetailPane = ({ recommendedSpots }: DetailPaneProps) => {
               border="1px solid"
               borderColor="gray.200"
               boxShadow="sm"
+              width="100%"
+              minHeight="100px"
             >
               <Text fontWeight="semibold" fontSize="sm" mb={1}>
                 {pin.details.name}
