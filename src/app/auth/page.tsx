@@ -33,7 +33,7 @@ export default function AuthPage() {
 
   useEffect(() => {
     if (user && !initializing) {
-      router.push("/");
+      router.push("/register");
     }
   }, [user, initializing, router]);
 

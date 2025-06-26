@@ -25,6 +25,17 @@ const RequiredMark = () => (
   </Text>
 );
 
+const atmosphereTags = [
+  "自然を満喫したい",
+  "歴史的な場所を巡りたい",
+  "グルメを楽しみたい",
+  "のんびりリラックスしたい",
+  "アクティビティを楽しみたい",
+  "温泉でゆっくりしたい",
+  "写真映えスポットを巡りたい",
+  "地元の文化を体験したい",
+];
+
 const RegisterPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,6 +46,14 @@ const RegisterPage: React.FC = () => {
   const [budget, setBudget] = useState<number>(0);
   const [atmosphere, setAtmosphere] = useState<string>("");
   const router = useRouter();
+
+  const handleTagClick = (tagText: string) => {
+    if (atmosphere) {
+      setAtmosphere(atmosphere + "、" + tagText);
+    } else {
+      setAtmosphere(tagText);
+    }
+  };
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -172,10 +191,37 @@ const RegisterPage: React.FC = () => {
               旅行の雰囲気
               <RequiredMark />
             </Text>
+            <HStack wrap="wrap" gap={2} mb={3}>
+              {atmosphereTags.map((tag) => (
+                <Button
+                  key={tag}
+                  size="sm"
+                  variant="subtle"
+                  colorScheme="gray"
+                  borderRadius="full"
+                  px={4}
+                  py={2}
+                  fontSize="sm"
+                  fontWeight="medium"
+                  bg="gray.100"
+                  color="gray.800"
+                  onClick={() => handleTagClick(tag)}
+                  disabled={isLoading}
+                  _hover={{
+                    bg: "gray.200",
+                    transform: "translateY(-1px)",
+                    boxShadow: "sm",
+                  }}
+                  transition="all 0.2s"
+                >
+                  {tag}
+                </Button>
+              ))}
+            </HStack>
             <Textarea
               value={atmosphere}
               onChange={(e) => setAtmosphere(e.target.value)}
-              placeholder="例: 自然を満喫したい、歴史的な場所を巡りたい、グルメを楽しみたい、のんびりリラックスしたい..."
+              placeholder="タグをクリックして選択、または自由に入力してください"
               rows={4}
               disabled={isLoading}
             />
