@@ -4,8 +4,7 @@ import { z } from 'zod';
 import { Message } from '@ai-sdk/ui-utils';
 import { messageSchema, recommendSpotInputSchema } from '../schema/message';
 import { outputSchema } from '../schema/output';
-import type { RecommendedSpots } from '../../src/types/mastra';
-import { setInitialRecommendSpots, getRecommendSpots, addRecommendSpots } from '../tools/manage-recommend-spots-tool';
+import { setInitialRecommendSpots } from '../tools/manage-recommend-spots-tool';
 import { searchSpots } from '../tools/spots-tool';
 
 function convertMessages(messages: z.infer<typeof messageSchema>[]): Message[] {
@@ -122,19 +121,6 @@ const spotSearchChain = createStep({
       recommend_spots: recommendSpotObject,
       plan_id: planId,
     });
-    
-    addRecommendSpots(spotResult);
-    
-    // 更新されたデータを取得
-    const updatedRecommendSpots = getRecommendSpots();
-    const finalRecommendSpots: RecommendedSpots = updatedRecommendSpots
-      ? updatedRecommendSpots
-      : {
-          recommend_spot_id: "",
-          recommend_spots: [],
-        };
-      
-    console.log(finalRecommendSpots);
 
     // 両エージェントの応答を結合
     const combinedMessage = `更新しました！`;
