@@ -36,6 +36,7 @@ export default function ChatPane({
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [streamingMessageId, setStreamingMessageId] = useState<number | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
   const { object, submit, isLoading } = useObject({
@@ -118,24 +119,65 @@ export default function ChatPane({
   }, [initialMessage]);
 
   useEffect(() => {
+    if (!object?.message) return;
+    
     setMessages((prev): Message[] => {
-      if (!object?.message) return prev;
       const last = prev[prev.length - 1];
-
-      if (last && last.role === "assistant") {
-        return [
-          ...prev.slice(0, -1),
-          { ...last, content: object?.message ?? "" },
-        ];
+      
+      // If this is a new message, add it
+      if (!last || last.role !== "assistant" || last.content === object.message) {
+        const newMessage: Message = {
+          role: "assistant",
+          content: "",
+        };
+        setStreamingMessageId(prev.length);
+        return [...prev, newMessage];
       }
-
-      const assistantMsg: Message = {
-        role: "assistant",
-        content: object?.message ?? "",
-      };
-      return [...prev, assistantMsg];
+      
+      return prev;
     });
   }, [object?.message]);
+  
+  // Streaming effect for AI responses
+  useEffect(() => {
+    if (streamingMessageId === null || !object?.message) return;
+    
+    const targetMessage = object.message;
+    let currentIndex = 0;
+    
+    const streamNextChar = () => {
+      if (currentIndex < targetMessage.length) {
+        setMessages((prev) => {
+          const newMessages = [...prev];
+          if (newMessages[streamingMessageId]) {
+            newMessages[streamingMessageId].content = targetMessage.slice(0, currentIndex + 1);
+          }
+          return newMessages;
+        });
+        currentIndex++;
+        
+        // Variable typing speed for more natural effect
+        let nextDelay = 20; // base speed
+        const currentChar = targetMessage[currentIndex - 1];
+        
+        if (currentChar === "。" || currentChar === "！" || currentChar === "？") {
+          nextDelay = 150 + Math.random() * 100;
+        } else if (currentChar === "、" || currentChar === "，") {
+          nextDelay = 80 + Math.random() * 50;
+        } else if (currentChar === "\n") {
+          nextDelay = 100 + Math.random() * 50;
+        } else {
+          nextDelay = 15 + Math.random() * 25;
+        }
+        
+        setTimeout(streamNextChar, nextDelay);
+      } else {
+        setStreamingMessageId(null);
+      }
+    };
+    
+    streamNextChar();
+  }, [streamingMessageId, object?.message]);
 
   useEffect(() => {
     if (object?.recommendSpotObject && onRecommendSpotUpdate) {
@@ -198,24 +240,112 @@ export default function ChatPane({
             </Flex>
           ))}
 
-          {isLoading && (
-            <Flex justify="flex-start">
+          {isLoading && streamingMessageId === null && (
+            <Flex justify="center" pt={3}>
               <Box
-                maxW="80%"
-                bg="purple.100"
-                borderRadius="lg"
-                px={3}
-                py={2}
-                fontSize="sm"
-                color="gray.600"
+                bg="white"
+                borderRadius="xl"
+                px={6}
+                py={4}
+                boxShadow="lg"
+                border="2px solid"
+                borderColor="purple.300"
+                position="relative"
+                _before={{
+                  content: '""',
+                  position: "absolute",
+                  top: "-8px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: 0,
+                  height: 0,
+                  borderLeft: "8px solid transparent",
+                  borderRight: "8px solid transparent",
+                  borderBottom: "8px solid",
+                  borderBottomColor: "purple.300",
+                }}
+                _after={{
+                  content: '""',
+                  position: "absolute",
+                  top: "-6px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: 0,
+                  height: 0,
+                  borderLeft: "6px solid transparent",
+                  borderRight: "6px solid transparent",
+                  borderBottom: "6px solid white",
+                }}
               >
-                <HStack gap={2}>
-                  <Spinner size="sm" />
-                  <Text color="gray.600">…</Text>
-                </HStack>
+                <VStack gap={2}>
+                  <HStack gap={2}>
+                    <Spinner size="sm" color="purple.500" />
+                    <Text color="purple.700" fontWeight="bold" fontSize="sm">
+                      AIが考えています...
+                    </Text>
+                  </HStack>
+                  <Text color="gray.600" fontSize="xs">
+                    あなたにぴったりのスポットを探しています
+                  </Text>
+                </VStack>
               </Box>
             </Flex>
           )}
+          
+          {!recommendedSpots && !isTyping && (
+            <Flex justify="center" pt={4}>
+              <Box
+                bg="white"
+                borderRadius="xl"
+                px={6}
+                py={4}
+                boxShadow="lg"
+                border="2px solid"
+                borderColor="orange.300"
+                position="relative"
+                _before={{
+                  content: '""',
+                  position: "absolute",
+                  top: "-8px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: 0,
+                  height: 0,
+                  borderLeft: "8px solid transparent",
+                  borderRight: "8px solid transparent",
+                  borderBottom: "8px solid",
+                  borderBottomColor: "orange.300",
+                }}
+                _after={{
+                  content: '""',
+                  position: "absolute",
+                  top: "-6px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: 0,
+                  height: 0,
+                  borderLeft: "6px solid transparent",
+                  borderRight: "6px solid transparent",
+                  borderBottom: "6px solid white",
+                }}
+              >
+                <VStack gap={2}>
+                  <HStack gap={2}>
+                    <Spinner size="sm" color="orange.500" />
+                    <Text color="orange.700" fontWeight="bold" fontSize="sm">
+                      AIが分析しています...
+                    </Text>
+                  </HStack>
+                  <Text color="gray.600" fontSize="xs" textAlign="center">
+                    あなたの希望をもとに
+                    <br />
+                    最適なスポットを選定中です!
+                  </Text>
+                </VStack>
+              </Box>
+            </Flex>
+          )}
+          
           <div ref={endRef} />
         </VStack>
       </Box>
@@ -234,7 +364,7 @@ export default function ChatPane({
             colorScheme="blue"
             size="sm"
             loading={isLoading}
-            disabled={isLoading || isTyping}
+            disabled={isLoading || isTyping || !recommendedSpots || streamingMessageId !== null}
           >
             送信
           </Button>
