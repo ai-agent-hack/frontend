@@ -15,6 +15,26 @@ export function getRecommendSpots(): RecommendedSpots | null {
   return sharedRecommendSpots;
 }
 
+export function addRecommendSpots(data: RecommendedSpots) {
+  if (!sharedRecommendSpots) {
+    sharedRecommendSpots = data;
+  } else {
+    for (const newGroup of data.recommend_spots) {
+      // 既存の同じtime_slotグループを探す
+      const existingGroup = sharedRecommendSpots.recommend_spots.find(
+        (group) => group.time_slot === newGroup.time_slot
+      );
+      if (existingGroup) {
+        // 同じtime_slotがあればスポットを追加
+        existingGroup.spots.push(...newGroup.spots);
+      } else {
+        // なければ新しいグループごと追加
+        sharedRecommendSpots.recommend_spots.push(newGroup);
+      }
+    }
+  }
+}
+
 export const manageRecommendSpotsTool = {
   id: 'manageRecommendSpots',
   name: 'Manage Recommend Spots',

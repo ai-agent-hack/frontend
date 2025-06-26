@@ -5,7 +5,8 @@ import { Message } from '@ai-sdk/ui-utils';
 import { messageSchema, recommendSpotInputSchema } from '../schema/message';
 import { outputSchema } from '../schema/output';
 import type { RecommendedSpots } from '../../src/types/mastra';
-import { setInitialRecommendSpots, getRecommendSpots } from '../tools/manage-recommend-spots-tool';
+import { setInitialRecommendSpots, getRecommendSpots, addRecommendSpots } from '../tools/manage-recommend-spots-tool';
+import { searchSpots } from '../tools/spots-tool';
 
 function convertMessages(messages: z.infer<typeof messageSchema>[]): Message[] {
   return messages.map(message => ({
@@ -15,27 +16,131 @@ function convertMessages(messages: z.infer<typeof messageSchema>[]): Message[] {
   }));
 }
 
-const callRecommendSpotAgentStep = createStep({
-  id: 'callRecommendSpotAgent',
+// Step 0: ユーザーの意図を判別
+const checkIntentStep = createStep({
+  id: 'checkIntent',
   inputSchema: recommendSpotInputSchema,
-  outputSchema: outputSchema,
+  outputSchema: z.object({
+    isSpotSearch: z.boolean(),
+    response: z.string().optional(),
+    messages: z.array(messageSchema),
+    recommendSpotObject: z.any().optional(),
+  }),
   execute: async ({ inputData, mastra }) => {
     const { messages, recommendSpotObject } = inputData;
     
-    if (!messages) {
+    if (!messages || messages.length === 0) {
       throw new Error('No messages provided');
     }
 
-    const agent = mastra.getAgent('recommendSpotAgent');
+    // 意図判別用のエージェントを取得
+    const intentAgent = mastra.getAgent('intentClassifierAgent');
+    const recommendAgent = mastra.getAgent('recommendSpotAgent');
     
-    // recommendSpotsがある場合は、共有ストアに設定
+    // 最後のメッセージを取得
+    const lastMessage = messages[messages.length - 1];
+    const userInput = lastMessage?.content || "";
+    
+    // 意図分類エージェントで判定
+    const intentResult = await intentAgent.generate(
+      [
+        {
+          id: crypto.randomUUID(),
+          role: 'user' as const,
+          content: userInput,
+        }
+      ],
+      {
+        output: z.object({
+          isSpotSearch: z.boolean(),
+          confidence: z.number().min(0).max(1),
+          reason: z.string(),
+        }),
+      }
+    );
+    
+    const intentData = intentResult.object;
+    
+    if (!intentData.isSpotSearch) {
+      // スポット検索でない場合は、通常の会話として返答
+      const generalMessages = [
+        {
+          id: crypto.randomUUID(),
+          role: 'user' as const,
+          content: userInput,
+        }
+      ];
+      
+      const result = await recommendAgent.generate(generalMessages);
+      
+      return {
+        isSpotSearch: false,
+        response: result.text,
+        messages: messages,
+        recommendSpotObject: recommendSpotObject,
+      };
+    }
+    
+    return {
+      isSpotSearch: true,
+      messages: messages,
+      recommendSpotObject: recommendSpotObject,
+    };
+  },
+});
+
+// スポット検索でない場合の返答ステップ
+const nonSpotResponseStep = createStep({
+  id: 'nonSpotResponse',
+  inputSchema: z.object({
+    isSpotSearch: z.boolean(),
+    response: z.string().optional(),
+    messages: z.array(messageSchema),
+    recommendSpotObject: z.any().optional(),
+  }),
+  outputSchema: outputSchema,
+  execute: async ({ inputData }) => {
+    const { response, recommendSpotObject } = inputData;
+    
+    return {
+      message: response || "申し訳ございません。お手伝いできることがありましたらお申し付けください。",
+      recommendSpotObject: recommendSpotObject || {
+        recommend_spot_id: "",
+        recommend_spots: [],
+      }
+    };
+  },
+});
+
+
+
+// スポット検索の処理チェーン
+const spotSearchChain = createStep({
+  id: 'spotSearchChain',
+  inputSchema: z.object({
+    isSpotSearch: z.boolean(),
+    response: z.string().optional(),
+    messages: z.array(messageSchema),
+    recommendSpotObject: z.any().optional(),
+  }),
+  outputSchema: outputSchema,
+  execute: async ({ inputData, mastra }) => {
+    const { messages, recommendSpotObject } = inputData;
+
+    console.log("recommendSpotObject", recommendSpotObject);
+    
     if (recommendSpotObject) {
       setInitialRecommendSpots(recommendSpotObject);
     }
     
-    const result = await agent.generate(convertMessages(messages));
+    const query = "東京のお勧めスポットも増やして"
+    const location = "東京";
     
-    // Agentが処理した後の更新されたデータを取得
+    const spotResult = await searchSpots(query, location);
+    
+    addRecommendSpots(spotResult);
+    
+    // 更新されたデータを取得
     const updatedRecommendSpots = getRecommendSpots();
     const finalRecommendSpots: RecommendedSpots = updatedRecommendSpots
       ? updatedRecommendSpots
@@ -43,9 +148,14 @@ const callRecommendSpotAgentStep = createStep({
           recommend_spot_id: "",
           recommend_spots: [],
         };
+      
+    console.log(finalRecommendSpots);
+
+    // 両エージェントの応答を結合
+    const combinedMessage = `更新しました！`;
 
     return {
-      message: result.text,
+      message: combinedMessage,
       recommendSpotObject: finalRecommendSpots
     };
   },
@@ -55,7 +165,13 @@ export const recommendSpotWorkflow = createWorkflow({
   id: 'recommend-spot-workflow',
   inputSchema: recommendSpotInputSchema,
   outputSchema: outputSchema,
-  steps: [callRecommendSpotAgentStep],
+  steps: [checkIntentStep, nonSpotResponseStep, spotSearchChain],
 })
-.then(callRecommendSpotAgentStep)
+.then(checkIntentStep)
+.branch([
+  // スポット検索でない場合
+  [async ({ inputData }) => !inputData.isSpotSearch, nonSpotResponseStep],
+  // スポット検索の場合
+  [async ({ inputData }) => inputData.isSpotSearch, spotSearchChain]
+])
 .commit();

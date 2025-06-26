@@ -3,7 +3,6 @@ import { Memory } from '@mastra/memory';
 import { LibSQLStore } from '@mastra/libsql';
 import { spotsTool } from '../tools/spots-tool';
 import { reviewsTool } from '../tools/reviews-tool';
-import { patchTool } from '../tools/patch-tool';
 import { manageRecommendSpotsTool } from '../tools/manage-recommend-spots-tool';
 import { createVertex } from '@ai-sdk/google-vertex';
 
@@ -56,11 +55,10 @@ export const recommendSpotAgent = new Agent({
       - 情報が不足している場合は、利用可能なツールを積極的に活用する
       - **スポット推薦後は、必ず「〜をrecommend_spotsデータに追加/更新しました」という形で更新内容を明示してください**
 `,
-  model: vertex('gemini-2.5-pro'),
+  model: vertex('gemini-2.5-flash'),
   tools: {
     spotsTool,
     reviewsTool,
-    patchTool,
     manageRecommendSpotsTool,
   },
   memory: new Memory({
