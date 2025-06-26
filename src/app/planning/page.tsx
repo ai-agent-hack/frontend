@@ -172,8 +172,9 @@ export default function Planning() {
             </Text>
           </Box>
           <Box width="100%" flex="1" overflowY="auto">
-            {recommendedSpots ? (
+            {recommendedSpots && preInfoId ? (
               <DetailPane
+                preInfoId={preInfoId}
                 recommendedSpots={recommendedSpots}
                 selectedTimeSlot={selectedTimeSlot}
                 onTimeSlotChange={setSelectedTimeSlot}

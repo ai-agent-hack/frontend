@@ -49,3 +49,47 @@ export const getPreInfo = async (preInfoId: string): Promise<PreInfo> => {
 
   return result as PreInfo;
 };
+
+type RouteDay = {
+  day_number: number;
+  start_location: string;
+  end_location: string;
+  // biome-ignore lint/suspicious/noExplicitAny: return type is not defined in the API
+  route_geometry: any;
+  // biome-ignore lint/suspicious/noExplicitAny: return type is not defined in the API
+  route_segments: any;
+};
+
+type Route = {
+  plan_id: string;
+  route_days: RouteDay[];
+};
+
+export const createRoute = async (preInfoId: string): Promise<Route> => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/route/calculate-detailed`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        plan_id: preInfoId,
+        version: 0,
+        departure_location: "兵庫",
+        hotel_location: "東京",
+        travel_mode: "TRANSIT",
+        optimize_for: "distance",
+      }),
+      credentials: "include",
+    },
+  );
+
+  const result = await response.json();
+  console.log("Route creation response:", result);
+
+  if (!response.ok)
+    throw new Error(result.message || "事前情報の取得に失敗しました。");
+
+  return result as Route;
+};

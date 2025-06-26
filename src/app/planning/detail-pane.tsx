@@ -1,13 +1,23 @@
-import { Box, SegmentGroup, Separator, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  SegmentGroup,
+  Separator,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import type { RecommendedSpots } from "@/types/mastra";
+import { createRoute } from "./action";
 
 interface DetailPaneProps {
+  preInfoId: string;
   recommendedSpots: RecommendedSpots;
   selectedTimeSlot: "午前" | "午後" | "夜";
   onTimeSlotChange: (timeSlot: "午前" | "午後" | "夜") => void;
 }
 
 const DetailPane = ({
+  preInfoId,
   recommendedSpots,
   selectedTimeSlot,
   onTimeSlotChange,
@@ -57,6 +67,14 @@ const DetailPane = ({
             </Box>
           ))}
       </VStack>
+
+      <Button
+        colorScheme="blue"
+        width="100%"
+        onClick={() => createRoute(preInfoId)}
+      >
+        ルートを作成
+      </Button>
     </VStack>
   );
 };
