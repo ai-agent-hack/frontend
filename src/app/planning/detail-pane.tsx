@@ -41,7 +41,7 @@ const DetailPane = ({ recommendedSpots }: DetailPaneProps) => {
               border="1px solid"
               borderColor="gray.200"
               boxShadow="sm"
-              width="100%"
+              width="90%"
               minHeight="100px"
             >
               <Text fontWeight="semibold" fontSize="sm" mb={1}>
