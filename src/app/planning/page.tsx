@@ -15,6 +15,7 @@ export default function Planning() {
   const [initialMessage, setInitialMessage] = useState<string>("");
   const [recommendedSpots, setRecommendedSpots] =
     useState<RecommendedSpots | null>(null);
+  const [planId, setPlanId] = useState<string>("");
   const preInfoId = useSearchParams().get("pre_info_id");
 
   useEffect(() => {
@@ -44,16 +45,19 @@ export default function Planning() {
         const spots = await getInitialRecommendedSpots({
           pre_info_id: preInfoId,
         });
-        const pins: MapPin[] = spots.recommend_spots.flatMap((timeSlot) =>
-          timeSlot.spots.map((spot, index) => ({
-            id: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
-            position: { lat: spot.latitude, lng: spot.longitude },
-            title: spot.details.name,
-            description: spot.recommendation_reason,
-            imageUrl: spot.google_map_image_url,
-            websiteUrl: spot.website_url,
-          })),
+        const pins: MapPin[] = spots.recommend_spots.recommend_spots.flatMap(
+          (timeSlot) =>
+            timeSlot.spots.map((spot, index) => ({
+              id: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
+              position: { lat: spot.latitude, lng: spot.longitude },
+              title: spot.details.name,
+              description: spot.recommendation_reason,
+              imageUrl: spot.google_map_image_url,
+              websiteUrl: spot.website_url,
+            })),
         );
+        const planId = spots.plan_id;
+        setPlanId(planId);
         setMapPins(pins);
       } catch (error) {
         console.error("Failed to fetch data:", error);
@@ -109,6 +113,7 @@ export default function Planning() {
           <ChatPane
             onRecommendSpotUpdate={handleRecommendSpotUpdate}
             initialMessage={initialMessage}
+            planId={planId}
           />
         </Box>
       </VStack>

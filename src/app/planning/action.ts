@@ -5,9 +5,14 @@ export interface GetInitialRecommendedSpotsInput {
   pre_info_id: string;
 }
 
+type GetInitialRecommendedSpotsOutput = {
+  recommend_spots: RecommendedSpots;
+  plan_id: string;
+};
+
 export const getInitialRecommendedSpots = async (
   input: GetInitialRecommendedSpotsInput,
-): Promise<RecommendedSpots> => {
+): Promise<GetInitialRecommendedSpotsOutput> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/trip/seed`, {
     method: "POST",
     headers: {
@@ -22,7 +27,7 @@ export const getInitialRecommendedSpots = async (
   if (!response.ok)
     throw new Error(result.message || "APIリクエストに失敗しました。");
 
-  return result as RecommendedSpots;
+  return result as GetInitialRecommendedSpotsOutput;
 };
 
 export const getPreInfo = async (preInfoId: string): Promise<PreInfo> => {
