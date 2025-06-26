@@ -20,7 +20,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     }
   }, [user, loading, initializing, router]);
 
-  if (loading) {
+  if (loading || initializing) {
     return (
       <Center h="100vh">
         <Spinner size="xl" />

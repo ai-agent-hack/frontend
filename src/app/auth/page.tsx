@@ -75,7 +75,7 @@ export default function AuthPage() {
 
   if (initializing) {
     return (
-      <Center h="100vh">
+      <Center h="100%">
         <Spinner size="xl" />
       </Center>
     );
@@ -83,7 +83,7 @@ export default function AuthPage() {
 
   if (user) {
     return (
-      <Center h="100vh">
+      <Center h="100%">
         <Spinner size="xl" />
       </Center>
     );
