@@ -21,7 +21,7 @@ type Message = {
 };
 
 interface ChatPaneProps {
-  onRecommendSpotUpdate?: (recommendSpotObject: unknown) => void;
+  onRecommendSpotUpdate?: (recommendSpotObject: RecommendedSpots) => void;
   initialMessage?: string;
 }
 
