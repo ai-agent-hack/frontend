@@ -24,6 +24,7 @@ interface ChatPaneProps {
   onRecommendSpotUpdate?: (recommendSpotObject: RecommendedSpots) => void;
   initialMessage?: string;
   initialRecommendedSpots?: RecommendedSpots | null;
+  recommendedSpots?: RecommendedSpots | null;
   planId?: string;
 }
 
@@ -31,6 +32,7 @@ export default function ChatPane({
   onRecommendSpotUpdate,
   initialMessage,
   initialRecommendedSpots,
+  recommendedSpots,
   planId,
 }: ChatPaneProps) {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -163,11 +165,15 @@ export default function ChatPane({
         ? {
             recommendSpotObject: object.recommendSpotObject,
           }
-        : initialRecommendedSpots
+        : recommendedSpots
           ? {
-              recommendSpotObject: initialRecommendedSpots,
+              recommendSpotObject: recommendedSpots,
             }
-          : {}),
+          : initialRecommendedSpots
+            ? {
+                recommendSpotObject: initialRecommendedSpots,
+              }
+            : {}),
     };
 
     try {

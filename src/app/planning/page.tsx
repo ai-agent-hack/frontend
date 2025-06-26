@@ -57,6 +57,7 @@ export default function Planning() {
               description: spot.recommendation_reason,
               imageUrl: spot.google_map_image_url,
               websiteUrl: spot.website_url ?? undefined,
+              selected: spot.selected,
             })),
         );
         setInitialRecommendedSpots(spots.recommend_spots);
@@ -80,6 +81,9 @@ export default function Planning() {
           position: { lat: spot.latitude, lng: spot.longitude },
           title: spot.details.name,
           description: spot.recommendation_reason,
+          imageUrl: spot.google_map_image_url,
+          websiteUrl: spot.website_url ?? undefined,
+          selected: spot.selected,
         })),
       );
       setMapPins(pins);
@@ -87,10 +91,51 @@ export default function Planning() {
     [],
   );
 
+  const handleSpotSelect = useCallback(
+    (spotId: string, isSelected: boolean) => {
+      if (!recommendedSpots) return;
+
+      const updatedSpots = { ...recommendedSpots };
+      updatedSpots.recommend_spots = updatedSpots.recommend_spots.map(
+        (timeSlot) => ({
+          ...timeSlot,
+          spots: timeSlot.spots.map((spot, index) => {
+            const pinId = `${timeSlot.time_slot}-${spot.spot_id}-${index}`;
+            if (pinId === spotId) {
+              return { ...spot, selected: isSelected };
+            }
+            return spot;
+          }),
+        }),
+      );
+
+      setRecommendedSpots(updatedSpots);
+
+      // Update mapPins immediately
+      const pins: MapPin[] = updatedSpots.recommend_spots.flatMap((timeSlot) =>
+        timeSlot.spots.map((spot, index) => ({
+          id: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
+          position: { lat: spot.latitude, lng: spot.longitude },
+          title: spot.details.name,
+          description: spot.recommendation_reason,
+          imageUrl: spot.google_map_image_url,
+          websiteUrl: spot.website_url ?? undefined,
+          selected: spot.selected,
+        })),
+      );
+      setMapPins(pins);
+    },
+    [recommendedSpots],
+  );
+
   return (
     <HStack height="100vh" gap={0} position="relative">
       <VStack width="calc(100% - 700px)" height="100%" gap={0}>
-        <GoogleMap apiKey={GOOGLE_MAPS_API_KEY} pins={mapPins} />
+        <GoogleMap
+          apiKey={GOOGLE_MAPS_API_KEY}
+          pins={mapPins}
+          onSpotSelect={handleSpotSelect}
+        />
       </VStack>
 
       <VStack width="400px" height="100vh" p={4} gap={4}>
@@ -119,6 +164,7 @@ export default function Planning() {
             onRecommendSpotUpdate={handleRecommendSpotUpdate}
             initialMessage={initialMessage}
             initialRecommendedSpots={initialRecommendedSpots}
+            recommendedSpots={recommendedSpots}
             planId={planId}
           />
         </Box>
