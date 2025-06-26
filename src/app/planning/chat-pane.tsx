@@ -230,12 +230,13 @@ export default function ChatPane({
   return (
     <VStack height="100%" width="100%" p={4} gap={4}>
       <Box flex="1" height="100%" width="100%" overflowY="auto" p={3}>
-        <VStack gap={2} align="stretch" height="100%">
+        <VStack gap={4} align="stretch" height="100%">
           {messages.map((m, index) => (
             <Flex
               key={`${m.content}-${index}`}
               justify={m.role === "user" ? "flex-end" : "flex-start"}
               gap={2}
+              mb={index < messages.length - 1 ? 2 : 0}
             >
               {m.role === "assistant" && (
                 <Box

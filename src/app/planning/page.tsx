@@ -130,7 +130,7 @@ export default function Planning() {
       <HStack height="100%" gap={3} position="relative">
         {/* Map Section */}
         <Box
-          width="calc(100% - 712px)"
+          width="calc(100% - 812px)"
           height="100%"
           position="relative"
           borderRadius="xl"
@@ -181,7 +181,7 @@ export default function Planning() {
 
         {/* Chat Section */}
         <VStack
-          width="350px"
+          width="450px"
           height="100%"
           bg="white"
           borderRadius="xl"
