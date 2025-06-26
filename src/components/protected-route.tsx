@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Center, Spinner } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAuth } from "@/contexts/auth/auth-context";
 
@@ -12,14 +12,15 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, loading, initializing } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (!loading && !user && !initializing) {
+    if (!user && !loading && !initializing) {
       router.push("/auth");
     }
   }, [user, loading, initializing, router]);
 
-  if (loading || initializing) {
+  if (loading) {
     return (
       <Center h="100vh">
         <Spinner size="xl" />
@@ -27,7 +28,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
-  if (!user) {
+  if (!user && pathname !== "/auth") {
     return (
       <Center h="100vh">
         <Spinner size="xl" />
