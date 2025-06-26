@@ -23,11 +23,15 @@ type Message = {
 interface ChatPaneProps {
   onRecommendSpotUpdate?: (recommendSpotObject: RecommendedSpots) => void;
   initialMessage?: string;
+  initialRecommendedSpots?: RecommendedSpots | null;
+  planId?: string;
 }
 
 export default function ChatPane({
   onRecommendSpotUpdate,
   initialMessage,
+  initialRecommendedSpots,
+  planId,
 }: ChatPaneProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -153,10 +157,17 @@ export default function ChatPane({
     setInput("");
 
     const requestData = {
+      planId: planId,
       messages: nextMessages.map(({ role, content }) => ({ role, content })),
-      ...(object?.recommendSpotObject && {
-        recommendSpotObject: object.recommendSpotObject,
-      }),
+      ...(object?.recommendSpotObject
+        ? {
+            recommendSpotObject: object.recommendSpotObject,
+          }
+        : initialRecommendedSpots
+          ? {
+              recommendSpotObject: initialRecommendedSpots,
+            }
+          : {}),
     };
 
     try {

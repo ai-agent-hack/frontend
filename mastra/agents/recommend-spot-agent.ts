@@ -1,7 +1,6 @@
 import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
 import { LibSQLStore } from '@mastra/libsql';
-import { spotsTool } from '../tools/spots-tool';
 import { reviewsTool } from '../tools/reviews-tool';
 import { manageRecommendSpotsTool } from '../tools/manage-recommend-spots-tool';
 import { createVertex } from '@ai-sdk/google-vertex';
@@ -57,7 +56,6 @@ export const recommendSpotAgent = new Agent({
 `,
   model: vertex('gemini-2.5-flash'),
   tools: {
-    spotsTool,
     reviewsTool,
     manageRecommendSpotsTool,
   },

@@ -8,6 +8,8 @@ import { outputSchema } from "../../../../mastra/schema/output";
 export async function POST(req: Request) {
   const requestData = await req.json();
 
+  console.log("requestData", requestData);
+
   const validatedRequestData: RecommendSpotInputSchema =
     recommendSpotInputSchema.parse(requestData);
 

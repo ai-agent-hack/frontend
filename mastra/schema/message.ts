@@ -16,6 +16,7 @@ export const recommendSpotSchema = z.object({
 });
 
 export const recommendSpotInputSchema = z.object({
+	planId: z.string(),
 	messages: z.array(messageSchema),
-	recommendSpotObject: recommendedSpotsSchema.optional(),
+	recommendSpotObject: recommendedSpotsSchema
 });
