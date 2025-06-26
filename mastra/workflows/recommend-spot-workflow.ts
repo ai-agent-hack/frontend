@@ -141,7 +141,7 @@ const spotSearchChain = createStep({
 
     return {
       message: combinedMessage,
-      recommendSpotObject: finalRecommendSpots
+      recommendSpotObject: spotResult,
     };
   },
 });

@@ -26,7 +26,7 @@ export const spotItemSchema = z.object({
   spot_id: z.string(),
   details: spotDetailsSchema,
   google_map_image_url: z.string().optional(),
-  website_url: z.string().optional(),
+  website_url: z.string().nullable().optional(),
 });
 
 export const timeSlotSpotsSchema = z.object({

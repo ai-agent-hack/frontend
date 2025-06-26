@@ -15,6 +15,8 @@ export default function Planning() {
   const [initialMessage, setInitialMessage] = useState<string>("");
   const [recommendedSpots, setRecommendedSpots] =
     useState<RecommendedSpots | null>(null);
+  const [initialRecommendedSpots, setInitialRecommendedSpots] =
+    useState<RecommendedSpots | null>(null);
   const [planId, setPlanId] = useState<string>("");
   const preInfoId = useSearchParams().get("pre_info_id");
 
@@ -45,6 +47,7 @@ export default function Planning() {
         const spots = await getInitialRecommendedSpots({
           pre_info_id: preInfoId,
         });
+
         const pins: MapPin[] = spots.recommend_spots.recommend_spots.flatMap(
           (timeSlot) =>
             timeSlot.spots.map((spot, index) => ({
@@ -53,9 +56,11 @@ export default function Planning() {
               title: spot.details.name,
               description: spot.recommendation_reason,
               imageUrl: spot.google_map_image_url,
-              websiteUrl: spot.website_url,
+              websiteUrl: spot.website_url ?? undefined,
             })),
         );
+        setInitialRecommendedSpots(spots.recommend_spots);
+        setRecommendedSpots(spots.recommend_spots);
         const planId = spots.plan_id;
         setPlanId(planId);
         setMapPins(pins);
@@ -113,6 +118,7 @@ export default function Planning() {
           <ChatPane
             onRecommendSpotUpdate={handleRecommendSpotUpdate}
             initialMessage={initialMessage}
+            initialRecommendedSpots={initialRecommendedSpots}
             planId={planId}
           />
         </Box>

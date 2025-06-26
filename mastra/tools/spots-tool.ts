@@ -1,5 +1,17 @@
 import { MessageSchema, RecommendedSpots } from "../../src/types/mastra";
 
+type Message = {
+	role: "user" | "assistant";
+	message: string;
+}
+
+function convertMessageSchemaToMessage(message: MessageSchema): Message {
+	return {
+		role: message.role as "user" | "assistant",
+		message: message.content,
+	}
+}
+
 // 独立した検索関数として切り出し
 export async function searchSpots(input: { chat_history: MessageSchema[], recommend_spots: RecommendedSpots, plan_id: string }): Promise<RecommendedSpots> {
 	const { chat_history, recommend_spots, plan_id } = input;
@@ -15,7 +27,7 @@ export async function searchSpots(input: { chat_history: MessageSchema[], recomm
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-			chat_history,
+			chat_history: chat_history.map(convertMessageSchemaToMessage),
 			recommend_spots,
 		})
 	});
