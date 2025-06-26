@@ -15,8 +15,6 @@ export default function Planning() {
   const [initialMessage, setInitialMessage] = useState<string>("");
   const [recommendedSpots, setRecommendedSpots] =
     useState<RecommendedSpots | null>(null);
-  const [initialRecommendedSpots, setInitialRecommendedSpots] =
-    useState<RecommendedSpots | null>(null);
   const [planId, setPlanId] = useState<string>("");
   const preInfoId = useSearchParams().get("pre_info_id");
 
@@ -60,7 +58,6 @@ export default function Planning() {
               selected: spot.selected,
             })),
         );
-        setInitialRecommendedSpots(spots.recommend_spots);
         setRecommendedSpots(spots.recommend_spots);
         const planId = spots.plan_id;
         setPlanId(planId);
@@ -163,7 +160,6 @@ export default function Planning() {
           <ChatPane
             onRecommendSpotUpdate={handleRecommendSpotUpdate}
             initialMessage={initialMessage}
-            initialRecommendedSpots={initialRecommendedSpots}
             recommendedSpots={recommendedSpots}
             planId={planId}
           />

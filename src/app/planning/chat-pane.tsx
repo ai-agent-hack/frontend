@@ -23,7 +23,6 @@ type Message = {
 interface ChatPaneProps {
   onRecommendSpotUpdate?: (recommendSpotObject: RecommendedSpots) => void;
   initialMessage?: string;
-  initialRecommendedSpots?: RecommendedSpots | null;
   recommendedSpots?: RecommendedSpots | null;
   planId?: string;
 }
@@ -31,7 +30,6 @@ interface ChatPaneProps {
 export default function ChatPane({
   onRecommendSpotUpdate,
   initialMessage,
-  initialRecommendedSpots,
   recommendedSpots,
   planId,
 }: ChatPaneProps) {
@@ -161,19 +159,9 @@ export default function ChatPane({
     const requestData = {
       planId: planId,
       messages: nextMessages.map(({ role, content }) => ({ role, content })),
-      ...(object?.recommendSpotObject
-        ? {
-            recommendSpotObject: object.recommendSpotObject,
-          }
-        : recommendedSpots
-          ? {
-              recommendSpotObject: recommendedSpots,
-            }
-          : initialRecommendedSpots
-            ? {
-                recommendSpotObject: initialRecommendedSpots,
-              }
-            : {}),
+      ...(recommendedSpots && {
+        recommendSpotObject: recommendedSpots,
+      }),
     };
 
     try {
