@@ -12,6 +12,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
+import { FaRobot, FaUser } from "react-icons/fa";
 import type { RecommendedSpots } from "@/types/mastra";
 import { outputSchema } from "../../../mastra/schema/output";
 
@@ -36,7 +37,9 @@ export default function ChatPane({
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [streamingMessageId, setStreamingMessageId] = useState<number | null>(null);
+  const [streamingMessageId, setStreamingMessageId] = useState<number | null>(
+    null,
+  );
   const endRef = useRef<HTMLDivElement>(null);
 
   const { object, submit, isLoading } = useObject({
@@ -120,12 +123,16 @@ export default function ChatPane({
 
   useEffect(() => {
     if (!object?.message) return;
-    
+
     setMessages((prev): Message[] => {
       const last = prev[prev.length - 1];
-      
+
       // If this is a new message, add it
-      if (!last || last.role !== "assistant" || last.content === object.message) {
+      if (
+        !last ||
+        last.role !== "assistant" ||
+        last.content === object.message
+      ) {
         const newMessage: Message = {
           role: "assistant",
           content: "",
@@ -133,34 +140,41 @@ export default function ChatPane({
         setStreamingMessageId(prev.length);
         return [...prev, newMessage];
       }
-      
+
       return prev;
     });
   }, [object?.message]);
-  
+
   // Streaming effect for AI responses
   useEffect(() => {
     if (streamingMessageId === null || !object?.message) return;
-    
+
     const targetMessage = object.message;
     let currentIndex = 0;
-    
+
     const streamNextChar = () => {
       if (currentIndex < targetMessage.length) {
         setMessages((prev) => {
           const newMessages = [...prev];
           if (newMessages[streamingMessageId]) {
-            newMessages[streamingMessageId].content = targetMessage.slice(0, currentIndex + 1);
+            newMessages[streamingMessageId].content = targetMessage.slice(
+              0,
+              currentIndex + 1,
+            );
           }
           return newMessages;
         });
         currentIndex++;
-        
+
         // Variable typing speed for more natural effect
         let nextDelay = 20; // base speed
         const currentChar = targetMessage[currentIndex - 1];
-        
-        if (currentChar === "。" || currentChar === "！" || currentChar === "？") {
+
+        if (
+          currentChar === "。" ||
+          currentChar === "！" ||
+          currentChar === "？"
+        ) {
           nextDelay = 150 + Math.random() * 100;
         } else if (currentChar === "、" || currentChar === "，") {
           nextDelay = 80 + Math.random() * 50;
@@ -169,13 +183,13 @@ export default function ChatPane({
         } else {
           nextDelay = 15 + Math.random() * 25;
         }
-        
+
         setTimeout(streamNextChar, nextDelay);
       } else {
         setStreamingMessageId(null);
       }
     };
-    
+
     streamNextChar();
   }, [streamingMessageId, object?.message]);
 
@@ -221,22 +235,56 @@ export default function ChatPane({
             <Flex
               key={`${m.content}-${index}`}
               justify={m.role === "user" ? "flex-end" : "flex-start"}
+              gap={2}
             >
+              {m.role === "assistant" && (
+                <Box
+                  flexShrink={0}
+                  w={8}
+                  h={8}
+                  bg="purple.100"
+                  borderRadius="full"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  color="purple.600"
+                >
+                  <FaRobot size={16} />
+                </Box>
+              )}
               <Box
-                maxW="80%"
-                bg={m.role === "user" ? "blue.100" : "purple.100"}
-                borderRadius="lg"
-                px={3}
-                py={2}
+                maxW="70%"
+                bg={m.role === "user" ? "blue.50" : "gray.50"}
+                color={m.role === "user" ? "blue.900" : "gray.700"}
+                borderRadius="2xl"
+                borderTopLeftRadius={m.role === "assistant" ? "sm" : "2xl"}
+                borderTopRightRadius={m.role === "user" ? "sm" : "2xl"}
+                px={4}
+                py={2.5}
                 fontSize="sm"
+                boxShadow="sm"
+                border="1px solid"
+                borderColor={m.role === "user" ? "blue.100" : "gray.200"}
               >
-                <Text fontWeight="medium" color="gray.600" fontSize="xs">
-                  {m.role === "user" ? "ユーザー" : "AI"}
-                </Text>
-                <Text color="gray.600" whiteSpace="pre-line">
+                <Text whiteSpace="pre-line" lineHeight="1.6">
                   {m.content}
                 </Text>
               </Box>
+              {m.role === "user" && (
+                <Box
+                  flexShrink={0}
+                  w={8}
+                  h={8}
+                  bg="blue.100"
+                  borderRadius="full"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  color="blue.600"
+                >
+                  <FaUser size={14} />
+                </Box>
+              )}
             </Flex>
           ))}
 
@@ -248,8 +296,8 @@ export default function ChatPane({
                 px={6}
                 py={4}
                 boxShadow="lg"
-                border="2px solid"
-                borderColor="purple.300"
+                border="1px solid"
+                borderColor="purple.200"
                 position="relative"
                 _before={{
                   content: '""',
@@ -262,7 +310,7 @@ export default function ChatPane({
                   borderLeft: "8px solid transparent",
                   borderRight: "8px solid transparent",
                   borderBottom: "8px solid",
-                  borderBottomColor: "purple.300",
+                  borderBottomColor: "purple.200",
                 }}
                 _after={{
                   content: '""',
@@ -279,8 +327,8 @@ export default function ChatPane({
               >
                 <VStack gap={2}>
                   <HStack gap={2}>
-                    <Spinner size="sm" color="purple.500" />
-                    <Text color="purple.700" fontWeight="bold" fontSize="sm">
+                    <Spinner size="sm" color="purple.400" />
+                    <Text color="purple.600" fontWeight="bold" fontSize="sm">
                       AIが考えています...
                     </Text>
                   </HStack>
@@ -291,7 +339,7 @@ export default function ChatPane({
               </Box>
             </Flex>
           )}
-          
+
           {!recommendedSpots && !isTyping && (
             <Flex justify="center" pt={4}>
               <Box
@@ -300,8 +348,8 @@ export default function ChatPane({
                 px={6}
                 py={4}
                 boxShadow="lg"
-                border="2px solid"
-                borderColor="orange.300"
+                border="1px solid"
+                borderColor="orange.200"
                 position="relative"
                 _before={{
                   content: '""',
@@ -314,7 +362,7 @@ export default function ChatPane({
                   borderLeft: "8px solid transparent",
                   borderRight: "8px solid transparent",
                   borderBottom: "8px solid",
-                  borderBottomColor: "orange.300",
+                  borderBottomColor: "orange.200",
                 }}
                 _after={{
                   content: '""',
@@ -331,8 +379,8 @@ export default function ChatPane({
               >
                 <VStack gap={2}>
                   <HStack gap={2}>
-                    <Spinner size="sm" color="orange.500" />
-                    <Text color="orange.700" fontWeight="bold" fontSize="sm">
+                    <Spinner size="sm" color="orange.400" />
+                    <Text color="orange.600" fontWeight="bold" fontSize="sm">
                       AIが分析しています...
                     </Text>
                   </HStack>
@@ -345,7 +393,7 @@ export default function ChatPane({
               </Box>
             </Flex>
           )}
-          
+
           <div ref={endRef} />
         </VStack>
       </Box>
@@ -364,7 +412,12 @@ export default function ChatPane({
             colorScheme="blue"
             size="sm"
             loading={isLoading}
-            disabled={isLoading || isTyping || !recommendedSpots || streamingMessageId !== null}
+            disabled={
+              isLoading ||
+              isTyping ||
+              !recommendedSpots ||
+              streamingMessageId !== null
+            }
           >
             送信
           </Button>
