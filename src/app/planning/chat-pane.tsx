@@ -25,6 +25,7 @@ type Message = {
 
 interface ChatPaneProps {
   onRecommendSpotUpdate?: (recommendSpotObject: RecommendedSpots) => void;
+  onCoordinatesUpdate?: (coordinates: Array<{lat: number; lng: number}>) => void;
   initialMessage?: string;
   recommendedSpots?: RecommendedSpots | null;
   planId?: string;
@@ -34,6 +35,7 @@ interface ChatPaneProps {
 
 export default function ChatPane({
   onRecommendSpotUpdate,
+  onCoordinatesUpdate,
   initialMessage,
   recommendedSpots,
   planId,
@@ -205,6 +207,12 @@ export default function ChatPane({
     }
   }, [object?.recommendSpotObject, onRecommendSpotUpdate]);
 
+  useEffect(() => {
+    if (object?.coordinates && onCoordinatesUpdate) {
+      onCoordinatesUpdate(object.coordinates as Array<{lat: number; lng: number}>);
+    }
+  }, [object?.coordinates, onCoordinatesUpdate]);
+
   const submitMessage = useCallback(
     (messageContent: string) => {
       if (!messageContent || !messageContent.trim()) return;
@@ -237,7 +245,6 @@ export default function ChatPane({
 
   useEffect(() => {
     if (triggerMessage?.trim()) {
-      console.log("Triggering message:", triggerMessage);
       submitMessage(triggerMessage);
       if (onTriggerMessageHandled) {
         onTriggerMessageHandled();

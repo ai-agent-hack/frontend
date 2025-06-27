@@ -16,6 +16,7 @@ import {
   // biome-ignore lint/suspicious/noShadowRestrictedNames: Map is a reserved name in this context
   Map,
   Pin,
+  useMap,
 } from "@vis.gl/react-google-maps";
 import { useCallback, useEffect, useState } from "react";
 import { LuExternalLink } from "react-icons/lu";
@@ -36,11 +37,67 @@ interface GoogleMapProps {
   onSpotSelect?: (spotId: string, isSelected: boolean) => void;
   selectedPinId?: string | null;
   setSelectedPinId?: (pinId: string) => void;
+  routeCoordinates?: Array<{ lat: number; lng: number }>;
 }
 
 const mapContainerStyle = {
   width: "100%",
   height: "100%",
+};
+
+// Component to render route polyline
+const RoutePolyline: React.FC<{
+  coordinates: Array<{ lat: number; lng: number }>;
+}> = ({ coordinates }) => {
+  const map = useMap();
+  const [polyline, setPolyline] = useState<google.maps.Polyline | null>(null);
+
+  useEffect(() => {
+    if (!map || coordinates.length < 2) return;
+
+    // Create new polyline with improved visibility
+    const newPolyline = new google.maps.Polyline({
+      path: coordinates,
+      strokeColor: "#FF1744", // 鮮やかな赤色に変更
+      strokeOpacity: 0.9, // より不透明に
+      strokeWeight: 6, // より太く
+      map: map,
+      geodesic: true, // 地球の曲率に沿って描画
+      icons: [
+        {
+          icon: {
+            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+            scale: 3,
+            strokeColor: "#FF1744",
+            strokeWeight: 2,
+            fillColor: "#FF1744",
+            fillOpacity: 1,
+          },
+          offset: "100%",
+          repeat: "100px", // 矢印を100ピクセルごとに表示
+        },
+      ],
+    });
+
+    setPolyline(newPolyline);
+
+    return () => {
+      if (newPolyline) {
+        newPolyline.setMap(null);
+      }
+    };
+  }, [map, coordinates]);
+
+  // Clean up previous polyline when new one is created
+  useEffect(() => {
+    return () => {
+      if (polyline) {
+        polyline.setMap(null);
+      }
+    };
+  }, [polyline]);
+
+  return null;
 };
 
 const GoogleMap: React.FC<GoogleMapProps> = ({
@@ -49,6 +106,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   onSpotSelect,
   selectedPinId,
   setSelectedPinId,
+  routeCoordinates = [],
 }) => {
   const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
   const [zoom, setZoom] = useState(10);
@@ -187,6 +245,10 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
               </AdvancedMarker>
             );
           })}
+
+          {routeCoordinates.length > 1 && (
+            <RoutePolyline coordinates={routeCoordinates} />
+          )}
 
           {selectedPin && (
             <InfoWindow

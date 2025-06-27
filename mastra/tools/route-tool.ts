@@ -3,7 +3,14 @@ import { Route, Coordinates } from "../../src/types/mastra";
 export async function routeTool(input: { planId: string }): Promise<Coordinates> {
 	const { planId } = input;
 
-	return [{ lat: 0, lng: 0 }];
+	// テスト用に異なる座標を返す（大阪周辺の座標）
+	return [
+		{ lat: 34.6937, lng: 135.5023 }, // 大阪駅
+		{ lat: 34.6853, lng: 135.5259 }, // 新大阪駅
+		{ lat: 34.7024, lng: 135.4960 }, // 梅田
+		{ lat: 34.6693, lng: 135.5022 }, // 難波
+		{ lat: 34.6509, lng: 135.5138 }, // 天王寺
+	];
 	
 	// BACKEND_API_URLが設定されていない場合のデフォルト値
 	const backendUrl = process.env.NEXT_PUBLIC_API_URL;
