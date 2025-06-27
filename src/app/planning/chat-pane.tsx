@@ -203,32 +203,35 @@ export default function ChatPane({
     }
   }, [object?.recommendSpotObject, onRecommendSpotUpdate]);
 
-  const submitMessage = useCallback((messageContent: string) => {
-    if (!messageContent || !messageContent.trim()) return;
+  const submitMessage = useCallback(
+    (messageContent: string) => {
+      if (!messageContent || !messageContent.trim()) return;
 
-    const userMsg: Message = {
-      role: "user",
-      content: messageContent.trim(),
-    };
+      const userMsg: Message = {
+        role: "user",
+        content: messageContent.trim(),
+      };
 
-    const nextMessages = [...messages, userMsg];
-    setMessages(nextMessages);
-    setInput("");
+      const nextMessages = [...messages, userMsg];
+      setMessages(nextMessages);
+      setInput("");
 
-    const requestData = {
-      planId: planId,
-      messages: nextMessages.map(({ role, content }) => ({ role, content })),
-      ...(recommendedSpots && {
-        recommendSpotObject: recommendedSpots,
-      }),
-    };
+      const requestData = {
+        planId: planId,
+        messages: nextMessages.map(({ role, content }) => ({ role, content })),
+        ...(recommendedSpots && {
+          recommendSpotObject: recommendedSpots,
+        }),
+      };
 
-    try {
-      submit(requestData);
-    } catch (err) {
-      console.error(err);
-    }
-  }, [messages, planId, recommendedSpots, submit]);
+      try {
+        submit(requestData);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    [messages, planId, recommendedSpots, submit],
+  );
 
   useEffect(() => {
     if (triggerMessage?.trim()) {
