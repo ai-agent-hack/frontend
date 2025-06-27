@@ -1,5 +1,9 @@
 import type { z } from "zod";
 import type {
+  coordinatesSchema,
+  routeSchema,
+} from "../../mastra/schema/coordinates";
+import type {
   messageSchema,
   recommendSpotInputSchema,
 } from "../../mastra/schema/message";
@@ -25,3 +29,6 @@ export type SpotDetails = z.infer<typeof spotDetailsSchema>;
 export type SpotItem = z.infer<typeof spotItemSchema>;
 export type TimeSlotSpots = z.infer<typeof timeSlotSpotsSchema>;
 export type RecommendedSpots = z.infer<typeof recommendedSpotsSchema>;
+
+export type Coordinates = z.infer<typeof coordinatesSchema>;
+export type Route = z.infer<typeof routeSchema>;
