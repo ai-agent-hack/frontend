@@ -228,9 +228,9 @@ export default function ChatPane({
   };
 
   return (
-    <VStack height="100%" width="100%" p={4} gap={4}>
-      <Box flex="1" height="100%" width="100%" overflowY="auto" p={3}>
-        <VStack gap={4} align="stretch" height="100%">
+    <VStack height="100%" width="100%" gap={0}>
+      <Box flex="1" width="100%" overflowY="auto" p={4}>
+        <VStack gap={4} align="stretch">
           {messages.map((m, index) => (
             <Flex
               key={`${m.content}-${index}`}
@@ -399,7 +399,7 @@ export default function ChatPane({
         </VStack>
       </Box>
 
-      <Box as="form" onSubmit={handleSubmit} width="100%">
+      <Box as="form" onSubmit={handleSubmit} width="100%" p={4}>
         <HStack gap={2}>
           <Input
             placeholder="気になる場所を聞いてみよう…"

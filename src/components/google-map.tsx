@@ -35,6 +35,7 @@ interface GoogleMapProps {
   apiKey: string;
   pins?: MapPin[];
   onSpotSelect?: (spotId: string, isSelected: boolean) => void;
+  selectedPinId?: string | null;
 }
 
 const mapContainerStyle = {
@@ -46,6 +47,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   apiKey,
   pins = [],
   onSpotSelect,
+  selectedPinId,
 }) => {
   const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
   const [zoom, setZoom] = useState(10);
@@ -106,6 +108,22 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     }
   }, [pins, calculateAveragePosition]);
 
+  // Handle external pin selection
+  useEffect(() => {
+    if (selectedPinId !== undefined) {
+      if (selectedPinId === null) {
+        setSelectedPin(null);
+      } else {
+        const pin = pins.find((p) => p.id === selectedPinId);
+        if (pin) {
+          setSelectedPin(pin);
+          // Center the map on the selected pin
+          setCenter(pin.position);
+        }
+      }
+    }
+  }, [selectedPinId, pins]);
+
   if (!apiKey) {
     return (
       <Center w={"100%"} h="100%">
@@ -139,9 +157,9 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                 onClick={() => handleMarkerClick(pin)}
               >
                 <Pin
-                  background={"#0f9d58"}
-                  borderColor={"#006425"}
-                  glyphColor={"#60d98f"}
+                  background={"#ff8c00"}
+                  borderColor={"#cc7000"}
+                  glyphColor={"#ffb366"}
                 />
               </AdvancedMarker>
             );
