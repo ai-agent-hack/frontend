@@ -21,7 +21,9 @@ export default function Planning() {
   >("午前");
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
   const [triggerMessage, setTriggerMessage] = useState<string | null>(null);
-  const [routeCoordinates, setRouteCoordinates] = useState<Array<{lat: number; lng: number}>>([]);
+  const [routeCoordinates, setRouteCoordinates] = useState<
+    Array<{ lat: number; lng: number }>
+  >([]);
   const preInfoId = useSearchParams().get("pre_info_id");
 
   useEffect(() => {
@@ -155,9 +157,12 @@ ${preInfo.region}
     setSelectedPinId(pinId);
   }, []);
 
-  const handleCoordinatesUpdate = useCallback((coordinates: Array<{lat: number; lng: number}>) => {
-    setRouteCoordinates(coordinates);
-  }, []);
+  const handleCoordinatesUpdate = useCallback(
+    (coordinates: Array<{ lat: number; lng: number }>) => {
+      setRouteCoordinates(coordinates);
+    },
+    [],
+  );
 
   return (
     <Box height="100vh" bg="gray.50" p={4}>

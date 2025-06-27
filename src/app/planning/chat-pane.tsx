@@ -25,7 +25,9 @@ type Message = {
 
 interface ChatPaneProps {
   onRecommendSpotUpdate?: (recommendSpotObject: RecommendedSpots) => void;
-  onCoordinatesUpdate?: (coordinates: Array<{lat: number; lng: number}>) => void;
+  onCoordinatesUpdate?: (
+    coordinates: Array<{ lat: number; lng: number }>,
+  ) => void;
   initialMessage?: string;
   recommendedSpots?: RecommendedSpots | null;
   planId?: string;
@@ -209,7 +211,9 @@ export default function ChatPane({
 
   useEffect(() => {
     if (object?.coordinates && onCoordinatesUpdate) {
-      onCoordinatesUpdate(object.coordinates as Array<{lat: number; lng: number}>);
+      onCoordinatesUpdate(
+        object.coordinates as Array<{ lat: number; lng: number }>,
+      );
     }
   }, [object?.coordinates, onCoordinatesUpdate]);
 
