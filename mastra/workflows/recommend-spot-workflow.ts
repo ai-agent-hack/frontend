@@ -109,8 +109,6 @@ const spotSearchChain = createStep({
   outputSchema: outputSchema,
   execute: async ({ inputData, mastra }) => {
     const { messages, recommendSpotObject, planId } = inputData;
-
-    console.log("recommendSpotObject", recommendSpotObject);
     
     if (recommendSpotObject) {
       setInitialRecommendSpots(recommendSpotObject);
@@ -122,11 +120,23 @@ const spotSearchChain = createStep({
       plan_id: planId,
     });
 
-    // 両エージェントの応答を結合
-    const combinedMessage = `更新しました！`;
+    // スポット更新サマリーエージェントを使用してメッセージを生成
+    const summaryAgent = mastra.getAgent('spotUpdateSummaryAgent');
+    const userRequest = messages[messages.length - 1]?.content || "スポットを探してください";
+    const spotsInfo = spotResult.recommend_spots ? JSON.stringify(spotResult.recommend_spots) : "[]";
+    
+    const summaryResult = await summaryAgent.generate(
+      [
+        {
+          id: crypto.randomUUID(),
+          role: 'user' as const,
+          content: `以下の情報をもとに、ユーザーに対して追加されたスポットについて簡潔に説明してください。\n\nユーザーのリクエスト: ${userRequest}\n\n追加されたスポット情報: ${spotsInfo}`,
+        }
+      ]
+    );
 
     return {
-      message: combinedMessage,
+      message: summaryResult.text || "スポット情報を更新しました！",
       recommendSpotObject: spotResult,
     };
   },
