@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import type { Metadata } from "next";
+import GoogleMapsProvider from "@/components/google-maps-provider";
 import ProtectedRoute from "@/components/protected-route";
 import { Provider } from "@/components/ui/provider";
 import { AuthProvider } from "@/contexts/auth/auth-context";
@@ -19,11 +20,13 @@ export default function RootLayout({
       <body>
         <AuthProvider>
           <Provider>
-            <ProtectedRoute>
-              <Box minH={"100vh"} w={"100vw"} top={0}>
-                {children}
-              </Box>
-            </ProtectedRoute>
+            <GoogleMapsProvider>
+              <ProtectedRoute>
+                <Box minH={"100vh"} w={"100vw"} top={0}>
+                  {children}
+                </Box>
+              </ProtectedRoute>
+            </GoogleMapsProvider>
           </Provider>
         </AuthProvider>
       </body>

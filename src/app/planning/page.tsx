@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
+import { useMap } from "@vis.gl/react-google-maps";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import GoogleMap, { type MapPin } from "@/components/google-map";
@@ -10,7 +11,6 @@ import ChatPane from "./chat-pane";
 import DetailPane from "./detail-pane";
 
 export default function Planning() {
-  const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
   const [mapPins, setMapPins] = useState<MapPin[]>([]);
   const [initialMessage, setInitialMessage] = useState<string>("");
   const [recommendedSpots, setRecommendedSpots] =
@@ -22,6 +22,23 @@ export default function Planning() {
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
   const [triggerMessage, setTriggerMessage] = useState<string | null>(null);
   const preInfoId = useSearchParams().get("pre_info_id");
+  const map = useMap();
+
+  useEffect(() => {
+    const polyline = new google.maps.Polyline({
+      path: [
+        { lat: 35.681236, lng: 139.767125 }, // Tokyo Station
+        { lat: 35.689487, lng: 139.691706 }, // Shinjuku
+        { lat: 35.676192, lng: 139.650311 }, // Shibuya
+        { lat: 35.658581, lng: 139.745433 }, // Tokyo Tower
+      ],
+      geodesic: true,
+      strokeColor: "#4a82de",
+      strokeOpacity: 0.8,
+      strokeWeight: 6,
+    });
+    polyline.setMap(map);
+  }, [map]);
 
   useEffect(() => {
     (async () => {
@@ -187,7 +204,6 @@ ${preInfo.region}
             </Text>
           </Box>
           <GoogleMap
-            apiKey={GOOGLE_MAPS_API_KEY}
             pins={mapPins.filter((pin) => pin.id.startsWith(selectedTimeSlot))}
             onSpotSelect={handleSpotSelect}
             selectedPinId={selectedPinId}
@@ -261,7 +277,6 @@ ${preInfo.region}
           <Box width="100%" flex="1" overflowY="auto">
             {recommendedSpots && preInfoId ? (
               <DetailPane
-                preInfoId={preInfoId}
                 recommendedSpots={recommendedSpots}
                 selectedTimeSlot={selectedTimeSlot}
                 onTimeSlotChange={setSelectedTimeSlot}

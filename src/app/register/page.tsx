@@ -49,7 +49,7 @@ const RegisterPage: React.FC = () => {
 
   const handleTagClick = (tagText: string) => {
     if (atmosphere) {
-      setAtmosphere(atmosphere + "、" + tagText);
+      setAtmosphere(`${atmosphere}、${tagText}`);
     } else {
       setAtmosphere(tagText);
     }
