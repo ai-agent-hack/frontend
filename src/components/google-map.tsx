@@ -36,6 +36,7 @@ interface GoogleMapProps {
   pins?: MapPin[];
   onSpotSelect?: (spotId: string, isSelected: boolean) => void;
   selectedPinId?: string | null;
+  setSelectedPinId?: (pinId: string) => void;
 }
 
 const mapContainerStyle = {
@@ -48,6 +49,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   pins = [],
   onSpotSelect,
   selectedPinId,
+  setSelectedPinId,
 }) => {
   const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
   const [zoom, setZoom] = useState(10);
@@ -83,9 +85,13 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     [],
   );
 
-  const handleMarkerClick = useCallback((pin: MapPin) => {
-    setSelectedPin(pin);
-  }, []);
+  const handleMarkerClick = useCallback(
+    (pin: MapPin) => {
+      setSelectedPin(pin);
+      setSelectedPinId?.(pin.id);
+    },
+    [setSelectedPinId],
+  );
 
   // Update selectedPin when pins change
   useEffect(() => {

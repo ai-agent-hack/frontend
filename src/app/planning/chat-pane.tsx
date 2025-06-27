@@ -11,7 +11,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FaRobot, FaUser } from "react-icons/fa";
 import type { RecommendedSpots } from "@/types/mastra";
 import { outputSchema } from "../../../mastra/schema/output";
@@ -26,6 +26,8 @@ interface ChatPaneProps {
   initialMessage?: string;
   recommendedSpots?: RecommendedSpots | null;
   planId?: string;
+  triggerMessage?: string | null;
+  onTriggerMessageHandled?: () => void;
 }
 
 export default function ChatPane({
@@ -33,6 +35,8 @@ export default function ChatPane({
   initialMessage,
   recommendedSpots,
   planId,
+  triggerMessage,
+  onTriggerMessageHandled,
 }: ChatPaneProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -199,32 +203,50 @@ export default function ChatPane({
     }
   }, [object?.recommendSpotObject, onRecommendSpotUpdate]);
 
+  const submitMessage = useCallback(
+    (messageContent: string) => {
+      if (!messageContent || !messageContent.trim()) return;
+
+      const userMsg: Message = {
+        role: "user",
+        content: messageContent.trim(),
+      };
+
+      const nextMessages = [...messages, userMsg];
+      setMessages(nextMessages);
+      setInput("");
+
+      const requestData = {
+        planId: planId,
+        messages: nextMessages.map(({ role, content }) => ({ role, content })),
+        ...(recommendedSpots && {
+          recommendSpotObject: recommendedSpots,
+        }),
+      };
+
+      try {
+        submit(requestData);
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    [messages, planId, recommendedSpots, submit],
+  );
+
+  useEffect(() => {
+    if (triggerMessage?.trim()) {
+      console.log("Triggering message:", triggerMessage);
+      submitMessage(triggerMessage);
+      if (onTriggerMessageHandled) {
+        onTriggerMessageHandled();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [triggerMessage, onTriggerMessageHandled, submitMessage]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
-
-    const userMsg: Message = {
-      role: "user",
-      content: input.trim(),
-    };
-
-    const nextMessages = [...messages, userMsg];
-    setMessages(nextMessages);
-    setInput("");
-
-    const requestData = {
-      planId: planId,
-      messages: nextMessages.map(({ role, content }) => ({ role, content })),
-      ...(recommendedSpots && {
-        recommendSpotObject: recommendedSpots,
-      }),
-    };
-
-    try {
-      submit(requestData);
-    } catch (err) {
-      console.error(err);
-    }
+    submitMessage(input);
   };
 
   return (
@@ -399,30 +421,91 @@ export default function ChatPane({
         </VStack>
       </Box>
 
-      <Box as="form" onSubmit={handleSubmit} width="100%" p={4}>
-        <HStack gap={2}>
-          <Input
-            placeholder="気になる場所を聞いてみよう…"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            size="sm"
-            flex="1"
-          />
-          <Button
-            type="submit"
-            colorScheme="blue"
-            size="sm"
-            loading={isLoading}
-            disabled={
-              isLoading ||
-              isTyping ||
-              !recommendedSpots ||
-              streamingMessageId !== null
+      <Box width="100%" p={4}>
+        {(() => {
+          // 最後の「旅行ルート作成を開始して」のインデックスを見つける
+          let lastRouteRequestIndex = -1;
+          for (let i = messages.length - 1; i >= 0; i--) {
+            if (
+              messages[i].role === "user" &&
+              messages[i].content.includes("旅行ルート作成を開始して")
+            ) {
+              lastRouteRequestIndex = i;
+              break;
             }
-          >
-            送信
-          </Button>
-        </HStack>
+          }
+
+          // 最後の「旅行ルート作成を開始して」以降に「はい、お願いします 👍」があるかチェック
+          if (lastRouteRequestIndex === -1) return false;
+
+          for (let i = lastRouteRequestIndex + 1; i < messages.length; i++) {
+            if (
+              messages[i].role === "user" &&
+              messages[i].content === "はい、お願いします 👍"
+            ) {
+              return false;
+            }
+          }
+
+          return true;
+        })() && (
+          <VStack mb={3} align="stretch" gap={2}>
+            <Button
+              size="sm"
+              onClick={() => submitMessage("はい、お願いします 👍")}
+              disabled={isLoading || isTyping || streamingMessageId !== null}
+              bg="blue.50"
+              color="blue.700"
+              border="1px solid"
+              borderColor="blue.200"
+              _hover={{
+                bg: "blue.100",
+                transform: "translateY(-1px)",
+                boxShadow: "sm",
+              }}
+              _active={{
+                bg: "blue.200",
+                transform: "translateY(0)",
+              }}
+              transition="all 0.2s"
+              fontSize="sm"
+              px={4}
+              py={2}
+              borderRadius="lg"
+              width="fit-content"
+            >
+              はい、お願いします 👍
+            </Button>
+            <Text fontSize="xs" color="gray.500">
+              条件を追加したい場合は、下のチャットに入力してください
+            </Text>
+          </VStack>
+        )}
+        <Box as="form" onSubmit={handleSubmit} width="100%">
+          <HStack gap={2}>
+            <Input
+              placeholder="気になる場所を聞いてみよう…"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              size="sm"
+              flex="1"
+            />
+            <Button
+              type="submit"
+              colorScheme="blue"
+              size="sm"
+              loading={isLoading}
+              disabled={
+                isLoading ||
+                isTyping ||
+                !recommendedSpots ||
+                streamingMessageId !== null
+              }
+            >
+              送信
+            </Button>
+          </HStack>
+        </Box>
       </Box>
     </VStack>
   );

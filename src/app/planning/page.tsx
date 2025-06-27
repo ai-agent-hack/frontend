@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import GoogleMap, { type MapPin } from "@/components/google-map";
@@ -20,6 +20,7 @@ export default function Planning() {
     "午前" | "午後" | "夜"
   >("午前");
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
+  const [triggerMessage, setTriggerMessage] = useState<string | null>(null);
   const preInfoId = useSearchParams().get("pre_info_id");
 
   useEffect(() => {
@@ -31,16 +32,16 @@ export default function Planning() {
         const preInfo = await getPreInfo(preInfoId);
 
         // Create initial message from preInfo
-        const message = `以下の情報を元にお勧めスポットを調べますね！
+        const message = `こんにちは！最高の旅を作るお手伝いをします🎉
 
-出発地: ${preInfo.departure_location}
-期間: ${preInfo.start_date} 〜 ${preInfo.end_date}
-雰囲気: ${preInfo.atmosphere}
-予算: ¥${preInfo.budget.toLocaleString()}
-人数: ${preInfo.participants_count}人
-地域: ${preInfo.region}
+📍 ${preInfo.departure_location}から出発
+📅 ${new Date(preInfo.start_date).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })} 〜 ${new Date(preInfo.end_date).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })}
+✨ ${preInfo.atmosphere}な感じで！
+💰 予算は¥${preInfo.budget.toLocaleString()}
+👥 ${preInfo.participants_count}人で行くんですね！
+🗾 ${preInfo.region}エリア
 
-素敵な場所をお探ししますね！
+最高のスポット探してきますね〜🔍✨
 少々お待ちください！`;
 
         setInitialMessage(message);
@@ -170,7 +171,38 @@ export default function Planning() {
             pins={mapPins.filter((pin) => pin.id.startsWith(selectedTimeSlot))}
             onSpotSelect={handleSpotSelect}
             selectedPinId={selectedPinId}
+            setSelectedPinId={setSelectedPinId}
           />
+          <Box
+            position="absolute"
+            bottom={4}
+            left="50%"
+            transform="translateX(-50%)"
+            zIndex={10}
+          >
+            <Button
+              size="lg"
+              colorScheme="purple"
+              boxShadow="2xl"
+              px={8}
+              py={7}
+              fontSize="lg"
+              fontWeight="bold"
+              borderRadius="full"
+              _hover={{
+                transform: "scale(1.05)",
+                boxShadow: "3xl",
+              }}
+              transition="all 0.2s"
+              disabled={!mapPins.some((pin) => pin.selected)}
+              onClick={() => {
+                console.log("Button clicked, triggering message");
+                setTriggerMessage("旅行ルート作成を開始して");
+              }}
+            >
+              🗺️ 今選択中のスポットで旅行ルートを考える
+            </Button>
+          </Box>
         </Box>
 
         {/* Details Section */}
@@ -267,6 +299,8 @@ export default function Planning() {
               initialMessage={initialMessage}
               recommendedSpots={recommendedSpots}
               planId={planId}
+              triggerMessage={triggerMessage}
+              onTriggerMessageHandled={() => setTriggerMessage(null)}
             />
           </Box>
         </VStack>
