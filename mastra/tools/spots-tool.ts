@@ -17,7 +17,7 @@ export async function searchSpots(input: { chat_history: MessageSchema[], recomm
 	const { chat_history, recommend_spots, plan_id } = input;
 	
 	// BACKEND_API_URLが設定されていない場合のデフォルト値
-	const backendUrl = process.env.BACKEND_API_URL || 'http://localhost:8000';
+	const backendUrl = process.env.NEXT_PUBLIC_API_URL;
 	const url = `${backendUrl}/api/v1/trip/${plan_id}/refine`;
 	
 	const response = await fetch(url, {
