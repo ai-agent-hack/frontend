@@ -39,17 +39,16 @@ const atmosphereTags = [
 const RegisterPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [departure, setDeparture] = useState<string>("");
   const [destination, setDestination] = useState<string>("");
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [date, setDate] = useState<Date | null>(null);
+  const [participantsCount, setParticipantsCount] = useState<number>(1);
   const [budget, setBudget] = useState<number>(0);
   const [atmosphere, setAtmosphere] = useState<string>("");
   const router = useRouter();
 
   const handleTagClick = (tagText: string) => {
     if (atmosphere) {
-      setAtmosphere(atmosphere + "、" + tagText);
+      setAtmosphere(`${atmosphere}、${tagText}`);
     } else {
       setAtmosphere(tagText);
     }
@@ -60,7 +59,7 @@ const RegisterPage: React.FC = () => {
     setIsLoading(true);
     setError(null);
 
-    if (!departure || !destination || !startDate || !endDate || !atmosphere) {
+    if (destination === "" || !date || participantsCount === 0 || !atmosphere) {
       setError("必須項目をすべて入力してください。");
       setIsLoading(false);
       return;
@@ -68,13 +67,12 @@ const RegisterPage: React.FC = () => {
 
     try {
       const requestBody = {
-        departure_location: departure,
-        start_date: startDate.toISOString(),
-        end_date: endDate.toISOString(),
-        participants_count: 1, // TODO: Change this to the actual number of participants
+        region: destination,
+        start_date: new Date(date.setHours(9, 0, 0, 0)).toISOString(),
+        end_date: new Date(date.setHours(21, 0, 0, 0)).toISOString(),
+        participants_count: participantsCount,
         atmosphere: atmosphere,
         budget: budget,
-        region: destination,
       };
 
       const preInfo = await registerPreInfo(requestBody);
@@ -111,20 +109,7 @@ const RegisterPage: React.FC = () => {
 
           <Box flex={1}>
             <Text display="block" mb={3} fontWeight="semibold">
-              出発地
-              <RequiredMark />
-            </Text>
-            <Input
-              value={departure}
-              onChange={(e) => setDeparture(e.target.value)}
-              placeholder="例: 東京、大阪"
-              disabled={isLoading}
-            />
-          </Box>
-
-          <Box flex={1}>
-            <Text display="block" mb={3} fontWeight="semibold">
-              地域
+              旅行先
               <RequiredMark />
             </Text>
             <Input
@@ -138,39 +123,31 @@ const RegisterPage: React.FC = () => {
 
           <Box>
             <Text mb={3} fontSize="md" fontWeight="semibold">
-              旅行期間
+              旅行日
               <RequiredMark />
             </Text>
-            <HStack gap={6} align="flex-start" w="full">
-              <Box flex={1}>
-                <Text mb={2} fontSize="sm">
-                  開始日
-                </Text>
-                <Input
-                  type="date"
-                  value={formatDate(startDate)}
-                  onChange={(e) =>
-                    setStartDate(
-                      e.target.value ? new Date(e.target.value) : null,
-                    )
-                  }
-                  disabled={isLoading}
-                />
-              </Box>
-              <Box flex={1}>
-                <Text mb={2} fontSize="sm">
-                  終了日
-                </Text>
-                <Input
-                  type="date"
-                  value={formatDate(endDate)}
-                  onChange={(e) =>
-                    setEndDate(e.target.value ? new Date(e.target.value) : null)
-                  }
-                  disabled={isLoading}
-                />
-              </Box>
-            </HStack>
+
+            <Input
+              type="date"
+              value={formatDate(date)}
+              onChange={(e) =>
+                setDate(e.target.value ? new Date(e.target.value) : null)
+              }
+              disabled={isLoading}
+            />
+          </Box>
+
+          <Box>
+            <Text mb={3} fontWeight="semibold">
+              参加人数 (人)
+            </Text>
+            <Input
+              value={participantsCount}
+              onChange={(e) => setParticipantsCount(Number(e.target.value))}
+              min={0}
+              placeholder="例: 50000"
+              disabled={isLoading}
+            />
           </Box>
 
           <Box>

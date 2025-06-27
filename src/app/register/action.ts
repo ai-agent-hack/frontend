@@ -1,12 +1,11 @@
 import type { PreInfo } from "@/types/pre-info";
 
 export interface RegisterPreInfoInput {
-  departure_location: string;
+  region: string;
   start_date: string;
   end_date: string;
   atmosphere: string;
   budget: number;
-  region: string;
 }
 
 export const registerPreInfo = async (
