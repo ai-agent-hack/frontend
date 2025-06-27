@@ -23,11 +23,15 @@ export async function POST(req: Request) {
     const text =
       (result as any)?.result?.nonSpotResponse?.message ??
       (result as any)?.result?.spotSearchChain?.message ??
-      "No response";
+      (result as any)?.result?.routeCreationConfirm?.message ??
+      (result as any)?.result?.routeCreationExecute?.message ??
+      "あわわ〜！システムがちょっとご機嫌ナナメみたいでスポット探しの途中でエラーっちゃいました...！🙈✨\nもう一回、どんな場所をお探しか教えてもらえますか？今度こそ頑張ります！💪";
 
     const recommendSpotData =
       (result as any)?.result?.nonSpotResponse?.recommendSpotObject ||
-      (result as any)?.result?.spotSearchChain?.recommendSpotObject;
+      (result as any)?.result?.spotSearchChain?.recommendSpotObject ||
+      (result as any)?.result?.routeCreationConfirm?.recommendSpotObject ||
+      (result as any)?.result?.routeCreationExecute?.recommendSpotObject;
 
     const responseData: OutputSchema = {
       message: text,

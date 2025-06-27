@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import GoogleMap, { type MapPin } from "@/components/google-map";
@@ -19,6 +19,8 @@ export default function Planning() {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<
     "午前" | "午後" | "夜"
   >("午前");
+  const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
+  const [triggerMessage, setTriggerMessage] = useState<string | null>(null);
   const preInfoId = useSearchParams().get("pre_info_id");
 
   useEffect(() => {
@@ -30,17 +32,37 @@ export default function Planning() {
         const preInfo = await getPreInfo(preInfoId);
 
         // Create initial message from preInfo
-        const message = `以下の情報を元にお勧めスポットを調べますね！
+        const message = `
+**こんにちは！**
 
-出発地: ${preInfo.departure_location}
-期間: ${preInfo.start_date} 〜 ${preInfo.end_date}
-雰囲気: ${preInfo.atmosphere}
-予算: ¥${preInfo.budget.toLocaleString()}
-人数: ${preInfo.participants_count}人
-地域: ${preInfo.region}
+**最高の旅を作るお手伝いをします** 🎉
 
-素敵な場所をお探ししますね！
-少々お待ちください！`;
+---
+
+### 📋 いただいた旅行プラン
+
+**📍 出発地**  
+${preInfo.departure_location}
+
+**📅 期間**  
+${new Date(preInfo.start_date).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })} 〜 ${new Date(preInfo.end_date).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })}
+
+**✨ 雰囲気**  
+${preInfo.atmosphere}な感じ
+
+**💰 予算**  
+¥${preInfo.budget.toLocaleString()}
+
+**👥 人数**  
+${preInfo.participants_count}人
+
+**🗾 エリア**  
+${preInfo.region}
+
+---
+
+**最高のスポット探してきますね〜** 🔍✨  
+*少々お待ちください！*`;
 
         setInitialMessage(message);
 
@@ -56,7 +78,7 @@ export default function Planning() {
               position: { lat: spot.latitude, lng: spot.longitude },
               title: spot.details.name,
               description: spot.recommendation_reason,
-              imageUrl: spot.google_map_image_url,
+              imageUrl: spot.google_map_image_url ?? undefined,
               websiteUrl: spot.website_url ?? undefined,
               selected: spot.selected,
             })),
@@ -81,7 +103,7 @@ export default function Planning() {
           position: { lat: spot.latitude, lng: spot.longitude },
           title: spot.details.name,
           description: spot.recommendation_reason,
-          imageUrl: spot.google_map_image_url,
+          imageUrl: spot.google_map_image_url ?? undefined,
           websiteUrl: spot.website_url ?? undefined,
           selected: spot.selected,
         })),
@@ -118,7 +140,7 @@ export default function Planning() {
           position: { lat: spot.latitude, lng: spot.longitude },
           title: spot.details.name,
           description: spot.recommendation_reason,
-          imageUrl: spot.google_map_image_url,
+          imageUrl: spot.google_map_image_url ?? undefined,
           websiteUrl: spot.website_url ?? undefined,
           selected: spot.selected,
         })),
@@ -128,24 +150,79 @@ export default function Planning() {
     [recommendedSpots],
   );
 
+  const handlePinClick = useCallback((pinId: string) => {
+    setSelectedPinId(pinId);
+  }, []);
+
   return (
-    <Box height="100vh" bg="gray.100" p={3}>
-      <HStack height="100%" gap={3} position="relative">
+    <Box height="100vh" bg="gray.50" p={4}>
+      <HStack height="100%" gap={4} position="relative">
         {/* Map Section */}
         <Box
           width="calc(100% - 812px)"
           height="100%"
           position="relative"
-          borderRadius="xl"
+          borderRadius="2xl"
           overflow="hidden"
-          boxShadow="md"
+          boxShadow="xl"
           bg="white"
+          border="1px solid"
+          borderColor="gray.200"
         >
+          <Box
+            position="absolute"
+            top={2}
+            left={3}
+            zIndex={10}
+            bg="white"
+            px={7}
+            py={2}
+            borderRadius="lg"
+            boxShadow="md"
+            border="1px solid"
+            borderColor="gray.200"
+          >
+            <Text fontSize="xl" fontWeight="semibold" color="gray.700">
+              🗺️ 旅行マップ
+            </Text>
+          </Box>
           <GoogleMap
             apiKey={GOOGLE_MAPS_API_KEY}
             pins={mapPins.filter((pin) => pin.id.startsWith(selectedTimeSlot))}
             onSpotSelect={handleSpotSelect}
+            selectedPinId={selectedPinId}
+            setSelectedPinId={setSelectedPinId}
           />
+          <Box
+            position="absolute"
+            bottom={4}
+            left="50%"
+            transform="translateX(-50%)"
+            zIndex={10}
+          >
+            <Button
+              size="lg"
+              colorScheme="purple"
+              boxShadow="2xl"
+              px={8}
+              py={7}
+              fontSize="lg"
+              fontWeight="bold"
+              borderRadius="full"
+              _hover={{
+                transform: "scale(1.05)",
+                boxShadow: "3xl",
+              }}
+              transition="all 0.2s"
+              disabled={!mapPins.some((pin) => pin.selected)}
+              onClick={() => {
+                console.log("Button clicked, triggering message");
+                setTriggerMessage("旅行ルート作成を開始して");
+              }}
+            >
+              🗺️ 今選択中のスポットで旅行ルートを考える
+            </Button>
+          </Box>
         </Box>
 
         {/* Details Section */}
@@ -153,11 +230,13 @@ export default function Planning() {
           width="350px"
           height="100%"
           bg="white"
-          borderRadius="xl"
-          boxShadow="md"
+          borderRadius="2xl"
+          boxShadow="xl"
           gap={0}
           position="relative"
           overflow="hidden"
+          border="1px solid"
+          borderColor="gray.200"
         >
           <Box
             width="100%"
@@ -167,8 +246,16 @@ export default function Planning() {
             bg="gradient.to-br"
             bgGradient="linear(to-br, purple.50, pink.50)"
           >
-            <Text fontWeight="bold" fontSize="lg" color="gray.700">
-              Details
+            <HStack gap={2}>
+              <Text fontSize="lg" fontWeight="bold" color="purple.700">
+                📍
+              </Text>
+              <Text fontWeight="bold" fontSize="lg" color="purple.700">
+                スポット詳細
+              </Text>
+            </HStack>
+            <Text fontSize="sm" color="purple.600" mt={1}>
+              お気に入りの場所をチェックしてください
             </Text>
           </Box>
           <Box width="100%" flex="1" overflowY="auto">
@@ -178,10 +265,17 @@ export default function Planning() {
                 recommendedSpots={recommendedSpots}
                 selectedTimeSlot={selectedTimeSlot}
                 onTimeSlotChange={setSelectedTimeSlot}
+                onSpotSelect={handleSpotSelect}
+                onPinClick={handlePinClick}
               />
             ) : (
-              <Box p={4}>
-                <Text color="gray.500">No details available</Text>
+              <Box p={6} textAlign="center">
+                <Text fontSize="lg" color="gray.400" mb={2}>
+                  🎯
+                </Text>
+                <Text color="gray.500" fontSize="sm">
+                  スポット情報を読み込み中...
+                </Text>
               </Box>
             )}
           </Box>
@@ -192,11 +286,13 @@ export default function Planning() {
           width="450px"
           height="100%"
           bg="white"
-          borderRadius="xl"
+          borderRadius="2xl"
           gap={0}
-          boxShadow="lg"
+          boxShadow="xl"
           position="relative"
           overflow="hidden"
+          border="1px solid"
+          borderColor="gray.200"
         >
           <Box
             width="100%"
@@ -204,18 +300,28 @@ export default function Planning() {
             borderBottom="1px solid"
             borderColor="gray.100"
             bg="gradient.to-br"
-            bgGradient="linear(to-br, blue.50, purple.50)"
+            bgGradient="linear(to-br, blue.50, indigo.50)"
           >
-            <Text fontWeight="bold" fontSize="lg" color="gray.700">
-              Chat
+            <HStack gap={2}>
+              <Text fontSize="lg" fontWeight="bold" color="blue.700">
+                💬
+              </Text>
+              <Text fontWeight="bold" fontSize="lg" color="blue.700">
+                旅行アシスタント
+              </Text>
+            </HStack>
+            <Text fontSize="sm" color="blue.600" mt={1}>
+              AIがあなたの旅行をサポートします
             </Text>
           </Box>
-          <Box width="100%" flex="1">
+          <Box width="100%" flex="1" overflow="hidden">
             <ChatPane
               onRecommendSpotUpdate={handleRecommendSpotUpdate}
               initialMessage={initialMessage}
               recommendedSpots={recommendedSpots}
               planId={planId}
+              triggerMessage={triggerMessage}
+              onTriggerMessageHandled={() => setTriggerMessage(null)}
             />
           </Box>
         </VStack>
