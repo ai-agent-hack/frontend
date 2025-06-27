@@ -20,15 +20,13 @@ const DetailPane = ({
   return (
     <VStack width="100%" p={4} gap={4}>
       {/* Time Slot Selector */}
-      <Box width="100%">
-        <Text fontSize="sm" fontWeight="semibold" color="gray.600" mb={2}>
-          時間帯を選択
-        </Text>
+      <Box width="100%" display="flex" justifyContent="center">
         <SegmentGroup.Root
           value={selectedTimeSlot}
           onValueChange={(e) => {
             onTimeSlotChange(e.value as "午前" | "午後" | "夜");
           }}
+          size="sm"
         >
           <SegmentGroup.Indicator />
           <SegmentGroup.Items items={["午前", "午後", "夜"]} />
