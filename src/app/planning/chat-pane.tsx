@@ -617,6 +617,13 @@ export default function ChatPane({
               onChange={(e) => setInput(e.target.value)}
               size="sm"
               flex="1"
+              borderRadius="full"
+              border="1px solid"
+              borderColor="gray.200"
+              _focus={{
+                borderColor: "blue.400",
+                boxShadow: "0 0 0 1px #3182ce",
+              }}
             />
             <Button
               type="submit"
@@ -629,6 +636,8 @@ export default function ChatPane({
                 !recommendedSpots ||
                 streamingMessageId !== null
               }
+              borderRadius="full"
+              px={6}
             >
               送信
             </Button>
