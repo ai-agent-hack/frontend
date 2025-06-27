@@ -32,17 +32,37 @@ export default function Planning() {
         const preInfo = await getPreInfo(preInfoId);
 
         // Create initial message from preInfo
-        const message = `こんにちは！最高の旅を作るお手伝いをします🎉
+        const message = `
+**こんにちは！**
 
-📍 ${preInfo.departure_location}から出発
-📅 ${new Date(preInfo.start_date).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })} 〜 ${new Date(preInfo.end_date).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })}
-✨ ${preInfo.atmosphere}な感じで！
-💰 予算は¥${preInfo.budget.toLocaleString()}
-👥 ${preInfo.participants_count}人で行くんですね！
-🗾 ${preInfo.region}エリア
+**最高の旅を作るお手伝いをします** 🎉
 
-最高のスポット探してきますね〜🔍✨
-少々お待ちください！`;
+---
+
+### 📋 いただいた旅行プラン
+
+**📍 出発地**  
+${preInfo.departure_location}
+
+**📅 期間**  
+${new Date(preInfo.start_date).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })} 〜 ${new Date(preInfo.end_date).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })}
+
+**✨ 雰囲気**  
+${preInfo.atmosphere}な感じ
+
+**💰 予算**  
+¥${preInfo.budget.toLocaleString()}
+
+**👥 人数**  
+${preInfo.participants_count}人
+
+**🗾 エリア**  
+${preInfo.region}
+
+---
+
+**最高のスポット探してきますね〜** 🔍✨  
+*少々お待ちください！*`;
 
         setInitialMessage(message);
 
@@ -58,7 +78,7 @@ export default function Planning() {
               position: { lat: spot.latitude, lng: spot.longitude },
               title: spot.details.name,
               description: spot.recommendation_reason,
-              imageUrl: spot.google_map_image_url,
+              imageUrl: spot.google_map_image_url ?? undefined,
               websiteUrl: spot.website_url ?? undefined,
               selected: spot.selected,
             })),
@@ -83,7 +103,7 @@ export default function Planning() {
           position: { lat: spot.latitude, lng: spot.longitude },
           title: spot.details.name,
           description: spot.recommendation_reason,
-          imageUrl: spot.google_map_image_url,
+          imageUrl: spot.google_map_image_url ?? undefined,
           websiteUrl: spot.website_url ?? undefined,
           selected: spot.selected,
         })),
@@ -120,7 +140,7 @@ export default function Planning() {
           position: { lat: spot.latitude, lng: spot.longitude },
           title: spot.details.name,
           description: spot.recommendation_reason,
-          imageUrl: spot.google_map_image_url,
+          imageUrl: spot.google_map_image_url ?? undefined,
           websiteUrl: spot.website_url ?? undefined,
           selected: spot.selected,
         })),
@@ -152,17 +172,17 @@ export default function Planning() {
           <Box
             position="absolute"
             top={2}
-            left={2}
+            left={3}
             zIndex={10}
             bg="white"
-            px={11}
-            py={5}
+            px={7}
+            py={2}
             borderRadius="lg"
             boxShadow="md"
             border="1px solid"
             borderColor="gray.200"
           >
-            <Text fontSize="sm" fontWeight="semibold" color="gray.700">
+            <Text fontSize="xl" fontWeight="semibold" color="gray.700">
               🗺️ 旅行マップ
             </Text>
           </Box>

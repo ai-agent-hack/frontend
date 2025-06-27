@@ -6,7 +6,7 @@ const FIRECRAWL_API_KEY = process.env.FIRECRAWL_API_KEY;
 
 export const webSearchTool = createTool({
 	id: "web-search",
-	description: "Search the web for information about spots, travel recommendations, or general information",
+	description: "Search the web for general information",
 	inputSchema: z.object({
 		query: z.string().describe("The search query"),
 		limit: z.number().default(3).describe("Maximum number of results to return"),

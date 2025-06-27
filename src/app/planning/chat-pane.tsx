@@ -13,6 +13,8 @@ import {
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FaRobot, FaUser } from "react-icons/fa";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import type { RecommendedSpots } from "@/types/mastra";
 import { outputSchema } from "../../../mastra/schema/output";
 
@@ -86,8 +88,8 @@ export default function ChatPane({
             });
             currentIndex++;
 
-            // Variable typing speed
-            let nextDelay = 13; // base speed
+            // Variable typing speed (faster)
+            let nextDelay = 8; // base speed (reduced from 13)
             const currentChar = initialMessage[currentIndex - 1];
             const nextChar = initialMessage[currentIndex];
 
@@ -97,16 +99,16 @@ export default function ChatPane({
               currentChar === "！" ||
               currentChar === "？"
             ) {
-              nextDelay = 200 + Math.random() * 200; // Pause after sentence
+              nextDelay = 100 + Math.random() * 100; // Pause after sentence (reduced from 200-400)
             } else if (currentChar === "、" || currentChar === ":") {
-              nextDelay = 100 + Math.random() * 100; // Small pause after comma
+              nextDelay = 50 + Math.random() * 50; // Small pause after comma (reduced from 100-200)
             } else if (currentChar === "\n") {
-              nextDelay = 150 + Math.random() * 150; // Pause at line breaks
+              nextDelay = 75 + Math.random() * 75; // Pause at line breaks (reduced from 150-300)
             } else if (nextChar === " " || currentChar === " ") {
-              nextDelay = 50 + Math.random() * 30; // Quick for spaces
+              nextDelay = 25 + Math.random() * 15; // Quick for spaces (reduced from 50-80)
             } else {
               // Random variation for normal characters
-              nextDelay = 15 + Math.random() * 40;
+              nextDelay = 8 + Math.random() * 20; // (reduced from 15-55)
             }
 
             setTimeout(typeNextChar, nextDelay);
@@ -170,8 +172,8 @@ export default function ChatPane({
         });
         currentIndex++;
 
-        // Variable typing speed for more natural effect
-        let nextDelay = 20; // base speed
+        // Variable typing speed for more natural effect (faster)
+        let nextDelay = 10; // base speed (reduced from 20)
         const currentChar = targetMessage[currentIndex - 1];
 
         if (
@@ -179,13 +181,13 @@ export default function ChatPane({
           currentChar === "！" ||
           currentChar === "？"
         ) {
-          nextDelay = 150 + Math.random() * 100;
+          nextDelay = 75 + Math.random() * 50; // (reduced from 150-250)
         } else if (currentChar === "、" || currentChar === "，") {
-          nextDelay = 80 + Math.random() * 50;
+          nextDelay = 40 + Math.random() * 25; // (reduced from 80-130)
         } else if (currentChar === "\n") {
-          nextDelay = 100 + Math.random() * 50;
+          nextDelay = 50 + Math.random() * 25; // (reduced from 100-150)
         } else {
-          nextDelay = 15 + Math.random() * 25;
+          nextDelay = 8 + Math.random() * 12; // (reduced from 15-40)
         }
 
         setTimeout(streamNextChar, nextDelay);
@@ -289,9 +291,135 @@ export default function ChatPane({
                 border="1px solid"
                 borderColor={m.role === "user" ? "blue.100" : "gray.200"}
               >
-                <Text whiteSpace="pre-line" lineHeight="1.6">
-                  {m.content}
-                </Text>
+                {m.role === "assistant" ? (
+                  <Box
+                    css={{
+                      "& > *:first-child": {
+                        marginTop: 0,
+                      },
+                      "& > *:last-child": {
+                        marginBottom: 0,
+                      },
+                      "& p": {
+                        margin: 0,
+                        marginBottom: "0.5em",
+                        lineHeight: "1.6",
+                        display: "block",
+                      },
+                      "& p:last-child": {
+                        marginBottom: 0,
+                      },
+                      "& ul, & ol": {
+                        marginLeft: "1.5em",
+                        marginTop: "0.5em",
+                        marginBottom: "0.5em",
+                      },
+                      "& li": {
+                        marginBottom: "0.25em",
+                      },
+                      "& strong": {
+                        fontWeight: "bold",
+                        color: m.role === "assistant" ? "gray.800" : "inherit",
+                      },
+                      "& code": {
+                        backgroundColor: "gray.100",
+                        borderRadius: "3px",
+                        padding: "0.1em 0.3em",
+                        fontSize: "0.9em",
+                        fontFamily: "monospace",
+                      },
+                      "& pre": {
+                        backgroundColor: "gray.100",
+                        borderRadius: "6px",
+                        padding: "0.75em",
+                        overflowX: "auto",
+                        marginTop: "0.5em",
+                        marginBottom: "0.5em",
+                      },
+                      "& pre code": {
+                        backgroundColor: "transparent",
+                        padding: 0,
+                      },
+                      "& h1, & h2, & h3": {
+                        fontWeight: "bold",
+                        marginTop: "0.5em",
+                        marginBottom: "0.25em",
+                      },
+                      "& h1": { fontSize: "1.3em" },
+                      "& h2": { fontSize: "1.2em" },
+                      "& h3": { fontSize: "1.1em" },
+                      "& a": {
+                        color: "blue.600",
+                        textDecoration: "underline",
+                        cursor: "pointer",
+                        _hover: {
+                          textDecoration: "underline",
+                          color: "blue.700",
+                        },
+                      },
+                      "& blockquote": {
+                        borderLeft: "3px solid",
+                        borderColor: "gray.300",
+                        paddingLeft: "0.75em",
+                        marginLeft: "0",
+                        fontStyle: "italic",
+                        color: "gray.600",
+                      },
+                      "& table": {
+                        borderCollapse: "collapse",
+                        marginTop: "0.5em",
+                        marginBottom: "0.5em",
+                        width: "100%",
+                      },
+                      "& th, & td": {
+                        border: "1px solid",
+                        borderColor: "gray.300",
+                        padding: "0.5em",
+                        textAlign: "left",
+                      },
+                      "& th": {
+                        backgroundColor: "gray.100",
+                        fontWeight: "bold",
+                      },
+                      "& tr:nth-of-type(even)": {
+                        backgroundColor: "gray.50",
+                      },
+                    }}
+                  >
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        a: ({ href, children }) => (
+                          <a
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              color: "#3182ce",
+                              textDecoration: "underline",
+                              cursor: "pointer",
+                              display: "inline-block",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.color = "#2c5282";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.color = "#3182ce";
+                            }}
+                          >
+                            {children}
+                          </a>
+                        ),
+                      }}
+                    >
+                      {m.content}
+                    </ReactMarkdown>
+                  </Box>
+                ) : (
+                  <Text whiteSpace="pre-line" lineHeight="1.6">
+                    {m.content}
+                  </Text>
+                )}
               </Box>
               {m.role === "user" && (
                 <Box
