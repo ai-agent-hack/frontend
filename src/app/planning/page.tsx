@@ -170,6 +170,7 @@ export default function Planning() {
             pins={mapPins.filter((pin) => pin.id.startsWith(selectedTimeSlot))}
             onSpotSelect={handleSpotSelect}
             selectedPinId={selectedPinId}
+            setSelectedPinId={setSelectedPinId}
           />
         </Box>
 
