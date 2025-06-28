@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       (result as any)?.result?.spotSearchChain?.message ??
       (result as any)?.result?.routeCreationConfirm?.message ??
       (result as any)?.result?.routeCreationExecute?.message ??
-      "あわわ〜！システムがちょっとご機嫌ナナメみたいでスポット探しの途中でエラーっちゃいました...！🙈✨\nもう一回、どんな場所をお探しか教えてもらえますか？今度こそ頑張ります！💪";
+      "すみません、スポット情報を探している途中でエラーになってしまいました。\nもう一度、どんな場所をお探しか教えてもらえますか？";
 
     const recommendSpotData =
       (result as any)?.result?.nonSpotResponse?.recommendSpotObject ||

@@ -617,6 +617,98 @@ export default function ChatPane({
             </Text>
           </VStack>
         )}
+
+        {/* 推奨スポットがある場合に提案ボタンを表示 */}
+        {recommendedSpots &&
+          !isLoading &&
+          !isTyping &&
+          streamingMessageId === null && (
+            <VStack mb={3} align="stretch" gap={2}>
+              <HStack gap={2} flexWrap="wrap">
+                <Button
+                  size="sm"
+                  onClick={() => submitMessage("旅行期間の天気は大丈夫？")}
+                  disabled={
+                    isLoading || isTyping || streamingMessageId !== null
+                  }
+                  bg="blue.50"
+                  color="blue.700"
+                  border="1px solid"
+                  borderColor="blue.200"
+                  _hover={{
+                    bg: "blue.100",
+                    transform: "translateY(-1px)",
+                  }}
+                  _active={{
+                    bg: "blue.200",
+                    transform: "translateY(0)",
+                  }}
+                  transition="all 0.2s"
+                  fontSize="sm"
+                  px={4}
+                  py={2}
+                  borderRadius="lg"
+                  width="fit-content"
+                >
+                  旅行期間の天気は大丈夫？
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => submitMessage("リラックスできる温泉を教えて")}
+                  disabled={
+                    isLoading || isTyping || streamingMessageId !== null
+                  }
+                  bg="blue.50"
+                  color="blue.700"
+                  border="1px solid"
+                  borderColor="blue.200"
+                  _hover={{
+                    bg: "blue.100",
+                    transform: "translateY(-1px)",
+                  }}
+                  _active={{
+                    bg: "blue.200",
+                    transform: "translateY(0)",
+                  }}
+                  transition="all 0.2s"
+                  fontSize="sm"
+                  px={4}
+                  py={2}
+                  borderRadius="lg"
+                  width="fit-content"
+                >
+                  リラックスできる温泉を教えて
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => submitMessage("おすすめのレストランを教えて")}
+                  disabled={
+                    isLoading || isTyping || streamingMessageId !== null
+                  }
+                  bg="blue.50"
+                  color="blue.700"
+                  border="1px solid"
+                  borderColor="blue.200"
+                  _hover={{
+                    bg: "blue.100",
+                    transform: "translateY(-1px)",
+                  }}
+                  _active={{
+                    bg: "blue.200",
+                    transform: "translateY(0)",
+                  }}
+                  transition="all 0.2s"
+                  fontSize="sm"
+                  px={4}
+                  py={2}
+                  borderRadius="lg"
+                  width="fit-content"
+                >
+                  おすすめのレストランを教えて
+                </Button>
+              </HStack>
+            </VStack>
+          )}
         <Box as="form" onSubmit={handleSubmit} width="100%">
           <HStack gap={2}>
             <Input
