@@ -1,10 +1,5 @@
 import { Agent } from '@mastra/core/agent';
-import { createVertex } from '@ai-sdk/google-vertex';
-
-const vertex = createVertex({
-  location: 'us-central1',
-  project: process.env.GOOGLE_PROJECT_ID,
-});
+import { vertex } from '../model/google';
 
 export const spotUpdateSummaryAgent = new Agent({
   name: 'Spot Update Summary Agent',
