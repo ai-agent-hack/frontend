@@ -3,6 +3,7 @@
 import {
   Box,
   Center,
+  CloseButton,
   Image,
   Link,
   Stack,
@@ -204,16 +205,28 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
           /* Hide default Google Maps InfoWindow close button */
           .gm-ui-hover-effect {
             display: none !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            border-radius: 20px !important;
           }
           /* Remove extra padding from InfoWindow */
           .gm-style-iw {
             padding: 0 !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            border-radius: 20px !important;
           }
           .gm-style-iw-c {
             padding: 0 !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            border-radius: 20px !important;
           }
           .gm-style-iw-d {
             overflow: visible !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            border-radius: 20px !important;
           }
         `}
       </style>
@@ -257,219 +270,184 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
               pixelOffset={[0, -40]}
               shouldFocus
               onCloseClick={handleInfoWindowClose}
-              headerDisabled={false}
+              headerDisabled={true}
+              style={{
+                maxWidth: "320px",
+                minWidth: "280px",
+                backgroundColor: "white",
+                borderRadius: "20px",
+                boxShadow: "0 0 15px rgba(0, 0, 0, 0.2)",
+              }}
             >
-              <Box
-                maxWidth="320px"
-                minWidth="280px"
-                bg="white"
-                borderRadius="2xl"
-                overflow="hidden"
-                boxShadow="xl"
-                border="1px solid"
-                borderColor="gray.200"
-                mt={-4}
-                p={2}
-                css={{
-                  "&": {
-                    overflow: "visible",
-                  },
-                  "& > *:first-of-type": {
-                    marginTop: 0,
-                  },
-                }}
-              >
-                {selectedPin.imageUrl && (
+              {selectedPin.imageUrl && (
+                <Box
+                  position="relative"
+                  height="200px"
+                  overflow="hidden"
+                  borderRadius="20px"
+                  mb={2}
+                >
+                  <Image
+                    src={selectedPin.imageUrl}
+                    alt={selectedPin.title}
+                    objectFit="cover"
+                    width="100%"
+                    height="100%"
+                  />
+                  <CloseButton
+                    position={"absolute"}
+                    borderRadius={"full"}
+                    variant={"ghost"}
+                    top={2}
+                    right={2}
+                    onClick={handleInfoWindowClose}
+                  />
+                </Box>
+              )}
+
+              <VStack align="stretch" gap={3} p={3} position="relative">
+                {!selectedPin.imageUrl && (
                   <Box
-                    position="relative"
-                    height="200px"
-                    overflow="hidden"
-                    borderRadius="lg"
-                    mb={2}
+                    position="absolute"
+                    top={2}
+                    right={2}
+                    bg="gray.100"
+                    borderRadius="full"
+                    p={1}
+                    cursor="pointer"
+                    onClick={handleInfoWindowClose}
+                    _hover={{
+                      bg: "gray.200",
+                    }}
+                    transition="all 0.2s"
+                    zIndex={1}
                   >
-                    <Image
-                      src={selectedPin.imageUrl}
-                      alt={selectedPin.title}
-                      objectFit="cover"
-                      width="100%"
-                      height="100%"
-                    />
-                    <Box
-                      position="absolute"
-                      top={2}
-                      right={2}
-                      bg="white"
-                      borderRadius="full"
-                      p={1.5}
-                      cursor="pointer"
-                      onClick={handleInfoWindowClose}
-                      boxShadow="md"
-                      _hover={{
-                        bg: "gray.100",
+                    <Text fontSize="sm" color="gray.600" lineHeight="1">
+                      ✕
+                    </Text>
+                  </Box>
+                )}
+                <Box>
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    color="gray.800"
+                    lineHeight="1.2"
+                    overflow="hidden"
+                    display="-webkit-box"
+                    css={{
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                    }}
+                  >
+                    {selectedPin.title}
+                  </Text>
+                </Box>
+
+                {selectedPin.description && (
+                  <>
+                    <Box borderTop="1px solid" borderColor="border" />
+                    <Text
+                      fontSize="sm"
+                      color="gray.600"
+                      lineHeight="1.5"
+                      overflow="hidden"
+                      display="-webkit-box"
+                      css={{
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical",
                       }}
-                      transition="all 0.2s"
                     >
-                      <Text fontSize="md" color="gray.600">
-                        ✕
+                      {selectedPin.description}
+                    </Text>
+                  </>
+                )}
+
+                {selectedPin.websiteUrl && (
+                  <Box
+                    bg="blue.50"
+                    borderRadius="lg"
+                    p={3}
+                    textAlign="center"
+                    transition="all 0.2s"
+                    _hover={{
+                      bg: "blue.100",
+                    }}
+                  >
+                    <Link
+                      href={selectedPin.websiteUrl}
+                      target="_blank"
+                      display="inline-flex"
+                      alignItems="center"
+                      color="blue.600"
+                      fontSize="sm"
+                      fontWeight="medium"
+                      textDecoration="none"
+                    >
+                      <Text mr={1}>ウェブサイトを見る</Text>
+                      <LuExternalLink size={12} />
+                    </Link>
+                  </Box>
+                )}
+
+                {onSpotSelect && (
+                  <Box pt={2} borderTop="1px solid" borderColor="border">
+                    <Box
+                      as="button"
+                      width="100%"
+                      bg={selectedPin.selected ? "blue.500" : "white"}
+                      color={selectedPin.selected ? "white" : "gray.700"}
+                      border="2px solid"
+                      borderColor={selectedPin.selected ? "blue.500" : "border"}
+                      borderRadius="xl"
+                      p={3}
+                      transition="all 0.2s"
+                      _hover={{
+                        bg: selectedPin.selected ? "blue.600" : "gray.50",
+                        borderColor: selectedPin.selected
+                          ? "blue.600"
+                          : "border",
+                        transform: "translateY(-1px)",
+                      }}
+                      onClick={() =>
+                        onSpotSelect(selectedPin.id, !selectedPin.selected)
+                      }
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      gap={2}
+                    >
+                      <Box
+                        width="20px"
+                        height="20px"
+                        borderRadius="md"
+                        border="2px solid"
+                        borderColor={selectedPin.selected ? "white" : "border"}
+                        bg={selectedPin.selected ? "white" : "transparent"}
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        transition="all 0.2s"
+                      >
+                        {selectedPin.selected && (
+                          <Text
+                            fontSize="sm"
+                            color="blue.500"
+                            fontWeight="bold"
+                          >
+                            ✓
+                          </Text>
+                        )}
+                      </Box>
+                      <Text fontSize="sm" fontWeight="medium">
+                        {selectedPin.selected
+                          ? "選択済み"
+                          : "このスポットを選択する"}
                       </Text>
                     </Box>
                   </Box>
                 )}
-
-                <VStack align="stretch" gap={3} p={3} position="relative">
-                  {!selectedPin.imageUrl && (
-                    <Box
-                      position="absolute"
-                      top={2}
-                      right={2}
-                      bg="gray.100"
-                      borderRadius="full"
-                      p={1}
-                      cursor="pointer"
-                      onClick={handleInfoWindowClose}
-                      _hover={{
-                        bg: "gray.200",
-                      }}
-                      transition="all 0.2s"
-                      zIndex={1}
-                    >
-                      <Text fontSize="sm" color="gray.600" lineHeight="1">
-                        ✕
-                      </Text>
-                    </Box>
-                  )}
-                  <Box>
-                    <Text
-                      fontSize="lg"
-                      fontWeight="bold"
-                      color="gray.800"
-                      lineHeight="1.2"
-                      overflow="hidden"
-                      display="-webkit-box"
-                      css={{
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
-                      }}
-                    >
-                      {selectedPin.title}
-                    </Text>
-                  </Box>
-
-                  {selectedPin.description && (
-                    <>
-                      <Box borderTop="1px solid" borderColor="gray.100" />
-                      <Text
-                        fontSize="sm"
-                        color="gray.600"
-                        lineHeight="1.5"
-                        overflow="hidden"
-                        display="-webkit-box"
-                        css={{
-                          WebkitLineClamp: 3,
-                          WebkitBoxOrient: "vertical",
-                        }}
-                      >
-                        {selectedPin.description}
-                      </Text>
-                    </>
-                  )}
-
-                  {selectedPin.websiteUrl && (
-                    <Box
-                      bg="blue.50"
-                      borderRadius="lg"
-                      p={3}
-                      textAlign="center"
-                      transition="all 0.2s"
-                      _hover={{
-                        bg: "blue.100",
-                      }}
-                    >
-                      <Link
-                        href={selectedPin.websiteUrl}
-                        target="_blank"
-                        display="inline-flex"
-                        alignItems="center"
-                        color="blue.600"
-                        fontSize="sm"
-                        fontWeight="medium"
-                        _hover={{
-                          textDecoration: "none",
-                        }}
-                      >
-                        <Text mr={1}>ウェブサイトを見る</Text>
-                        <LuExternalLink size={12} />
-                      </Link>
-                    </Box>
-                  )}
-
-                  {onSpotSelect && (
-                    <Box pt={2} borderTop="1px solid" borderColor="gray.100">
-                      <Box
-                        as="button"
-                        width="100%"
-                        bg={selectedPin.selected ? "blue.500" : "white"}
-                        color={selectedPin.selected ? "white" : "gray.700"}
-                        border="2px solid"
-                        borderColor={
-                          selectedPin.selected ? "blue.500" : "gray.300"
-                        }
-                        borderRadius="xl"
-                        p={3}
-                        transition="all 0.2s"
-                        _hover={{
-                          bg: selectedPin.selected ? "blue.600" : "gray.50",
-                          borderColor: selectedPin.selected
-                            ? "blue.600"
-                            : "gray.400",
-                          transform: "translateY(-1px)",
-                          boxShadow: "sm",
-                        }}
-                        _active={{
-                          transform: "translateY(0)",
-                        }}
-                        onClick={() =>
-                          onSpotSelect(selectedPin.id, !selectedPin.selected)
-                        }
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        gap={2}
-                      >
-                        <Box
-                          width="20px"
-                          height="20px"
-                          borderRadius="md"
-                          border="2px solid"
-                          borderColor={
-                            selectedPin.selected ? "white" : "gray.400"
-                          }
-                          bg={selectedPin.selected ? "white" : "transparent"}
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                          transition="all 0.2s"
-                        >
-                          {selectedPin.selected && (
-                            <Text
-                              fontSize="sm"
-                              color="blue.500"
-                              fontWeight="bold"
-                            >
-                              ✓
-                            </Text>
-                          )}
-                        </Box>
-                        <Text fontSize="sm" fontWeight="medium">
-                          {selectedPin.selected
-                            ? "選択済み"
-                            : "このスポットを選択する"}
-                        </Text>
-                      </Box>
-                    </Box>
-                  )}
-                </VStack>
-              </Box>
+              </VStack>
             </InfoWindow>
           )}
         </Map>

@@ -298,14 +298,14 @@ export default function ChatPane({
                 px={4}
                 py={2.5}
                 fontSize="sm"
-                boxShadow="sm"
+                boxShadow="0 0 15px rgba(0, 0, 0, 0.1)"
                 border="1px solid"
-                borderColor={m.role === "user" ? "blue.100" : "gray.200"}
+                borderColor={m.role === "user" ? "blue.100" : "border"}
               >
                 {m.role === "assistant" ? (
                   <Box
                     css={{
-                      "& > *:first-child": {
+                      "& > *:first-of-type": {
                         marginTop: 0,
                       },
                       "& > *:last-child": {
@@ -333,14 +333,14 @@ export default function ChatPane({
                         color: m.role === "assistant" ? "gray.800" : "inherit",
                       },
                       "& code": {
-                        backgroundColor: "gray.100",
+                        backgroundColor: "bg.subtle",
                         borderRadius: "3px",
                         padding: "0.1em 0.3em",
                         fontSize: "0.9em",
                         fontFamily: "monospace",
                       },
                       "& pre": {
-                        backgroundColor: "gray.100",
+                        backgroundColor: "bg.subtle",
                         borderRadius: "6px",
                         padding: "0.75em",
                         overflowX: "auto",
@@ -370,7 +370,7 @@ export default function ChatPane({
                       },
                       "& blockquote": {
                         borderLeft: "3px solid",
-                        borderColor: "gray.300",
+                        borderColor: "border",
                         paddingLeft: "0.75em",
                         marginLeft: "0",
                         fontStyle: "italic",
@@ -384,16 +384,16 @@ export default function ChatPane({
                       },
                       "& th, & td": {
                         border: "1px solid",
-                        borderColor: "gray.300",
+                        borderColor: "border",
                         padding: "0.5em",
                         textAlign: "left",
                       },
                       "& th": {
-                        backgroundColor: "gray.100",
+                        backgroundColor: "bg.subtle",
                         fontWeight: "bold",
                       },
                       "& tr:nth-of-type(even)": {
-                        backgroundColor: "gray.50",
+                        backgroundColor: "bg.subtle",
                       },
                     }}
                   >
@@ -453,11 +453,10 @@ export default function ChatPane({
           {isLoading && streamingMessageId === null && (
             <Flex justify="center" pt={3}>
               <Box
-                bg="white"
                 borderRadius="xl"
                 px={6}
                 py={4}
-                boxShadow="lg"
+                boxShadow="0 0 15px rgba(0, 0, 0, 0.1)"
                 border="1px solid"
                 borderColor="purple.200"
                 position="relative"
@@ -505,11 +504,10 @@ export default function ChatPane({
           {!recommendedSpots && !isTyping && (
             <Flex justify="center" pt={4}>
               <Box
-                bg="white"
                 borderRadius="xl"
                 px={6}
                 py={4}
-                boxShadow="lg"
+                boxShadow="0 0 15px rgba(0, 0, 0, 0.1)"
                 border="1px solid"
                 borderColor="orange.200"
                 position="relative"
@@ -600,7 +598,6 @@ export default function ChatPane({
               _hover={{
                 bg: "blue.100",
                 transform: "translateY(-1px)",
-                boxShadow: "sm",
               }}
               _active={{
                 bg: "blue.200",
@@ -630,10 +627,9 @@ export default function ChatPane({
               flex="1"
               borderRadius="full"
               border="1px solid"
-              borderColor="gray.200"
+              borderColor="border"
               _focus={{
                 borderColor: "blue.400",
-                boxShadow: "0 0 0 1px #3182ce",
               }}
             />
             <Button

@@ -162,8 +162,8 @@ ${preInfo.participants_count}人
   );
 
   return (
-    <Box height="100vh" bg="gray.50" p={4}>
-      <HStack height="100%" gap={4} position="relative">
+    <Box height="100vh" p={4}>
+      <HStack height="100%" gap={"15px"} position="relative">
         {/* Map Section */}
         <Box
           width="calc(100% - 812px)"
@@ -171,28 +171,10 @@ ${preInfo.participants_count}人
           position="relative"
           borderRadius="2xl"
           overflow="hidden"
-          boxShadow="xl"
-          bg="white"
           border="1px solid"
-          borderColor="gray.200"
+          shadow={"0px 0px 15px rgba(0, 0, 0, 0.2)"}
+          borderColor="border"
         >
-          <Box
-            position="absolute"
-            top={2}
-            left={3}
-            zIndex={10}
-            bg="white"
-            px={7}
-            py={2}
-            borderRadius="lg"
-            boxShadow="md"
-            border="1px solid"
-            borderColor="gray.200"
-          >
-            <Text fontSize="xl" fontWeight="semibold" color="gray.700">
-              🗺️ 旅行マップ
-            </Text>
-          </Box>
           <GoogleMap
             apiKey={GOOGLE_MAPS_API_KEY}
             pins={mapPins.filter((pin) => pin.id.startsWith(selectedTimeSlot))}
@@ -211,7 +193,7 @@ ${preInfo.participants_count}人
             <Button
               size="lg"
               colorScheme="purple"
-              boxShadow="2xl"
+              shadow={"0px 0px 15px rgba(0, 0, 0, 0.2)"}
               px={8}
               py={7}
               fontSize="lg"
@@ -219,7 +201,7 @@ ${preInfo.participants_count}人
               borderRadius="full"
               _hover={{
                 transform: "scale(1.05)",
-                boxShadow: "3xl",
+                shadow: "0px 0px 15px rgba(0, 0, 0, 0.5)",
               }}
               transition="all 0.2s"
               disabled={!mapPins.some((pin) => pin.selected)}
@@ -229,7 +211,7 @@ ${preInfo.participants_count}人
                 setTriggerMessage("旅行ルート作成を開始して");
               }}
             >
-              🗺️ 今選択中のスポットで旅行ルートを考える
+              選択中のスポットでルートを作成
             </Button>
           </Box>
         </Box>
@@ -238,32 +220,21 @@ ${preInfo.participants_count}人
         <VStack
           width="350px"
           height="100%"
-          bg="white"
           borderRadius="2xl"
-          boxShadow="xl"
           gap={0}
           position="relative"
           overflow="hidden"
           border="1px solid"
-          borderColor="gray.200"
+          borderColor="border"
+          shadow={"0px 0px 15px rgba(0, 0, 0, 0.2)"}
         >
-          <Box
-            width="100%"
-            p={4}
-            borderBottom="1px solid"
-            borderColor="gray.100"
-            bg="gradient.to-br"
-            bgGradient="linear(to-br, purple.50, pink.50)"
-          >
+          <Box width="100%" p={4} borderBottom="1px solid" borderColor="border">
             <HStack gap={2}>
-              <Text fontSize="lg" fontWeight="bold" color="purple.700">
-                📍
-              </Text>
-              <Text fontWeight="bold" fontSize="lg" color="purple.700">
+              <Text fontWeight="bold" fontSize="lg" color="purple.fg">
                 スポット詳細
               </Text>
             </HStack>
-            <Text fontSize="sm" color="purple.600" mt={1}>
+            <Text fontSize="sm" color="purple.fg" mt={1}>
               お気に入りの場所をチェックしてください
             </Text>
           </Box>
@@ -278,9 +249,6 @@ ${preInfo.participants_count}人
               />
             ) : (
               <Box p={6} textAlign="center">
-                <Text fontSize="lg" color="gray.400" mb={2}>
-                  🎯
-                </Text>
                 <Text color="gray.500" fontSize="sm">
                   スポット情報を読み込み中...
                 </Text>
@@ -293,32 +261,21 @@ ${preInfo.participants_count}人
         <VStack
           width="450px"
           height="100%"
-          bg="white"
           borderRadius="2xl"
           gap={0}
-          boxShadow="xl"
           position="relative"
           overflow="hidden"
           border="1px solid"
-          borderColor="gray.200"
+          borderColor="border"
+          shadow="0px 0px 15px rgba(0, 0, 0, 0.2)"
         >
-          <Box
-            width="100%"
-            p={4}
-            borderBottom="1px solid"
-            borderColor="gray.100"
-            bg="gradient.to-br"
-            bgGradient="linear(to-br, blue.50, indigo.50)"
-          >
+          <Box width="100%" p={4} borderBottom="1px solid" borderColor="border">
             <HStack gap={2}>
-              <Text fontSize="lg" fontWeight="bold" color="blue.700">
-                💬
-              </Text>
-              <Text fontWeight="bold" fontSize="lg" color="blue.700">
+              <Text fontWeight="bold" fontSize="lg" color="blue.fg">
                 旅行アシスタント
               </Text>
             </HStack>
-            <Text fontSize="sm" color="blue.600" mt={1}>
+            <Text fontSize="sm" color="blue.fg" mt={1}>
               AIがあなたの旅行をサポートします
             </Text>
           </Box>
@@ -338,3 +295,4 @@ ${preInfo.participants_count}人
     </Box>
   );
 }
+// End of file src/app/planning/page.tsx
