@@ -51,13 +51,12 @@ const DetailPane = ({
               borderRadius="xl"
               border="2px solid"
               borderColor={pin.selected ? "purple.200" : "gray.100"}
-              boxShadow="sm"
               cursor="pointer"
               transition="all 0.2s"
               width="100%"
               _hover={{
+                boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)",
                 borderColor: pin.selected ? "purple.300" : "gray.200",
-                boxShadow: "md",
                 transform: "translateY(-1px)",
               }}
               onClick={() => onPinClick(pin.pinId)}
