@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import GoogleMap, { type MapPin } from "@/components/google-map";
 import type { RecommendedSpots } from "@/types/mastra";
-import { getInitialRecommendedSpots, getPreInfo } from "./action";
+import { getInitialRecommendedSpots, getPreInfo, saveTrip } from "./action";
 import ChatPane from "./chat-pane";
 import DetailPane from "./detail-pane";
 
@@ -227,6 +227,8 @@ ${preInfo.region}
               transition="all 0.2s"
               disabled={!mapPins.some((pin) => pin.selected)}
               onClick={() => {
+                if (!recommendedSpots || !planId) return;
+                saveTrip(planId, recommendedSpots);
                 setTriggerMessage("旅行ルート作成を開始して");
               }}
             >

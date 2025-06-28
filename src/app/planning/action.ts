@@ -49,3 +49,14 @@ export const getPreInfo = async (preInfoId: string): Promise<PreInfo> => {
 
   return result as PreInfo;
 };
+
+export const saveTrip = (planId: string, spots: RecommendedSpots) => {
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/trip/${planId}/save`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ recommend_spots: spots }),
+    credentials: "include",
+  });
+};
