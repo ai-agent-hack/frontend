@@ -26,6 +26,7 @@ export async function apiSignup(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Firebase-Token": firebaseToken,
       },
       body: JSON.stringify({
         firebase_token: firebaseToken,
