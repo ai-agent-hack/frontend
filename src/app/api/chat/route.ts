@@ -33,9 +33,16 @@ export async function POST(req: Request) {
       (result as any)?.result?.routeCreationConfirm?.recommendSpotObject ||
       (result as any)?.result?.routeCreationExecute?.recommendSpotObject;
 
+    const coordinates =
+      (result as any)?.result?.nonSpotResponse?.coordinates ||
+      (result as any)?.result?.spotSearchChain?.coordinates ||
+      (result as any)?.result?.routeCreationConfirm?.coordinates ||
+      (result as any)?.result?.routeCreationExecute?.coordinates;
+
     const responseData: OutputSchema = {
       message: text,
       recommendSpotObject: recommendSpotData || undefined,
+      coordinates: coordinates || undefined,
     };
 
     // outputSchemaでバリデーション

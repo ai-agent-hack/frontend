@@ -6,6 +6,7 @@ import { messageSchema, recommendSpotInputSchema } from '../schema/message';
 import { outputSchema } from '../schema/output';
 import { setInitialRecommendSpots } from '../tools/manage-recommend-spots-tool';
 import { searchSpots } from '../tools/spots-tool';
+import { routeTool } from '../tools/route-tool';
 
 function convertMessages(messages: z.infer<typeof messageSchema>[]): Message[] {
   return messages.map(message => ({
@@ -254,7 +255,7 @@ const routeCreationExecuteStep = createStep({
   }),
   outputSchema: outputSchema,
   execute: async ({ inputData }) => {
-    const { recommendSpotObject } = inputData;
+    const { recommendSpotObject, planId } = inputData;
     
     // 選択されているスポットを確認
     const selectedSpots = recommendSpotObject?.recommend_spots?.flatMap((timeSlot: any) =>
@@ -271,13 +272,24 @@ const routeCreationExecuteStep = createStep({
       };
     }
     
-    // 実際のルート作成処理（将来的に実装）
-    const spotsInfo = selectedSpots.map((spot: any) => `${spot.details.name}（${spot.time_slot}）`).join('、');
-    
-    return {
-      message: `次のスポットで旅行ルートを作成しました！\n\n${spotsInfo}\n\n素敵な旅行になりますように！`,
-      recommendSpotObject: recommendSpotObject,
-    };
+    try {
+      // route-toolを使用してルート座標を取得
+      const coordinates = await routeTool({ planId });
+      
+      const spotsInfo = selectedSpots.map((spot: any) => `${spot.details.name}（${spot.time_slot}）`).join('、');
+      
+      return {
+        message: `次のスポットで旅行ルートを作成しました！\n\n${spotsInfo}\n\n素敵な旅行になりますように！`,
+        recommendSpotObject: recommendSpotObject,
+        coordinates: coordinates,
+      };
+    } catch (error) {
+      console.error('ルート作成エラー:', error);
+      return {
+        message: "ルート作成中にエラーが発生しました。もう一度お試しください。",
+        recommendSpotObject: recommendSpotObject,
+      };
+    }
   },
 });
 

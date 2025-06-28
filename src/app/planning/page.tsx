@@ -21,6 +21,9 @@ export default function Planning() {
   >("午前");
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
   const [triggerMessage, setTriggerMessage] = useState<string | null>(null);
+  const [routeCoordinates, setRouteCoordinates] = useState<
+    Array<{ lat: number; lng: number }>
+  >([]);
   const preInfoId = useSearchParams().get("pre_info_id");
 
   useEffect(() => {
@@ -154,6 +157,13 @@ ${preInfo.region}
     setSelectedPinId(pinId);
   }, []);
 
+  const handleCoordinatesUpdate = useCallback(
+    (coordinates: Array<{ lat: number; lng: number }>) => {
+      setRouteCoordinates(coordinates);
+    },
+    [],
+  );
+
   return (
     <Box height="100vh" bg="gray.50" p={4}>
       <HStack height="100%" gap={4} position="relative">
@@ -192,6 +202,7 @@ ${preInfo.region}
             onSpotSelect={handleSpotSelect}
             selectedPinId={selectedPinId}
             setSelectedPinId={setSelectedPinId}
+            routeCoordinates={routeCoordinates}
           />
           <Box
             position="absolute"
@@ -216,7 +227,6 @@ ${preInfo.region}
               transition="all 0.2s"
               disabled={!mapPins.some((pin) => pin.selected)}
               onClick={() => {
-                console.log("Button clicked, triggering message");
                 setTriggerMessage("旅行ルート作成を開始して");
               }}
             >
@@ -316,6 +326,7 @@ ${preInfo.region}
           <Box width="100%" flex="1" overflow="hidden">
             <ChatPane
               onRecommendSpotUpdate={handleRecommendSpotUpdate}
+              onCoordinatesUpdate={handleCoordinatesUpdate}
               initialMessage={initialMessage}
               recommendedSpots={recommendedSpots}
               planId={planId}
