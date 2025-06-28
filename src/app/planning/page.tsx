@@ -69,6 +69,7 @@ ${preInfo.participants_count}人
 
                 // Fetch initial spots
                 // TODO : pre_info id で紐づいているplantとrouteがあれば叩かない　代わりにgetを叩く
+                // get api 叩けるようにする
                 const spots = await getInitialRecommendedSpots({
                     pre_info_id: preInfoId,
                 });
