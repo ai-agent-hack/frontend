@@ -44,11 +44,11 @@ export default function Planning() {
 
 ### 📋 いただいた旅行プラン
 
-**📍 出発地**  
-${preInfo.departure_location}
+**📍 旅行先**  
+${preInfo.region}
 
-**📅 期間**  
-${new Date(preInfo.start_date).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })} 〜 ${new Date(preInfo.end_date).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })}
+**📅 旅行日**  
+${new Date(preInfo.start_date).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })}
 
 **✨ 雰囲気**  
 ${preInfo.atmosphere}な感じ
@@ -58,9 +58,6 @@ ${preInfo.atmosphere}な感じ
 
 **👥 人数**  
 ${preInfo.participants_count}人
-
-**🗾 エリア**  
-${preInfo.region}
 
 ---
 
