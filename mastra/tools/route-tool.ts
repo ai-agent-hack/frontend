@@ -1,6 +1,6 @@
 import { type RouteFullDetail } from "../../src/types/mastra";
 
-export async function routeTool(input: { planId: string }): Promise<string> {
+export async function routeTool(input: { planId: string }): Promise<{ polyline: string, orderedSpots: any }> {
     const { planId } = input;
 
     /* // テスト用に異なる座標を返す（大阪周辺の座標）
@@ -40,15 +40,36 @@ export async function routeTool(input: { planId: string }): Promise<string> {
     // Extract the polyline from the first day's route geometry.
     // Note: This logic might need adjustment if routes can span multiple days.
     const polyline = data.route_days?.[0]?.route_geometry?.polyline;
-
+    const orderedSpotsData = data.route_days?.[0]?.ordered_spots;
+    
     console.log("Extracted polyline:", polyline);
     console.log("Route days count:", data.route_days?.length);
     console.log("First route day:", data.route_days?.[0]);
     console.log("Route geometry:", data.route_days?.[0]?.route_geometry);
+    console.log("[RouteTool] ordered_spots object:", orderedSpotsData);
+    console.log("[RouteTool] ordered_spots keys:", Object.keys(orderedSpotsData || {}));
+    
+    // Check if ordered_spots has a spots property or if it is an array itself
+    let orderedSpots: any[] = [];
+    if (orderedSpotsData) {
+        if ((orderedSpotsData as any).spots && Array.isArray((orderedSpotsData as any).spots)) {
+            orderedSpots = (orderedSpotsData as any).spots;
+        } else if (Array.isArray(orderedSpotsData)) {
+            orderedSpots = orderedSpotsData as any[];
+        } else {
+            console.log("[RouteTool] Unexpected ordered_spots structure:", orderedSpotsData);
+        }
+    }
+    
+    console.log("[RouteTool] orderedSpots extracted:", orderedSpots);
+    console.log("[RouteTool] orderedSpots type:", typeof orderedSpots);
+    console.log("[RouteTool] orderedSpots is array:", Array.isArray(orderedSpots));
+    console.log("[RouteTool] orderedSpots length:", orderedSpots.length);
 
     if (polyline) {
         console.log("Returning polyline as coordinates:", polyline);
-        return polyline;
+        console.log("[RouteTool] Returning orderedSpots:", orderedSpots);
+        return { polyline, orderedSpots };
     }
 
     console.warn("Polyline not found in the route data.");
@@ -57,5 +78,5 @@ export async function routeTool(input: { planId: string }): Promise<string> {
         "Route geometry structure:",
         data.route_days?.[0]?.route_geometry
     );
-    return ""; // Return an empty string if no polyline is found
+    return { polyline: "", orderedSpots: [] };
 }

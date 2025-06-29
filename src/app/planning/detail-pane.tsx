@@ -1,6 +1,14 @@
-import { Box, HStack, SegmentGroup, Text, VStack } from "@chakra-ui/react";
-import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Box,
+  TabsContent,
+  TabsList,
+  TabsRoot,
+  TabsTrigger,
+  Text,
+} from "@chakra-ui/react";
 import type { RecommendedSpots } from "@/types/mastra";
+import RouteDetail from "./route-detail";
+import SpotDetail from "./spot-detail";
 
 interface DetailPaneProps {
   recommendedSpots: RecommendedSpots;
@@ -8,6 +16,20 @@ interface DetailPaneProps {
   onTimeSlotChange: (timeSlot: "午前" | "午後" | "夜") => void;
   onSpotSelect: (spotId: string, isSelected: boolean) => void;
   onPinClick: (pinId: string) => void;
+  setSelectedPinId: (pinId: string | null) => void;
+  onGenerateRoute?: () => void;
+  isGeneratingRoute?: boolean;
+  routeInfo?: {
+    duration: string;
+    distance: string;
+    waypoints: Array<{
+      name: string;
+      order: number;
+    }>;
+  };
+  orderedSpots?: any[];
+  onTabChange?: (tab: "spots" | "route") => void;
+  activeTab?: "spots" | "route";
 }
 
 const DetailPane = ({
@@ -16,111 +38,120 @@ const DetailPane = ({
   onTimeSlotChange,
   onSpotSelect,
   onPinClick,
+  setSelectedPinId,
+  onGenerateRoute,
+  isGeneratingRoute,
+  routeInfo,
+  orderedSpots,
+  onTabChange,
+  activeTab = "spots",
 }: DetailPaneProps) => {
+  // Get selected spots for route detail
+  const selectedSpots = recommendedSpots.recommend_spots.flatMap((timeSlot) =>
+    timeSlot.spots
+      .filter((spot) => spot.selected)
+      .map((spot, index) => ({
+        pinId: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
+        spotId: spot.spot_id,
+        name: spot.details.name,
+        timeSlot: timeSlot.time_slot,
+      })),
+  );
+
   return (
-    <VStack width="100%" p={4} gap={4}>
-      {/* Time Slot Selector */}
-      <Box width="100%" display="flex" justifyContent="center">
-        <SegmentGroup.Root
-          value={selectedTimeSlot}
-          onValueChange={(e) => {
-            onTimeSlotChange(e.value as "午前" | "午後" | "夜");
-          }}
-          size="sm"
+    <Box width="100%" height="100%">
+      <TabsRoot
+        value={activeTab}
+        defaultValue="spots"
+        variant="plain"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        onValueChange={(details) => {
+          onTabChange?.(details.value as "spots" | "route");
+        }}
+      >
+        <TabsList
+          mb={0}
+          borderBottom="1px solid"
+          borderColor="gray.200"
+          gap={4}
+          px={4}
+          pt={4}
+          justifyContent="center"
         >
-          <SegmentGroup.Indicator />
-          <SegmentGroup.Items items={["午前", "午後", "夜"]} />
-        </SegmentGroup.Root>
-      </Box>
-
-      {/* Spots List */}
-      <VStack width="100%" gap={3}>
-        {recommendedSpots.recommend_spots
-          .filter((timeSlot) => timeSlot.time_slot === selectedTimeSlot)
-          .flatMap((timeSlot) =>
-            timeSlot.spots.map((spot, index) => ({
-              ...spot,
-              pinId: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
-            })),
-          )
-          .map((pin) => (
-            <Box
-              key={pin.spot_id}
-              p={4}
-              bg={pin.selected ? "purple.50" : "white"}
-              borderRadius="xl"
-              border="2px solid"
-              borderColor={pin.selected ? "purple.200" : "gray.100"}
-              cursor="pointer"
-              transition="all 0.2s"
-              width="100%"
-              _hover={{
-                boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)",
-                borderColor: pin.selected ? "purple.300" : "gray.200",
-                transform: "translateY(-1px)",
-              }}
-              onClick={() => onPinClick(pin.pinId)}
-            >
-              <HStack justify="space-between" align="start" mb={2}>
-                <HStack gap={3} flex="1">
-                  <Box onClick={(e) => e.stopPropagation()}>
-                    <Checkbox
-                      checked={pin.selected}
-                      onCheckedChange={(checked) => {
-                        onSpotSelect(pin.pinId, checked === true);
-                      }}
-                    />
-                  </Box>
-                  <Text fontWeight="bold" fontSize="md" color="gray.800">
-                    {pin.details.name}
-                  </Text>
-                </HStack>
-                {pin.selected && (
-                  <Box
-                    bg="purple.500"
-                    color="white"
-                    px={2}
-                    py={1}
-                    borderRadius="full"
-                    fontSize="xs"
-                    fontWeight="bold"
-                  >
-                    選択済み
-                  </Box>
-                )}
-              </HStack>
-
-              <Text fontSize="sm" color="gray.600" lineHeight="1.5" mb={3}>
-                {pin.recommendation_reason}
-              </Text>
-
-              <HStack gap={2} fontSize="xs" color="gray.500">
-                <HStack gap={1}>
-                  <Text>💰</Text>
-                  <Text>¥{pin.details.price.toLocaleString()}</Text>
-                </HStack>
-                <HStack gap={1}>
-                  <Text>👥</Text>
-                  <Text>混雑度: {pin.details.congestion[0]}/5</Text>
-                </HStack>
-              </HStack>
-            </Box>
-          ))}
-
-        {recommendedSpots.recommend_spots
-          .filter((spot) => spot.time_slot === selectedTimeSlot)
-          .flatMap((spot) => spot.spots).length === 0 && (
-          <Box p={6} textAlign="center">
-            <Text fontSize="lg" color="gray.400" mb={2}>
-              🕐
+          <TabsTrigger
+            value="spots"
+            pb={3}
+            borderBottom="2px solid"
+            borderColor="transparent"
+            _selected={{
+              borderColor: "purple.500",
+              color: "purple.600",
+            }}
+            _hover={{
+              color: "purple.600",
+            }}
+          >
+            <Text fontWeight="medium" fontSize="sm" whiteSpace="nowrap">
+              スポット
             </Text>
-            <Text color="gray.500" fontSize="sm">
-              {selectedTimeSlot}のスポットはまだありません
+          </TabsTrigger>
+          <TabsTrigger
+            value="route"
+            pb={3}
+            borderBottom="2px solid"
+            borderColor="transparent"
+            _selected={{
+              borderColor: "purple.500",
+              color: "purple.600",
+            }}
+            _hover={{
+              color: "purple.600",
+            }}
+          >
+            <Text fontWeight="medium" fontSize="sm" whiteSpace="nowrap">
+              ルート
             </Text>
-          </Box>
-        )}
-      </VStack>
-    </VStack>
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="spots">
+          <SpotDetail
+            recommendedSpots={recommendedSpots}
+            selectedTimeSlot={selectedTimeSlot}
+            onTimeSlotChange={onTimeSlotChange}
+            onSpotSelect={onSpotSelect}
+            onPinClick={onPinClick}
+            setSelectedPinId={setSelectedPinId}
+          />
+        </TabsContent>
+
+        <TabsContent value="route">
+          <RouteDetail
+            selectedSpots={selectedSpots}
+            onGenerateRoute={
+              onGenerateRoute ||
+              (() => {
+                console.log("[DetailPane] onGenerateRoute called");
+              })
+            }
+            isGeneratingRoute={isGeneratingRoute}
+            routeInfo={routeInfo}
+            orderedSpots={(() => {
+              console.log(
+                "[DetailPane] Rendering RouteDetail with orderedSpots:",
+                orderedSpots,
+              );
+              return orderedSpots;
+            })()}
+            onPinClick={onPinClick}
+            recommendedSpots={recommendedSpots}
+            onTimeSlotChange={onTimeSlotChange}
+          />
+        </TabsContent>
+      </TabsRoot>
+    </Box>
   );
 };
 

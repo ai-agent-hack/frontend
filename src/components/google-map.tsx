@@ -43,6 +43,7 @@ interface GoogleMapProps {
   setSelectedPinId: React.Dispatch<React.SetStateAction<string | null>>;
   polyline?: string;
   setTriggerMessage?: (message: string) => void;
+  isRouteView?: boolean;
 }
 
 const mapContainerStyle = {
@@ -89,6 +90,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   setSelectedPinId,
   polyline,
   setTriggerMessage,
+  isRouteView = false,
 }) => {
   const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
   const [zoom, setZoom] = useState(10);
@@ -228,22 +230,44 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
           center={center}
           defaultZoom={10}
         >
-          {pins.map((pin) => {
-            return (
-              <AdvancedMarker
-                key={pin.id}
-                position={pin.position}
-                title={pin.title}
-                onClick={() => handleMarkerClick(pin)}
-              >
-                <Pin
-                  background={pin.selected ? "#4F46E5" : "#FBBC04"}
-                  borderColor={pin.selected ? "#3730A3" : "#F29900"}
-                  glyphColor={pin.selected ? "#FFFFFF" : "#000000"}
-                />
-              </AdvancedMarker>
-            );
-          })}
+          {pins
+            .filter((pin) => !pin.selected)
+            .map((pin) => {
+              return (
+                <AdvancedMarker
+                  key={pin.id}
+                  position={pin.position}
+                  title={pin.title}
+                  onClick={() => handleMarkerClick(pin)}
+                >
+                  <div style={{ opacity: isRouteView ? 0.5 : 1 }}>
+                    <Pin
+                      background={isRouteView ? "#E5E7EB" : "#FBBC04"}
+                      borderColor={isRouteView ? "#D1D5DB" : "#F29900"}
+                      glyphColor={isRouteView ? "#6B7280" : "#000000"}
+                    />
+                  </div>
+                </AdvancedMarker>
+              );
+            })}
+          {pins
+            .filter((pin) => pin.selected)
+            .map((pin) => {
+              return (
+                <AdvancedMarker
+                  key={pin.id}
+                  position={pin.position}
+                  title={pin.title}
+                  onClick={() => handleMarkerClick(pin)}
+                >
+                  <Pin
+                    background="#4F46E5"
+                    borderColor="#3730A3"
+                    glyphColor="#FFFFFF"
+                  />
+                </AdvancedMarker>
+              );
+            })}
 
           {infoWindowOpen && selectedPin && (
             <InfoWindow

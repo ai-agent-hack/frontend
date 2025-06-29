@@ -23,6 +23,8 @@ export default function Planning() {
   const [triggerMessage, setTriggerMessage] = useState<string | null>(null);
   const [polyline, setPolyline] = useState<string>("");
   const [isSaving, setIsSaving] = useState(false);
+  const [orderedSpots, setOrderedSpots] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState<"spots" | "route">("spots");
   const preInfoId = useSearchParams().get("pre_info_id");
 
   useEffect(() => {
@@ -161,6 +163,13 @@ ${preInfo.participants_count}人
     setPolyline(polyline);
   }, []);
 
+  const handleOrderedSpotsUpdate = useCallback((orderedSpots: any[]) => {
+    setOrderedSpots(orderedSpots);
+    if (orderedSpots && orderedSpots.length > 0) {
+      setActiveTab("route");
+    }
+  }, []);
+
   return (
     <Box height="100vh" p={4}>
       <HStack height="100%" gap={"15px"} position="relative">
@@ -177,12 +186,17 @@ ${preInfo.participants_count}人
         >
           <GoogleMap
             apiKey={GOOGLE_MAPS_API_KEY}
-            pins={mapPins.filter((pin) => pin.id.startsWith(selectedTimeSlot))}
+            pins={
+              activeTab === "route"
+                ? mapPins
+                : mapPins.filter((pin) => pin.id.startsWith(selectedTimeSlot))
+            }
             onSpotSelect={handleSpotSelect}
             selectedPinId={selectedPinId}
             setSelectedPinId={setSelectedPinId}
             polyline={polyline}
             setTriggerMessage={setTriggerMessage}
+            isRouteView={activeTab === "route"}
           />
           <Box
             position="absolute"
@@ -239,14 +253,14 @@ ${preInfo.participants_count}人
           <Box width="100%" p={4} borderBottom="1px solid" borderColor="border">
             <HStack gap={2}>
               <Text fontWeight="bold" fontSize="lg" color="purple.fg">
-                スポット詳細
+                スポット/ルート詳細
               </Text>
             </HStack>
             <Text fontSize="sm" color="purple.fg" mt={1}>
-              お気に入りの場所をチェックしてください
+              スポットとルートの詳細を確認しましょう。
             </Text>
           </Box>
-          <Box width="100%" flex="1" overflowY="auto">
+          <Box width="90%" flex="1" overflowY="auto">
             {recommendedSpots ? (
               <DetailPane
                 recommendedSpots={recommendedSpots}
@@ -254,6 +268,10 @@ ${preInfo.participants_count}人
                 onTimeSlotChange={setSelectedTimeSlot}
                 onSpotSelect={handleSpotSelect}
                 onPinClick={handlePinClick}
+                setSelectedPinId={setSelectedPinId}
+                orderedSpots={orderedSpots}
+                onTabChange={setActiveTab}
+                activeTab={activeTab}
               />
             ) : (
               <Box p={6} textAlign="center">
@@ -291,6 +309,7 @@ ${preInfo.participants_count}人
             <ChatPane
               onRecommendSpotUpdate={handleRecommendSpotUpdate}
               onPolylineUpdate={handlePolylineUpdate}
+              onOrderedSpotsUpdate={handleOrderedSpotsUpdate}
               initialMessage={initialMessage}
               recommendedSpots={recommendedSpots}
               planId={planId}
