@@ -25,9 +25,7 @@ type Message = {
 
 interface ChatPaneProps {
   onRecommendSpotUpdate?: (recommendSpotObject: RecommendedSpots) => void;
-  onCoordinatesUpdate?: (
-    coordinates: Array<{ lat: number; lng: number }>,
-  ) => void;
+  onPolylineUpdate?: (polyline: string) => void;
   initialMessage?: string;
   recommendedSpots?: RecommendedSpots | null;
   planId?: string;
@@ -37,7 +35,7 @@ interface ChatPaneProps {
 
 export default function ChatPane({
   onRecommendSpotUpdate,
-  onCoordinatesUpdate,
+  onPolylineUpdate,
   initialMessage,
   recommendedSpots,
   planId,
@@ -210,12 +208,10 @@ export default function ChatPane({
   }, [object?.recommendSpotObject, onRecommendSpotUpdate]);
 
   useEffect(() => {
-    if (object?.coordinates && onCoordinatesUpdate) {
-      onCoordinatesUpdate(
-        object.coordinates as Array<{ lat: number; lng: number }>,
-      );
+    if (object?.coordinates && onPolylineUpdate) {
+      onPolylineUpdate(object.coordinates as string);
     }
-  }, [object?.coordinates, onCoordinatesUpdate]);
+  }, [object?.coordinates, onPolylineUpdate]);
 
   const submitMessage = useCallback(
     (messageContent: string) => {
@@ -232,7 +228,10 @@ export default function ChatPane({
 
       const requestData = {
         planId: planId,
-        messages: nextMessages.map(({ role, content }) => ({ role, content })),
+        messages: nextMessages.map(({ role, content }) => ({
+          role,
+          content,
+        })),
         ...(recommendedSpots && {
           recommendSpotObject: recommendedSpots,
         }),

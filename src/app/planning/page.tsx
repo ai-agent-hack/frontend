@@ -21,9 +21,7 @@ export default function Planning() {
   >("午前");
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
   const [triggerMessage, setTriggerMessage] = useState<string | null>(null);
-  const [routeCoordinates, setRouteCoordinates] = useState<
-    Array<{ lat: number; lng: number }>
-  >([]);
+  const [polyline, setPolyline] = useState<string>("");
   const preInfoId = useSearchParams().get("pre_info_id");
 
   useEffect(() => {
@@ -159,12 +157,9 @@ ${preInfo.participants_count}人
     setSelectedPinId(pinId);
   }, []);
 
-  const handleCoordinatesUpdate = useCallback(
-    (coordinates: Array<{ lat: number; lng: number }>) => {
-      setRouteCoordinates(coordinates);
-    },
-    [],
-  );
+  const handlePolylineUpdate = useCallback((polyline: string) => {
+    setPolyline(polyline);
+  }, []);
 
   return (
     <Box height="100vh" p={4}>
@@ -186,7 +181,7 @@ ${preInfo.participants_count}人
             onSpotSelect={handleSpotSelect}
             selectedPinId={selectedPinId}
             setSelectedPinId={setSelectedPinId}
-            routeCoordinates={routeCoordinates}
+            polyline={polyline}
           />
           <Box
             position="absolute"
@@ -287,7 +282,7 @@ ${preInfo.participants_count}人
           <Box width="100%" flex="1" overflow="hidden">
             <ChatPane
               onRecommendSpotUpdate={handleRecommendSpotUpdate}
-              onCoordinatesUpdate={handleCoordinatesUpdate}
+              onPolylineUpdate={handlePolylineUpdate}
               initialMessage={initialMessage}
               recommendedSpots={recommendedSpots}
               planId={planId}
