@@ -1,6 +1,6 @@
 import { type RouteFullDetail } from "../../src/types/mastra";
 
-export async function routeTool(input: { planId: string }): Promise<string> {
+export async function routeTool(input: { planId: string }): Promise<{ polyline: string, orderedSpots: any }> {
     const { planId } = input;
 
     /* // テスト用に異なる座標を返す（大阪周辺の座標）
@@ -40,6 +40,7 @@ export async function routeTool(input: { planId: string }): Promise<string> {
     // Extract the polyline from the first day's route geometry.
     // Note: This logic might need adjustment if routes can span multiple days.
     const polyline = data.route_days?.[0]?.route_geometry?.polyline;
+    const orderedSpots = data.route_days?.[0]?.ordered_spots.spots;
 
     console.log("Extracted polyline:", polyline);
     console.log("Route days count:", data.route_days?.length);
@@ -48,7 +49,7 @@ export async function routeTool(input: { planId: string }): Promise<string> {
 
     if (polyline) {
         console.log("Returning polyline as coordinates:", polyline);
-        return polyline;
+        return { polyline, orderedSpots };
     }
 
     console.warn("Polyline not found in the route data.");
@@ -57,5 +58,5 @@ export async function routeTool(input: { planId: string }): Promise<string> {
         "Route geometry structure:",
         data.route_days?.[0]?.route_geometry
     );
-    return ""; // Return an empty string if no polyline is found
+    return { polyline: "", orderedSpots: [] };
 }

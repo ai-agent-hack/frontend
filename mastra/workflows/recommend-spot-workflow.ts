@@ -273,14 +273,15 @@ const routeCreationExecuteStep = createStep({
     
     try {
       // route-toolを使用してルート座標を取得
-      const coordinates = await routeTool({ planId });
+      const { polyline, orderedSpots } = await routeTool({ planId });
       
       const spotsInfo = selectedSpots.map((spot: any) => `${spot.details.name}（${spot.time_slot}）`).join('、');
       
       return {
         message: `次のスポットで旅行ルートを作成しました！\n\n${spotsInfo}\n\n素敵な旅行になりますように！`,
         recommendSpotObject: recommendSpotObject,
-        coordinates: coordinates,
+        polyline: polyline,
+        orderedSpots: orderedSpots,
       };
     } catch (error) {
       console.error('ルート作成エラー:', error);

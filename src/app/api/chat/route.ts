@@ -33,17 +33,27 @@ export async function POST(req: Request) {
       (result as any)?.result?.spotDetail?.recommendSpotObject ||
       (result as any)?.result?.routeCreationExecute?.recommendSpotObject;
 
-    const coordinates =
-      (result as any)?.result?.nonSpotResponse?.coordinates ||
-      (result as any)?.result?.spotSearchChain?.coordinates ||
-      (result as any)?.result?.spotDetail?.coordinates ||
-      (result as any)?.result?.routeCreationExecute?.coordinates;
+    const polyline =
+      (result as any)?.result?.nonSpotResponse?.polyline ||
+      (result as any)?.result?.spotSearchChain?.polyline ||
+      (result as any)?.result?.spotDetail?.polyline ||
+      (result as any)?.result?.routeCreationExecute?.polyline;
+
+    const orderedSpots =
+      (result as any)?.result?.nonSpotResponse?.orderedSpots ||
+      (result as any)?.result?.spotSearchChain?.orderedSpots ||
+      (result as any)?.result?.spotDetail?.orderedSpots ||
+      (result as any)?.result?.routeCreationExecute?.orderedSpots;
 
     const responseData: OutputSchema = {
       message: text,
       recommendSpotObject: recommendSpotData || undefined,
-      coordinates: coordinates || undefined,
+      polyline: polyline || undefined,
+      orderedSpots: orderedSpots || undefined,
     };
+
+    console.log("responseData", responseData);
+    console.log("orderedSpots", orderedSpots);
 
     // outputSchemaでバリデーション
     const validatedResponse = outputSchema.parse(responseData);
