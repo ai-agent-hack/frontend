@@ -253,8 +253,8 @@ const routeCreationExecuteStep = createStep({
     planId: z.string(),
   }),
   outputSchema: outputSchema,
-  execute: async ({ inputData }) => {
-    const { recommendSpotObject, planId } = inputData;
+  execute: async ({ inputData, mastra }) => {
+    const { recommendSpotObject, planId, messages } = inputData;
     
     // 選択されているスポットを確認
     const selectedSpots = recommendSpotObject?.recommend_spots?.flatMap((timeSlot: any) =>
@@ -274,11 +274,33 @@ const routeCreationExecuteStep = createStep({
     try {
       // route-toolを使用してルート座標を取得
       const { polyline, orderedSpots } = await routeTool({ planId });
+
+      // conciseRouteExplanationAgentを使用して簡潔で魅力的なルート説明を生成
+      const routeExplanationAgent = mastra.getAgent('conciseRouteExplanationAgent');
       
-      const spotsInfo = selectedSpots.map((spot: any) => `${spot.details.name}（${spot.time_slot}）`).join('、');
+      // チャット履歴から旅行の文脈を抽出
+      const recentMessages = messages.slice(-5);
+      const chatContext = recentMessages.map(msg => `${msg.role}: ${msg.content}`).join('\n');
+      
+      const routeExplanationResult = await routeExplanationAgent.generate(
+        [
+          {
+            id: crypto.randomUUID(),
+            role: 'user' as const,
+            content: `
+以下の観光ルートについて、ユーザーがワクワクする魅力的な説明を生成してください。
+
+チャット履歴（旅行の文脈）:
+${chatContext}
+
+実際の観光ルート（この順番で回ります）:
+${orderedSpots.map((spot: any, index: number) => `${index + 1}. ${spot.name}${spot.time ? ` (${spot.time})` : ''}`).join('\n')}`,
+          }
+        ]
+      );
       
       return {
-        message: `次のスポットで旅行ルートを作成しました！\n\n${spotsInfo}\n\n素敵な旅行になりますように！`,
+        message: routeExplanationResult.text || `旅行ルートを作成しました！選択されたスポットを効率的に巡れるルートです。`,
         recommendSpotObject: recommendSpotObject,
         polyline: polyline,
         orderedSpots: orderedSpots,
