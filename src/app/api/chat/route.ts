@@ -54,6 +54,15 @@ export async function POST(req: Request) {
 
     console.log("responseData", responseData);
     console.log("orderedSpots", orderedSpots);
+    console.log("[API Route] orderedSpots type:", typeof orderedSpots);
+    console.log(
+      "[API Route] orderedSpots is array:",
+      Array.isArray(orderedSpots),
+    );
+    console.log(
+      "[API Route] orderedSpots structure:",
+      JSON.stringify(orderedSpots, null, 2),
+    );
 
     // outputSchemaでバリデーション
     const validatedResponse = outputSchema.parse(responseData);

@@ -122,10 +122,24 @@ const DetailPane = ({
         <TabsContent value="route">
           <RouteDetail
             selectedSpots={selectedSpots}
-            onGenerateRoute={onGenerateRoute || (() => {})}
+            onGenerateRoute={
+              onGenerateRoute ||
+              (() => {
+                console.log("[DetailPane] onGenerateRoute called");
+              })
+            }
             isGeneratingRoute={isGeneratingRoute}
             routeInfo={routeInfo}
-            orderedSpots={orderedSpots}
+            orderedSpots={(() => {
+              console.log(
+                "[DetailPane] Rendering RouteDetail with orderedSpots:",
+                orderedSpots,
+              );
+              return orderedSpots;
+            })()}
+            onPinClick={onPinClick}
+            recommendedSpots={recommendedSpots}
+            onTimeSlotChange={onTimeSlotChange}
           />
         </TabsContent>
       </TabsRoot>
