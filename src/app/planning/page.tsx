@@ -21,9 +21,7 @@ export default function Planning() {
   >("午前");
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
   const [triggerMessage, setTriggerMessage] = useState<string | null>(null);
-  const [routeCoordinates, setRouteCoordinates] = useState<
-    Array<{ lat: number; lng: number }>
-  >([]);
+  const [polyline, setPolyline] = useState<string>("");
   const [isSaving, setIsSaving] = useState(false);
   const preInfoId = useSearchParams().get("pre_info_id");
 
@@ -86,7 +84,6 @@ ${preInfo.participants_count}人
               imageUrl: spot.google_map_image_url ?? undefined,
               websiteUrl: spot.website_url ?? undefined,
               selected: spot.selected,
-              placeId: spot.spot_id,
             })),
         );
         setRecommendedSpots(spots.recommend_spots);
@@ -112,7 +109,6 @@ ${preInfo.participants_count}人
           imageUrl: spot.google_map_image_url ?? undefined,
           websiteUrl: spot.website_url ?? undefined,
           selected: spot.selected,
-          placeId: spot.spot_id,
         })),
       );
       setMapPins(pins);
@@ -150,7 +146,6 @@ ${preInfo.participants_count}人
           imageUrl: spot.google_map_image_url ?? undefined,
           websiteUrl: spot.website_url ?? undefined,
           selected: spot.selected,
-          placeId: spot.spot_id,
         })),
       );
       setMapPins(pins);
@@ -162,12 +157,9 @@ ${preInfo.participants_count}人
     setSelectedPinId(pinId);
   }, []);
 
-  const handleCoordinatesUpdate = useCallback(
-    (coordinates: Array<{ lat: number; lng: number }>) => {
-      setRouteCoordinates(coordinates);
-    },
-    [],
-  );
+  const handlePolylineUpdate = useCallback((polyline: string) => {
+    setPolyline(polyline);
+  }, []);
 
   return (
     <Box height="100vh" p={4}>
@@ -189,7 +181,7 @@ ${preInfo.participants_count}人
             onSpotSelect={handleSpotSelect}
             selectedPinId={selectedPinId}
             setSelectedPinId={setSelectedPinId}
-            routeCoordinates={routeCoordinates}
+            polyline={polyline}
             setTriggerMessage={setTriggerMessage}
           />
           <Box
@@ -298,7 +290,7 @@ ${preInfo.participants_count}人
           <Box width="100%" flex="1" overflow="hidden">
             <ChatPane
               onRecommendSpotUpdate={handleRecommendSpotUpdate}
-              onCoordinatesUpdate={handleCoordinatesUpdate}
+              onPolylineUpdate={handlePolylineUpdate}
               initialMessage={initialMessage}
               recommendedSpots={recommendedSpots}
               planId={planId}

@@ -22,23 +22,26 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { LuExternalLink } from "react-icons/lu";
 
-export interface MapPin {
+export type MapPin = {
   id: string;
-  position: { lat: number; lng: number };
+  position: {
+    lat: number;
+    lng: number;
+  };
   title: string;
-  description?: string;
+  description: string;
   imageUrl?: string;
   websiteUrl?: string;
-  selected?: boolean;
-}
+  selected: boolean;
+};
 
 interface GoogleMapProps {
   apiKey: string;
-  pins?: MapPin[];
-  onSpotSelect?: (spotId: string, isSelected: boolean) => void;
-  selectedPinId?: string | null;
-  setSelectedPinId?: (pinId: string) => void;
-  routeCoordinates?: Array<{ lat: number; lng: number }>;
+  pins: MapPin[];
+  onSpotSelect: (id: string, selected: boolean) => void;
+  selectedPinId: string | null;
+  setSelectedPinId: React.Dispatch<React.SetStateAction<string | null>>;
+  polyline?: string;
   setTriggerMessage?: (message: string) => void;
 }
 
@@ -47,68 +50,44 @@ const mapContainerStyle = {
   height: "100%",
 };
 
-// Component to render route polyline
-const RoutePolyline: React.FC<{
-  coordinates: Array<{ lat: number; lng: number }>;
-}> = ({ coordinates }) => {
+const RoutePolyline = ({
+  polyline: encodedPolyline,
+}: {
+  polyline?: string;
+}) => {
   const map = useMap();
-  const [polyline, setPolyline] = useState<google.maps.Polyline | null>(null);
 
   useEffect(() => {
-    if (!map || coordinates.length < 2) return;
+    if (!map || !encodedPolyline) return;
 
-    // Create new polyline with improved visibility
-    const newPolyline = new google.maps.Polyline({
-      path: coordinates,
-      strokeColor: "#FF1744", // 鮮やかな赤色に変更
-      strokeOpacity: 0.9, // より不透明に
-      strokeWeight: 6, // より太く
-      map: map,
-      geodesic: true, // 地球の曲率に沿って描画
-      icons: [
-        {
-          icon: {
-            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-            scale: 3,
-            strokeColor: "#FF1744",
-            strokeWeight: 2,
-            fillColor: "#FF1744",
-            fillOpacity: 1,
-          },
-          offset: "100%",
-          repeat: "100px", // 矢印を100ピクセルごとに表示
-        },
-      ],
+    const path =
+      window.google.maps.geometry.encoding.decodePath(encodedPolyline);
+
+    const routePolyline = new window.google.maps.Polyline({
+      path,
+      geodesic: true,
+      strokeColor: "#4F46E5",
+      strokeOpacity: 0.8,
+      strokeWeight: 4,
     });
 
-    setPolyline(newPolyline);
+    routePolyline.setMap(map);
 
     return () => {
-      if (newPolyline) {
-        newPolyline.setMap(null);
-      }
+      routePolyline.setMap(null);
     };
-  }, [map, coordinates]);
-
-  // Clean up previous polyline when new one is created
-  useEffect(() => {
-    return () => {
-      if (polyline) {
-        polyline.setMap(null);
-      }
-    };
-  }, [polyline]);
+  }, [map, encodedPolyline]);
 
   return null;
 };
 
 const GoogleMap: React.FC<GoogleMapProps> = ({
   apiKey,
-  pins = [],
+  pins,
   onSpotSelect,
   selectedPinId,
   setSelectedPinId,
-  routeCoordinates = [],
+  polyline,
   setTriggerMessage,
 }) => {
   const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
@@ -117,6 +96,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     lat: 35.652832,
     lng: 139.839478,
   });
+  const [infoWindowOpen, setInfoWindowOpen] = useState(false);
 
   const calculateAveragePosition = useCallback(
     (pins: MapPin[]): { lat: number; lng: number } => {
@@ -149,6 +129,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     (pin: MapPin) => {
       setSelectedPin(pin);
       setSelectedPinId?.(pin.id);
+      setInfoWindowOpen(true);
     },
     [setSelectedPinId],
   );
@@ -165,6 +146,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
 
   const handleInfoWindowClose = useCallback(() => {
     setSelectedPin(null);
+    setInfoWindowOpen(false);
   }, []);
 
   useEffect(() => {
@@ -179,10 +161,12 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     if (selectedPinId !== undefined) {
       if (selectedPinId === null) {
         setSelectedPin(null);
+        setInfoWindowOpen(false);
       } else {
         const pin = pins.find((p) => p.id === selectedPinId);
         if (pin) {
           setSelectedPin(pin);
+          setInfoWindowOpen(true);
           // Center the map on the selected pin
           setCenter(pin.position);
         }
@@ -232,7 +216,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
           }
         `}
       </style>
-      <APIProvider apiKey={apiKey}>
+      <APIProvider apiKey={apiKey} libraries={["geometry"]}>
         <Map
           mapId={"DEMO_MAP_ID"}
           style={mapContainerStyle}
@@ -253,19 +237,15 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                 onClick={() => handleMarkerClick(pin)}
               >
                 <Pin
-                  background={"#ff8c00"}
-                  borderColor={"#cc7000"}
-                  glyphColor={"#ffb366"}
+                  background={pin.selected ? "#4F46E5" : "#FBBC04"}
+                  borderColor={pin.selected ? "#3730A3" : "#F29900"}
+                  glyphColor={pin.selected ? "#FFFFFF" : "#000000"}
                 />
               </AdvancedMarker>
             );
           })}
 
-          {routeCoordinates.length > 1 && (
-            <RoutePolyline coordinates={routeCoordinates} />
-          )}
-
-          {selectedPin && (
+          {infoWindowOpen && selectedPin && (
             <InfoWindow
               key={`${selectedPin.id}-${selectedPin.selected}`}
               position={selectedPin.position}
@@ -502,6 +482,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
               </VStack>
             </InfoWindow>
           )}
+          <RoutePolyline polyline={polyline} />
         </Map>
       </APIProvider>
     </Stack>

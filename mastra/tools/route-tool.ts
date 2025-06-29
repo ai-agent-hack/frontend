@@ -1,9 +1,9 @@
-import { Route, Coordinates } from "../../src/types/mastra";
+import { type RouteFullDetail } from "../../src/types/mastra";
 
-export async function routeTool(input: { planId: string }): Promise<Coordinates> {
-	const { planId } = input;
+export async function routeTool(input: { planId: string }): Promise<string> {
+    const { planId } = input;
 
-	/* // テスト用に異なる座標を返す（大阪周辺の座標）
+    /* // テスト用に異なる座標を返す（大阪周辺の座標）
 	return [
 		{ lat: 34.6937, lng: 135.5023 }, // 大阪駅
 		{ lat: 34.6853, lng: 135.5259 }, // 新大阪駅
@@ -11,36 +11,51 @@ export async function routeTool(input: { planId: string }): Promise<Coordinates>
 		{ lat: 34.6693, lng: 135.5022 }, // 難波
 		{ lat: 34.6509, lng: 135.5138 }, // 天王寺
 	]; */
-	
-	// BACKEND_API_URLが設定されていない場合のデフォルト値
-	const backendUrl = process.env.NEXT_PUBLIC_API_URL;
-	const url = `${backendUrl}/route/coordinates`;
-	const response = await fetch(url, {
-		method: 'POST',
-		credentials: 'include', // session cookie
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			plan_id: planId,
-			travel_mode: "TRANSIT",
-			optimize_for: "distance",
-		})
-	});
 
-	if (!response.ok) {
-		throw new Error(`HTTP error! status: ${response.status}`);
-	}
+    // BACKEND_API_URLが設定されていない場合のデフォルト値
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL;
+    const url = `${backendUrl}/route/calculate-detailed`;
+    const response = await fetch(url, {
+        method: "POST",
+        credentials: "include", // session cookie
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            plan_id: planId,
+            travel_mode: "driving",
+            optimize_for: "distance",
+        }),
+    });
 
-	const data: Route = await response.json();
-	
-	// Transform Route to Coordinates format
-	if (data.coordinates) {
-		return data.coordinates.map(coord => ({
-			lat: coord[0],
-			lng: coord[1]
-		}));
-	}
-	
-	return [];
+    if (!response.ok) {
+        const errorBody = await response.text();
+        console.error("Route calculation failed:", errorBody);
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data: RouteFullDetail = await response.json();
+    console.log("Full route data received:", JSON.stringify(data, null, 2));
+
+    // Extract the polyline from the first day's route geometry.
+    // Note: This logic might need adjustment if routes can span multiple days.
+    const polyline = data.route_days?.[0]?.route_geometry?.polyline;
+
+    console.log("Extracted polyline:", polyline);
+    console.log("Route days count:", data.route_days?.length);
+    console.log("First route day:", data.route_days?.[0]);
+    console.log("Route geometry:", data.route_days?.[0]?.route_geometry);
+
+    if (polyline) {
+        console.log("Returning polyline as coordinates:", polyline);
+        return polyline;
+    }
+
+    console.warn("Polyline not found in the route data.");
+    console.warn("Available route_days:", data.route_days);
+    console.warn(
+        "Route geometry structure:",
+        data.route_days?.[0]?.route_geometry
+    );
+    return ""; // Return an empty string if no polyline is found
 }
