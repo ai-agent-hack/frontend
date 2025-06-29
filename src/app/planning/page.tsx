@@ -23,6 +23,7 @@ export default function Planning() {
   const [triggerMessage, setTriggerMessage] = useState<string | null>(null);
   const [polyline, setPolyline] = useState<string>("");
   const [isSaving, setIsSaving] = useState(false);
+  const [orderedSpots, setOrderedSpots] = useState<any[]>([]);
   const preInfoId = useSearchParams().get("pre_info_id");
 
   useEffect(() => {
@@ -161,6 +162,10 @@ ${preInfo.participants_count}人
     setPolyline(polyline);
   }, []);
 
+  const handleOrderedSpotsUpdate = useCallback((orderedSpots: any[]) => {
+    setOrderedSpots(orderedSpots);
+  }, []);
+
   return (
     <Box height="100vh" p={4}>
       <HStack height="100%" gap={"15px"} position="relative">
@@ -255,6 +260,7 @@ ${preInfo.participants_count}人
                 onSpotSelect={handleSpotSelect}
                 onPinClick={handlePinClick}
                 setSelectedPinId={setSelectedPinId}
+                orderedSpots={orderedSpots}
               />
             ) : (
               <Box p={6} textAlign="center">
@@ -292,6 +298,7 @@ ${preInfo.participants_count}人
             <ChatPane
               onRecommendSpotUpdate={handleRecommendSpotUpdate}
               onPolylineUpdate={handlePolylineUpdate}
+              onOrderedSpotsUpdate={handleOrderedSpotsUpdate}
               initialMessage={initialMessage}
               recommendedSpots={recommendedSpots}
               planId={planId}

@@ -27,6 +27,7 @@ interface DetailPaneProps {
       order: number;
     }>;
   };
+  orderedSpots?: any[];
 }
 
 const DetailPane = ({
@@ -39,6 +40,7 @@ const DetailPane = ({
   onGenerateRoute,
   isGeneratingRoute,
   routeInfo,
+  orderedSpots,
 }: DetailPaneProps) => {
   // Get selected spots for route detail
   const selectedSpots = recommendedSpots.recommend_spots.flatMap((timeSlot) =>
@@ -123,6 +125,7 @@ const DetailPane = ({
             onGenerateRoute={onGenerateRoute || (() => {})}
             isGeneratingRoute={isGeneratingRoute}
             routeInfo={routeInfo}
+            orderedSpots={orderedSpots}
           />
         </TabsContent>
       </TabsRoot>
