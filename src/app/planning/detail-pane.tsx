@@ -28,6 +28,7 @@ interface DetailPaneProps {
     }>;
   };
   orderedSpots?: any[];
+  onTabChange?: (tab: "spots" | "route") => void;
 }
 
 const DetailPane = ({
@@ -41,6 +42,7 @@ const DetailPane = ({
   isGeneratingRoute,
   routeInfo,
   orderedSpots,
+  onTabChange,
 }: DetailPaneProps) => {
   // Get selected spots for route detail
   const selectedSpots = recommendedSpots.recommend_spots.flatMap((timeSlot) =>
@@ -62,6 +64,9 @@ const DetailPane = ({
         display="flex"
         flexDirection="column"
         alignItems="center"
+        onValueChange={(value) => {
+          onTabChange?.(value.value as "spots" | "route");
+        }}
       >
         <TabsList
           mb={0}

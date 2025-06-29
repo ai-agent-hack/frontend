@@ -43,6 +43,7 @@ interface GoogleMapProps {
   setSelectedPinId: React.Dispatch<React.SetStateAction<string | null>>;
   polyline?: string;
   setTriggerMessage?: (message: string) => void;
+  isRouteView?: boolean;
 }
 
 const mapContainerStyle = {
@@ -89,6 +90,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   setSelectedPinId,
   polyline,
   setTriggerMessage,
+  isRouteView = false,
 }) => {
   const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
   const [zoom, setZoom] = useState(10);
@@ -238,11 +240,13 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                   title={pin.title}
                   onClick={() => handleMarkerClick(pin)}
                 >
-                  <Pin
-                    background="#FBBC04"
-                    borderColor="#F29900"
-                    glyphColor="#000000"
-                  />
+                  <div style={{ opacity: isRouteView ? 0.5 : 1 }}>
+                    <Pin
+                      background={isRouteView ? "#E5E7EB" : "#FBBC04"}
+                      borderColor={isRouteView ? "#D1D5DB" : "#F29900"}
+                      glyphColor={isRouteView ? "#6B7280" : "#000000"}
+                    />
+                  </div>
                 </AdvancedMarker>
               );
             })}

@@ -24,6 +24,7 @@ export default function Planning() {
   const [polyline, setPolyline] = useState<string>("");
   const [isSaving, setIsSaving] = useState(false);
   const [orderedSpots, setOrderedSpots] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState<"spots" | "route">("spots");
   const preInfoId = useSearchParams().get("pre_info_id");
 
   useEffect(() => {
@@ -182,12 +183,17 @@ ${preInfo.participants_count}人
         >
           <GoogleMap
             apiKey={GOOGLE_MAPS_API_KEY}
-            pins={mapPins.filter((pin) => pin.id.startsWith(selectedTimeSlot))}
+            pins={
+              activeTab === "route"
+                ? mapPins
+                : mapPins.filter((pin) => pin.id.startsWith(selectedTimeSlot))
+            }
             onSpotSelect={handleSpotSelect}
             selectedPinId={selectedPinId}
             setSelectedPinId={setSelectedPinId}
             polyline={polyline}
             setTriggerMessage={setTriggerMessage}
+            isRouteView={activeTab === "route"}
           />
           <Box
             position="absolute"
@@ -261,6 +267,7 @@ ${preInfo.participants_count}人
                 onPinClick={handlePinClick}
                 setSelectedPinId={setSelectedPinId}
                 orderedSpots={orderedSpots}
+                onTabChange={setActiveTab}
               />
             ) : (
               <Box p={6} textAlign="center">
