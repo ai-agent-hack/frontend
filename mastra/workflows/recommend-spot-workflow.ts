@@ -7,6 +7,7 @@ import { outputSchema } from '../schema/output';
 import { setInitialRecommendSpots } from '../tools/manage-recommend-spots-tool';
 import { searchSpots } from '../tools/spots-tool';
 import { routeTool } from '../tools/route-tool';
+import { googleMapReviewTool } from '../tools/google-map-review-tool';
 
 function convertMessages(messages: z.infer<typeof messageSchema>[]): Message[] {
   return messages.map(message => ({
@@ -21,7 +22,7 @@ const checkIntentStep = createStep({
   id: 'checkIntent',
   inputSchema: recommendSpotInputSchema,
   outputSchema: z.object({
-    intentType: z.enum(['spot_search', 'route_creation_confirm', 'general_chat', 'route_creation_execute']),
+    intentType: z.enum(['spot_search', 'general_chat', 'spot_detail', 'route_creation_execute']),
     response: z.string().optional(),
     messages: z.array(messageSchema),
     recommendSpotObject: z.any().optional(),
@@ -39,40 +40,13 @@ const checkIntentStep = createStep({
     const userInput = lastMessage?.content || "";
     
     // 文字列一致による意図判定
-    let intentType: 'spot_search' | 'route_creation_confirm' | 'general_chat' | 'route_creation_execute' = 'general_chat';
-    
-    // 最後の「旅行ルート作成を開始して」のインデックスを見つける
-    let lastRouteRequestIndex = -1;
-    for (let i = messages.length - 1; i >= 0; i--) {
-      if (messages[i].role === 'user' && messages[i].content.includes('旅行ルート作成を開始して')) {
-        lastRouteRequestIndex = i;
-        break;
-      }
-    }
-    
-    // 最後の「旅行ルート作成を開始して」以降に「はい、お願いします 👍」があるかチェック
-    let hasApprovalAfterLastRequest = false;
-    if (lastRouteRequestIndex !== -1) {
-      for (let i = lastRouteRequestIndex + 1; i < messages.length - 1; i++) { // 現在のメッセージは除外
-        if (messages[i].role === 'user' && messages[i].content === 'はい、お願いします 👍') {
-          hasApprovalAfterLastRequest = true;
-          break;
-        }
-      }
-    }
+    let intentType: 'spot_search' | 'general_chat' | 'spot_detail' | 'route_creation_execute' = 'general_chat';
     
     if (userInput === "旅行ルート作成を開始して") {
-      // ボタンからの初回リクエスト
-      intentType = 'route_creation_confirm';
-    } else if (lastRouteRequestIndex !== -1 && !hasApprovalAfterLastRequest) {
-      // 最後のルート作成リクエスト後、まだ承認されていない
-      if (userInput === "はい、お願いします 👍") {
-        // 承認（ボタンクリックのみ）
-        intentType = 'route_creation_execute';
-      } else {
-        // 条件修正のリクエストとして扱う（どんな入力でも）
-        intentType = 'route_creation_confirm';
-      }
+      // ボタンからの初回リクエスト - 直接実行
+      intentType = 'route_creation_execute';
+    } else if (userInput.includes("(place_id:")) {
+      intentType = 'spot_detail';
     } else {
       // 通常の意図判定
       const intentAgent = mastra.getAgent('intentClassifierAgent');
@@ -110,7 +84,7 @@ const checkIntentStep = createStep({
 const nonSpotResponseStep = createStep({
   id: 'nonSpotResponse',
   inputSchema: z.object({
-    intentType: z.enum(['spot_search', 'route_creation_confirm', 'general_chat', 'route_creation_execute']),
+    intentType: z.enum(['spot_search', 'general_chat', 'spot_detail', 'route_creation_execute']),
     response: z.string().optional(),
     messages: z.array(messageSchema),
     recommendSpotObject: z.any().optional(),
@@ -139,7 +113,7 @@ const nonSpotResponseStep = createStep({
 const spotSearchChain = createStep({
   id: 'spotSearchChain',
   inputSchema: z.object({
-    intentType: z.enum(['spot_search', 'route_creation_confirm', 'general_chat', 'route_creation_execute']),
+    intentType: z.enum(['spot_search', 'general_chat', 'spot_detail', 'route_creation_execute']),
     response: z.string().optional(),
     messages: z.array(messageSchema),
     recommendSpotObject: z.any().optional(),
@@ -181,11 +155,11 @@ const spotSearchChain = createStep({
   },
 });
 
-// 旅行ルート作成の確認ステップ
-const routeCreationConfirmStep = createStep({
-  id: 'routeCreationConfirm',
+// スポット詳細ステップ
+const spotDetailStep = createStep({
+  id: 'spotDetail',
   inputSchema: z.object({
-    intentType: z.enum(['spot_search', 'route_creation_confirm', 'general_chat', 'route_creation_execute']),
+    intentType: z.enum(['spot_search', 'general_chat', 'spot_detail', 'route_creation_execute']),
     response: z.string().optional(),
     messages: z.array(messageSchema),
     recommendSpotObject: z.any().optional(),
@@ -193,16 +167,15 @@ const routeCreationConfirmStep = createStep({
   }),
   outputSchema: outputSchema,
   execute: async ({ inputData, mastra }) => {
-    const { recommendSpotObject, messages } = inputData;
+    const { messages, recommendSpotObject } = inputData;
     
-    // 選択されているスポットを確認
-    const selectedSpots = recommendSpotObject?.recommend_spots?.flatMap((timeSlot: any) =>
-      timeSlot.spots.filter((spot: any) => spot.selected)
-    ) || [];
+    // 最後のメッセージから場所情報を抽出
+    const lastMessage = messages[messages.length - 1]?.content || "";
+    const placeIdMatch = lastMessage.match(/place_id:\s*([^\)]+)\)/);
     
-    if (selectedSpots.length === 0) {
+    if (!placeIdMatch) {
       return {
-        message: "スポットが選択されていません。地図上のピンをクリックして、お気に入りのスポットを選んでください。",
+        message: "場所の情報が見つかりませんでした。もう一度お試しください。",
         recommendSpotObject: recommendSpotObject || {
           recommend_spot_id: "",
           recommend_spots: [],
@@ -210,36 +183,62 @@ const routeCreationConfirmStep = createStep({
       };
     }
     
-    // 旅行ルート作成確認エージェントを使用
-    const confirmAgent = mastra.getAgent('routeCreationConfirmAgent');
+    const rawPlaceId = placeIdMatch[1].trim();
+    // 時間帯プレフィックス（午前-、午後-、夜-）とインデックスサフィックス（-数字）を除去
+    const placeId = rawPlaceId
+      .replace(/^(午前|午後|夜)-/, '')  // プレフィックスを除去
+      .replace(/-\d+$/, '');            // サフィックスを除去
     
-    // 選択されたスポット情報と過去のチャット履歴を整形してエージェントに渡す
-    const spotsInfo = JSON.stringify({
-      selectedSpots: selectedSpots.map((spot: any) => ({
-        name: spot.details.name,
-        timeSlot: spot.time_slot,
-        address: spot.details.formatted_address,
-        type: spot.details.types,
-      })),
-      totalCount: selectedSpots.length
-    });
-    
-    const chatHistory = messages.slice(0, -1).map((msg: any) => 
-      `${msg.role === 'user' ? 'ユーザー' : 'アシスタント'}: ${msg.content}`
-    ).join('\n');
-    
-    const result = await confirmAgent.generate([
-      {
-        id: crypto.randomUUID(),
-        role: 'user' as const,
-        content: `以下の情報を基に、旅行ルート作成の条件を確認してください。\n\n【選択されたスポット情報】\n${spotsInfo}\n\n【過去のチャット履歴】\n${chatHistory}`,
-      }
-    ]);
-    
-    return {
-      message: result.text || "ルート作成を開始して良いですか？",
-      recommendSpotObject: recommendSpotObject,
-    };
+    try {
+      // Google Mapのレビュー情報を取得
+      const reviewData = await googleMapReviewTool({
+        placeId: placeId,
+      });
+      
+      // spot-recommendation-explanation-agentを使用して説明を生成
+      const explanationAgent = mastra.getAgent('spotRecommendationExplanationAgent');
+      
+      // チャット履歴から旅行の文脈を抽出（直近の10メッセージ）
+      const recentMessages = messages.slice(-10);
+      const chatContext = recentMessages.map(msg => `${msg.role}: ${msg.content}`).join('\n');
+      
+      const explanationResult = await explanationAgent.generate(
+        [
+          {
+            id: crypto.randomUUID(),
+            role: 'user' as const,
+            content: `
+              以下の情報を元に、「${reviewData.place_name}」をユーザーにおすすめする理由を説明してください。
+
+              チャット履歴:
+              ${chatContext}
+
+              場所の情報:
+              - 場所名: ${reviewData.place_name}
+              - 総合評価: ${reviewData.overall_rating}/5.0
+              - レビュー数: ${reviewData.total_reviews}件
+
+              レビュー情報:
+              ${reviewData.reviews.map(review => `
+              - 評価: ${review.rating}/5.0 (${review.relative_time_description})
+                「${review.text}」
+              `).join('\n')}`,
+          }
+        ]
+      );
+      
+      return {
+        message: explanationResult.text || `${reviewData.place_name}についての詳細情報です。`,
+        recommendSpotObject: recommendSpotObject,
+      };
+      
+    } catch (error) {
+      console.error('スポット詳細取得エラー:', error);
+      return {
+        message: "スポット情報の取得中にエラーが発生しました。もう一度お試しください。",
+        recommendSpotObject: recommendSpotObject,
+      };
+    }
   },
 });
 
@@ -247,7 +246,7 @@ const routeCreationConfirmStep = createStep({
 const routeCreationExecuteStep = createStep({
   id: 'routeCreationExecute',
   inputSchema: z.object({
-    intentType: z.enum(['spot_search', 'route_creation_confirm', 'general_chat', 'route_creation_execute']),
+    intentType: z.enum(['spot_search', 'general_chat', 'spot_detail', 'route_creation_execute']),
     response: z.string().optional(),
     messages: z.array(messageSchema),
     recommendSpotObject: z.any().optional(),
@@ -297,17 +296,17 @@ export const recommendSpotWorkflow = createWorkflow({
   id: 'recommend-spot-workflow',
   inputSchema: recommendSpotInputSchema,
   outputSchema: outputSchema,
-  steps: [checkIntentStep, nonSpotResponseStep, spotSearchChain, routeCreationConfirmStep, routeCreationExecuteStep],
+  steps: [checkIntentStep, nonSpotResponseStep, spotSearchChain, spotDetailStep, routeCreationExecuteStep],
 })
 .then(checkIntentStep)
 .branch([
-  // 旅行ルート作成確認の場合
-  [async ({ inputData }) => inputData.intentType === 'route_creation_confirm', routeCreationConfirmStep],
   // 旅行ルート作成実行の場合
   [async ({ inputData }) => inputData.intentType === 'route_creation_execute', routeCreationExecuteStep],
   // スポット検索の場合
   [async ({ inputData }) => inputData.intentType === 'spot_search', spotSearchChain],
   // 一般的なチャットの場合
   [async ({ inputData }) => inputData.intentType === 'general_chat', nonSpotResponseStep],
+  // スポット詳細の場合
+  [async ({ inputData }) => inputData.intentType === 'spot_detail', spotDetailStep],
 ])
 .commit();

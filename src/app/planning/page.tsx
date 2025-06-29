@@ -22,6 +22,7 @@ export default function Planning() {
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
   const [triggerMessage, setTriggerMessage] = useState<string | null>(null);
   const [polyline, setPolyline] = useState<string>("");
+  const [isSaving, setIsSaving] = useState(false);
   const preInfoId = useSearchParams().get("pre_info_id");
 
   useEffect(() => {
@@ -66,7 +67,6 @@ ${preInfo.participants_count}人
 
         // Fetch initial spots
         // TODO : pre_info id で紐づいているplantとrouteがあれば叩かない　代わりにgetを叩く
-        // get api 叩けるようにする
         const spots = await getInitialRecommendedSpots({
           pre_info_id: preInfoId,
         });
@@ -182,6 +182,7 @@ ${preInfo.participants_count}人
             selectedPinId={selectedPinId}
             setSelectedPinId={setSelectedPinId}
             polyline={polyline}
+            setTriggerMessage={setTriggerMessage}
           />
           <Box
             position="absolute"
@@ -204,14 +205,21 @@ ${preInfo.participants_count}人
                 shadow: "0px 0px 15px rgba(0, 0, 0, 0.5)",
               }}
               transition="all 0.2s"
-              disabled={!mapPins.some((pin) => pin.selected)}
-              onClick={() => {
+              disabled={!mapPins.some((pin) => pin.selected) || isSaving}
+              onClick={async () => {
                 if (!recommendedSpots || !planId) return;
-                saveTrip(planId, recommendedSpots);
-                setTriggerMessage("旅行ルート作成を開始して");
+                setIsSaving(true);
+                try {
+                  await saveTrip(planId, recommendedSpots);
+                  setTriggerMessage("旅行ルート作成を開始して");
+                } catch (error) {
+                  console.error("Failed to save trip:", error);
+                } finally {
+                  setIsSaving(false);
+                }
               }}
             >
-              選択中のスポットでルートを作成
+              {isSaving ? "保存中..." : "選択中のスポットでルートを作成"}
             </Button>
           </Box>
         </Box>

@@ -5,7 +5,7 @@ import { LibSQLStore } from '@mastra/libsql';
 import { recommendSpotAgent } from './agents/recommend-spot-agent';
 import { intentClassifierAgent } from './agents/intent-classifier-agent';
 import { spotUpdateSummaryAgent } from './agents/spot-update-summary-agent';
-import { routeCreationConfirmAgent } from './agents/route-creation-confirm-agent';
+import { spotRecommendationExplanationAgent } from './agents/spot-recommendation-explanation-agent';
 import { recommendSpotWorkflow } from './workflows/recommend-spot-workflow';
 
 const MASTRA_DEBUG = process.env.MASTRA_DEBUG === 'true';
@@ -16,9 +16,11 @@ export const mastra = new Mastra({
     recommendSpotAgent,
     intentClassifierAgent,
     spotUpdateSummaryAgent,
-    routeCreationConfirmAgent
+    spotRecommendationExplanationAgent,
   },
-  workflows: { recommendSpotWorkflow},
+  workflows: { 
+    recommendSpotWorkflow,
+  },
   storage: new LibSQLStore({
     url: storage_url,
   }),

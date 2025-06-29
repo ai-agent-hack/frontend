@@ -42,6 +42,7 @@ interface GoogleMapProps {
   selectedPinId: string | null;
   setSelectedPinId: React.Dispatch<React.SetStateAction<string | null>>;
   polyline?: string;
+  setTriggerMessage?: (message: string) => void;
 }
 
 const mapContainerStyle = {
@@ -87,6 +88,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   selectedPinId,
   setSelectedPinId,
   polyline,
+  setTriggerMessage,
 }) => {
   const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
   const [zoom, setZoom] = useState(10);
@@ -159,10 +161,12 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     if (selectedPinId !== undefined) {
       if (selectedPinId === null) {
         setSelectedPin(null);
+        setInfoWindowOpen(false);
       } else {
         const pin = pins.find((p) => p.id === selectedPinId);
         if (pin) {
           setSelectedPin(pin);
+          setInfoWindowOpen(true);
           // Center the map on the selected pin
           setCenter(pin.position);
         }
@@ -275,10 +279,17 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                   <CloseButton
                     position={"absolute"}
                     borderRadius={"full"}
-                    variant={"ghost"}
                     top={2}
                     right={2}
                     onClick={handleInfoWindowClose}
+                    bg="white"
+                    color="gray.700"
+                    boxShadow="0 2px 8px rgba(0, 0, 0, 0.15)"
+                    _hover={{
+                      bg: "gray.100",
+                      transform: "scale(1.1)",
+                    }}
+                    transition="all 0.2s"
                   />
                 </Box>
               )}
@@ -289,18 +300,27 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                     position="absolute"
                     top={2}
                     right={2}
-                    bg="gray.100"
+                    bg="white"
                     borderRadius="full"
                     p={1}
                     cursor="pointer"
                     onClick={handleInfoWindowClose}
+                    boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                    border="1px solid"
+                    borderColor="gray.200"
                     _hover={{
-                      bg: "gray.200",
+                      bg: "gray.100",
+                      transform: "scale(1.1)",
                     }}
                     transition="all 0.2s"
                     zIndex={1}
                   >
-                    <Text fontSize="sm" color="gray.600" lineHeight="1">
+                    <Text
+                      fontSize="sm"
+                      color="gray.700"
+                      lineHeight="1"
+                      fontWeight="bold"
+                    >
                       ✕
                     </Text>
                   </Box>
@@ -420,7 +440,41 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                       <Text fontSize="sm" fontWeight="medium">
                         {selectedPin.selected
                           ? "選択済み"
-                          : "このスポットを選択する"}
+                          : "このスポットに行く"}
+                      </Text>
+                    </Box>
+                  </Box>
+                )}
+
+                {setTriggerMessage && (
+                  <Box pt={2} borderTop="1px solid" borderColor="border">
+                    <Box
+                      as="button"
+                      width="100%"
+                      bg="purple.50"
+                      color="purple.700"
+                      border="1px solid"
+                      borderColor="purple.200"
+                      borderRadius="xl"
+                      p={3}
+                      transition="all 0.2s"
+                      _hover={{
+                        bg: "purple.100",
+                        borderColor: "purple.300",
+                        transform: "translateY(-1px)",
+                      }}
+                      onClick={() =>
+                        setTriggerMessage(
+                          `「${selectedPin.title}」について教えて\n${selectedPin.id ? ` (place_id: ${selectedPin.id})` : ""}`,
+                        )
+                      }
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      gap={2}
+                    >
+                      <Text fontSize="sm" fontWeight="medium">
+                        この場所について教えて
                       </Text>
                     </Box>
                   </Box>
