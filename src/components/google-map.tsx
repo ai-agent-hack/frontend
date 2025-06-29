@@ -299,10 +299,17 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                   <CloseButton
                     position={"absolute"}
                     borderRadius={"full"}
-                    variant={"ghost"}
                     top={2}
                     right={2}
                     onClick={handleInfoWindowClose}
+                    bg="white"
+                    color="gray.700"
+                    boxShadow="0 2px 8px rgba(0, 0, 0, 0.15)"
+                    _hover={{
+                      bg: "gray.100",
+                      transform: "scale(1.1)",
+                    }}
+                    transition="all 0.2s"
                   />
                 </Box>
               )}
@@ -313,18 +320,27 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                     position="absolute"
                     top={2}
                     right={2}
-                    bg="gray.100"
+                    bg="white"
                     borderRadius="full"
                     p={1}
                     cursor="pointer"
                     onClick={handleInfoWindowClose}
+                    boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+                    border="1px solid"
+                    borderColor="gray.200"
                     _hover={{
-                      bg: "gray.200",
+                      bg: "gray.100",
+                      transform: "scale(1.1)",
                     }}
                     transition="all 0.2s"
                     zIndex={1}
                   >
-                    <Text fontSize="sm" color="gray.600" lineHeight="1">
+                    <Text
+                      fontSize="sm"
+                      color="gray.700"
+                      lineHeight="1"
+                      fontWeight="bold"
+                    >
                       ✕
                     </Text>
                   </Box>
