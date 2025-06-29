@@ -254,6 +254,7 @@ ${preInfo.participants_count}人
                 onTimeSlotChange={setSelectedTimeSlot}
                 onSpotSelect={handleSpotSelect}
                 onPinClick={handlePinClick}
+                setSelectedPinId={setSelectedPinId}
               />
             ) : (
               <Box p={6} textAlign="center">

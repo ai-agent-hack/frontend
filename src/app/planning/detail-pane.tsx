@@ -8,6 +8,7 @@ interface DetailPaneProps {
   onTimeSlotChange: (timeSlot: "午前" | "午後" | "夜") => void;
   onSpotSelect: (spotId: string, isSelected: boolean) => void;
   onPinClick: (pinId: string) => void;
+  setSelectedPinId: (pinId: string | null) => void;
 }
 
 const DetailPane = ({
@@ -16,6 +17,7 @@ const DetailPane = ({
   onTimeSlotChange,
   onSpotSelect,
   onPinClick,
+  setSelectedPinId,
 }: DetailPaneProps) => {
   return (
     <VStack width="100%" p={4} gap={4}>
@@ -25,6 +27,8 @@ const DetailPane = ({
           value={selectedTimeSlot}
           onValueChange={(e) => {
             onTimeSlotChange(e.value as "午前" | "午後" | "夜");
+            // Clear selected pin to close info window
+            setSelectedPinId(null);
           }}
           size="sm"
         >
