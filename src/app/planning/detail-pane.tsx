@@ -4,6 +4,7 @@ import {
   TabsList,
   TabsRoot,
   TabsTrigger,
+  Text,
 } from "@chakra-ui/react";
 import type { RecommendedSpots } from "@/types/mastra";
 import RouteDetail from "./route-detail";
@@ -52,11 +53,57 @@ const DetailPane = ({
   );
 
   return (
-    <Box width="100%" height="100%" p={4}>
-      <TabsRoot defaultValue="spots" variant="enclosed">
-        <TabsList mb={4}>
-          <TabsTrigger value="spots">スポット一覧</TabsTrigger>
-          <TabsTrigger value="route">ルート詳細</TabsTrigger>
+    <Box width="100%" height="100%">
+      <TabsRoot
+        defaultValue="spots"
+        variant="plain"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
+        <TabsList
+          mb={0}
+          borderBottom="1px solid"
+          borderColor="gray.200"
+          gap={4}
+          px={4}
+          pt={4}
+          justifyContent="center"
+        >
+          <TabsTrigger
+            value="spots"
+            pb={3}
+            borderBottom="2px solid"
+            borderColor="transparent"
+            _selected={{
+              borderColor: "purple.500",
+              color: "purple.600",
+            }}
+            _hover={{
+              color: "purple.600",
+            }}
+          >
+            <Text fontWeight="medium" fontSize="sm" whiteSpace="nowrap">
+              スポット
+            </Text>
+          </TabsTrigger>
+          <TabsTrigger
+            value="route"
+            pb={3}
+            borderBottom="2px solid"
+            borderColor="transparent"
+            _selected={{
+              borderColor: "purple.500",
+              color: "purple.600",
+            }}
+            _hover={{
+              color: "purple.600",
+            }}
+          >
+            <Text fontWeight="medium" fontSize="sm" whiteSpace="nowrap">
+              ルート
+            </Text>
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="spots">

@@ -85,7 +85,7 @@ const RouteDetail = ({
       >
         <HStack gap={2}>
           <LuNavigation />
-          <Text>最適ルートを生成</Text>
+          <Text>ルートを生成</Text>
         </HStack>
       </Button>
 
@@ -152,7 +152,7 @@ const RouteDetail = ({
             🗺️
           </Text>
           <Text color="gray.500" fontSize="sm">
-            スポットを選択してルートを作成しましょう
+            スポットタブから行きたい場所を選択してください
           </Text>
         </Box>
       )}

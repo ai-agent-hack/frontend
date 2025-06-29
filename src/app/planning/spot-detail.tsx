@@ -1,4 +1,4 @@
-import { Box, HStack, SegmentGroup, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { RecommendedSpots } from "@/types/mastra";
 
@@ -23,18 +23,28 @@ const SpotDetail = ({
     <VStack width="100%" gap={4}>
       {/* Time Slot Selector */}
       <Box width="100%" display="flex" justifyContent="center">
-        <SegmentGroup.Root
-          value={selectedTimeSlot}
-          onValueChange={(e) => {
-            onTimeSlotChange(e.value as "午前" | "午後" | "夜");
-            // Clear selected pin to close info window
-            setSelectedPinId(null);
-          }}
-          size="sm"
-        >
-          <SegmentGroup.Indicator />
-          <SegmentGroup.Items items={["午前", "午後", "夜"]} />
-        </SegmentGroup.Root>
+        <HStack gap={1} bg="gray.100" p={1} borderRadius="lg">
+          {(["午前", "午後", "夜"] as const).map((slot) => (
+            <Button
+              key={slot}
+              size="sm"
+              variant={selectedTimeSlot === slot ? "solid" : "ghost"}
+              colorScheme={selectedTimeSlot === slot ? "purple" : "gray"}
+              onClick={() => {
+                onTimeSlotChange(slot);
+                setSelectedPinId(null);
+              }}
+              flex={1}
+              borderRadius="md"
+              fontWeight="medium"
+              _hover={{
+                bg: selectedTimeSlot === slot ? "purple.500" : "gray.200",
+              }}
+            >
+              {slot}
+            </Button>
+          ))}
+        </HStack>
       </Box>
 
       {/* Spots List */}

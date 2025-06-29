@@ -239,14 +239,14 @@ ${preInfo.participants_count}人
           <Box width="100%" p={4} borderBottom="1px solid" borderColor="border">
             <HStack gap={2}>
               <Text fontWeight="bold" fontSize="lg" color="purple.fg">
-                スポット詳細
+                スポット/ルート詳細
               </Text>
             </HStack>
             <Text fontSize="sm" color="purple.fg" mt={1}>
-              お気に入りの場所をチェックしてください
+              スポットとルートの詳細を確認しましょう。
             </Text>
           </Box>
-          <Box width="100%" flex="1" overflowY="auto">
+          <Box width="90%" flex="1" overflowY="auto">
             {recommendedSpots ? (
               <DetailPane
                 recommendedSpots={recommendedSpots}
