@@ -165,6 +165,9 @@ ${preInfo.participants_count}人
 
   const handleOrderedSpotsUpdate = useCallback((orderedSpots: any[]) => {
     setOrderedSpots(orderedSpots);
+    if (orderedSpots && orderedSpots.length > 0) {
+      setActiveTab("route");
+    }
   }, []);
 
   return (
@@ -268,6 +271,7 @@ ${preInfo.participants_count}人
                 setSelectedPinId={setSelectedPinId}
                 orderedSpots={orderedSpots}
                 onTabChange={setActiveTab}
+                activeTab={activeTab}
               />
             ) : (
               <Box p={6} textAlign="center">

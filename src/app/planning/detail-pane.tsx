@@ -29,6 +29,7 @@ interface DetailPaneProps {
   };
   orderedSpots?: any[];
   onTabChange?: (tab: "spots" | "route") => void;
+  activeTab?: "spots" | "route";
 }
 
 const DetailPane = ({
@@ -43,6 +44,7 @@ const DetailPane = ({
   routeInfo,
   orderedSpots,
   onTabChange,
+  activeTab = "spots",
 }: DetailPaneProps) => {
   // Get selected spots for route detail
   const selectedSpots = recommendedSpots.recommend_spots.flatMap((timeSlot) =>
@@ -59,13 +61,14 @@ const DetailPane = ({
   return (
     <Box width="100%" height="100%">
       <TabsRoot
+        value={activeTab}
         defaultValue="spots"
         variant="plain"
         display="flex"
         flexDirection="column"
         alignItems="center"
-        onValueChange={(value) => {
-          onTabChange?.(value.value as "spots" | "route");
+        onValueChange={(details) => {
+          onTabChange?.(details.value as "spots" | "route");
         }}
       >
         <TabsList
