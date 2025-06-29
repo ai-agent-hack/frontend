@@ -228,22 +228,42 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
           center={center}
           defaultZoom={10}
         >
-          {pins.map((pin) => {
-            return (
-              <AdvancedMarker
-                key={pin.id}
-                position={pin.position}
-                title={pin.title}
-                onClick={() => handleMarkerClick(pin)}
-              >
-                <Pin
-                  background={pin.selected ? "#4F46E5" : "#FBBC04"}
-                  borderColor={pin.selected ? "#3730A3" : "#F29900"}
-                  glyphColor={pin.selected ? "#FFFFFF" : "#000000"}
-                />
-              </AdvancedMarker>
-            );
-          })}
+          {pins
+            .filter((pin) => !pin.selected)
+            .map((pin) => {
+              return (
+                <AdvancedMarker
+                  key={pin.id}
+                  position={pin.position}
+                  title={pin.title}
+                  onClick={() => handleMarkerClick(pin)}
+                >
+                  <Pin
+                    background="#FBBC04"
+                    borderColor="#F29900"
+                    glyphColor="#000000"
+                  />
+                </AdvancedMarker>
+              );
+            })}
+          {pins
+            .filter((pin) => pin.selected)
+            .map((pin) => {
+              return (
+                <AdvancedMarker
+                  key={pin.id}
+                  position={pin.position}
+                  title={pin.title}
+                  onClick={() => handleMarkerClick(pin)}
+                >
+                  <Pin
+                    background="#4F46E5"
+                    borderColor="#3730A3"
+                    glyphColor="#FFFFFF"
+                  />
+                </AdvancedMarker>
+              );
+            })}
 
           {infoWindowOpen && selectedPin && (
             <InfoWindow
