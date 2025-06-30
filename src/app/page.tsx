@@ -60,11 +60,32 @@ export default function Home() {
           align="stretch"
           borderRadius="lg"
           shadow="sm"
+          overflow="hidden"
         >
           <Heading size="md" color="gray.700">
             私の旅行記録
           </Heading>
-          <VStack gap={3} align="stretch">
+          <VStack
+            gap={3}
+            align="stretch"
+            overflowY="auto"
+            flex={1}
+            css={{
+              "&::-webkit-scrollbar": {
+                width: "6px",
+              },
+              "&::-webkit-scrollbar-track": {
+                backgroundColor: "transparent",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "#CBD5E0",
+                borderRadius: "3px",
+              },
+              "&::-webkit-scrollbar-thumb:hover": {
+                backgroundColor: "#A0AEC0",
+              },
+            }}
+          >
             {isLoading ? (
               <Text>旅行記録を読み込み中...</Text>
             ) : trips.length > 0 ? (
