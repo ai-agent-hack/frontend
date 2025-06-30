@@ -58,36 +58,24 @@ export default function Planning() {
         id: "step2",
         title: "AIに質問してみましょう",
         content:
-          "スポットについて追加の情報を聞いてみましょう。例えば「リラックスできる温泉を教えて」などと質問できます。",
+          "スポットについて追加の情報を聞いてみましょう。例えば「リラックスできる温泉を教えて」などと質問できます。\n\nチャットのボタンをクリックして、AIに質問してみましょう！",
         position: "left",
         targetSelector: "[data-tutorial='chat-pane']",
-        actionButtons: [
-          {
-            label: "リラックスできる温泉を教えて",
-            action: () => setTriggerMessage("リラックスできる温泉を教えて"),
-          },
-        ],
       },
       {
         id: "step3",
         title: "気に入ったスポットを選択しましょう",
         content: "出てきた気に入った温泉を選択してルートを作成してみましょう！",
-        position: "bottom",
+        position: "top",
         targetSelector: "[data-tutorial='create-route-button']",
       },
       {
         id: "step4",
         title: "旅行の準備は万全ですか？",
         content:
-          "いい感じの予定ができました！そういえば、旅行中の天気は大丈夫でしょうか？チャットで聞いてみましょう。",
+          "いい感じの予定ができました！そういえば、旅行中の天気は大丈夫でしょうか？チャットのボタンで聞いてみましょう。",
         position: "left",
         targetSelector: "[data-tutorial='chat-pane']",
-        actionButtons: [
-          {
-            label: "旅行期間中の天気を教えて",
-            action: () => setTriggerMessage("旅行期間中の天気を教えて"),
-          },
-        ],
       },
     ],
     [],
