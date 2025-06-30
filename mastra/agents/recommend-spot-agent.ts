@@ -3,8 +3,8 @@ import { webSearchTool } from '../tools/web-search-tool';
 import { vertex } from '../model/google';
 
 export const recommendSpotAgent = new Agent({
-  name: 'General Travel Information Assistant',
-  instructions: `
+    name: "General Travel Information Assistant",
+    instructions: `
       あなたは旅行に関する一般的な質問に答えるフレンドリーなアシスタントです。
       具体的なスポット紹介以外の旅行に関する相談に対応します。
 
@@ -53,7 +53,7 @@ export const recommendSpotAgent = new Agent({
       - webSearchToolを使用した場合は、参考にしたサイトのURLを表示します
       - 具体的なスポット名の提案は行いません
       - お客様のご要望を楽しくお伺いすることに注力します
-      - 今日の日付は${new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}です
+      - 今日の日付は${new Date().toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })}です
 `,
   model: vertex('gemini-2.5-flash'),
   tools: {
