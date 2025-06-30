@@ -127,6 +127,60 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     [],
   );
 
+  const calculateBounds = useCallback((pins: MapPin[]) => {
+    if (pins.length === 0) return null;
+
+    const bounds = {
+      north: -90,
+      south: 90,
+      east: -180,
+      west: 180,
+    };
+
+    for (const pin of pins) {
+      bounds.north = Math.max(bounds.north, pin.position.lat);
+      bounds.south = Math.min(bounds.south, pin.position.lat);
+      bounds.east = Math.max(bounds.east, pin.position.lng);
+      bounds.west = Math.min(bounds.west, pin.position.lng);
+    }
+
+    return bounds;
+  }, []);
+
+  const calculateZoomLevel = useCallback(
+    (bounds: { north: number; south: number; east: number; west: number }) => {
+      const WORLD_DIM = { height: 256, width: 256 };
+      const ZOOM_MAX = 21;
+
+      const latDiff = bounds.north - bounds.south;
+      const lngDiff = bounds.east - bounds.west;
+
+      // Add padding (10% on each side)
+      const latPadding = latDiff * 0.1;
+      const lngPadding = lngDiff * 0.1;
+
+      const paddedLatDiff = latDiff + latPadding * 2;
+      const paddedLngDiff = lngDiff + lngPadding * 2;
+
+      // Assume a map container size (you might want to get the actual size)
+      const mapWidth = 800; // Default width
+      const mapHeight = 600; // Default height
+
+      const latZoom = Math.floor(
+        Math.log2((mapHeight * 360) / paddedLatDiff / WORLD_DIM.height),
+      );
+      const lngZoom = Math.floor(
+        Math.log2((mapWidth * 360) / paddedLngDiff / WORLD_DIM.width),
+      );
+
+      const zoom = Math.min(latZoom, lngZoom, ZOOM_MAX);
+
+      // Return a reasonable zoom level
+      return Math.max(1, Math.min(zoom, 18));
+    },
+    [],
+  );
+
   const handleMarkerClick = useCallback(
     (pin: MapPin) => {
       setSelectedPin(pin);
@@ -155,8 +209,29 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     if (pins.length > 0) {
       const newCenter = calculateAveragePosition(pins);
       setCenter(newCenter);
+
+      // Calculate and set zoom based on pin distribution
+      if (pins.length === 1) {
+        // For single pin, use a reasonable default zoom
+        setZoom(15);
+      } else {
+        const bounds = calculateBounds(pins);
+        if (bounds) {
+          // Check if all pins are at the same location
+          const latDiff = bounds.north - bounds.south;
+          const lngDiff = bounds.east - bounds.west;
+
+          if (latDiff < 0.0001 && lngDiff < 0.0001) {
+            // All pins are very close together
+            setZoom(15);
+          } else {
+            const newZoom = calculateZoomLevel(bounds);
+            setZoom(newZoom);
+          }
+        }
+      }
     }
-  }, [pins, calculateAveragePosition]);
+  }, [pins, calculateAveragePosition, calculateBounds, calculateZoomLevel]);
 
   // Handle external pin selection
   useEffect(() => {
