@@ -1,12 +1,6 @@
 import { Agent } from '@mastra/core/agent';
-import { Memory } from '@mastra/memory';
-import { LibSQLStore } from '@mastra/libsql';
 import { webSearchTool } from '../tools/web-search-tool';
 import { vertex } from '../model/google';
-
-const MASTRA_DEBUG = process.env.MASTRA_DEBUG === 'true';
-const storage_url = MASTRA_DEBUG ? 'file:../../mastra/mastra.db' : 'file:./mastra/mastra.db';
-
 
 export const recommendSpotAgent = new Agent({
   name: 'General Travel Information Assistant',
@@ -64,10 +58,5 @@ export const recommendSpotAgent = new Agent({
   model: vertex('gemini-2.5-flash'),
   tools: {
     webSearchTool,
-  },
-  memory: new Memory({
-    storage: new LibSQLStore({
-      url: storage_url,
-    }),
-  }),
+  }
 });

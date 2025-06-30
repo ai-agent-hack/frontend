@@ -1,10 +1,5 @@
 import { Agent } from '@mastra/core/agent';
-import { Memory } from '@mastra/memory';
-import { LibSQLStore } from '@mastra/libsql';
 import { vertex } from '../model/google';
-
-const MASTRA_DEBUG = process.env.MASTRA_DEBUG === 'true';
-const storage_url = MASTRA_DEBUG ? 'file:../../mastra/mastra.db' : 'file:./mastra/mastra.db';
 
 export const intentClassifierAgent = new Agent({
   name: 'Intent Classifier Agent',
@@ -36,10 +31,5 @@ export const intentClassifierAgent = new Agent({
 2. ユーザーが暗黙的に場所を探している可能性も考慮する
 3. 判定が難しい場合は、ユーザーの利便性を考慮してスポット検索として扱う`,
   model: vertex('gemini-2.5-flash'),
-  tools: {},
-  memory: new Memory({
-    storage: new LibSQLStore({
-      url: storage_url,
-    }),
-  }),
+  tools: {}
 });
