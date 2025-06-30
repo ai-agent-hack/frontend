@@ -290,7 +290,7 @@ const RouteDetail = ({
           </VStack>
         </Box>
       ) : (
-        <Box p={6} textAlign="center">
+        <Box p={6} mr={4} textAlign="center">
           <Text fontSize="2xl" color="gray.400" mb={2}>
             🗺️
           </Text>

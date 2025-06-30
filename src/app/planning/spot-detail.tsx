@@ -19,6 +19,82 @@ const SpotDetail = ({
   onPinClick,
   setSelectedPinId,
 }: SpotDetailProps) => {
+  // Helper function to get average congestion for a specific time slot
+  const getAverageCongestion = (
+    congestionArray: number[],
+    timeSlot: "午前" | "午後" | "夜",
+  ) => {
+    // Map time slots to hour ranges and calculate average
+    const hourRanges = {
+      午前: [9, 10, 11], // 9-12
+      午後: [13, 14, 15, 16], // 13-17
+      夜: [18, 19, 20, 21], // 18-22
+    };
+
+    const hours = hourRanges[timeSlot];
+    const relevantCongestion = hours.map((hour) => congestionArray[hour] || 0);
+    const average =
+      relevantCongestion.reduce((sum, val) => sum + val, 0) /
+      relevantCongestion.length;
+
+    return average;
+  };
+
+  // Get all congestion values for the current time slot
+  const currentTimeSlotSpots = recommendedSpots.recommend_spots
+    .filter((timeSlot) => timeSlot.time_slot === selectedTimeSlot)
+    .flatMap((timeSlot) => timeSlot.spots);
+
+  const allCongestionValues = currentTimeSlotSpots
+    .map((spot) =>
+      getAverageCongestion(spot.details.congestion, selectedTimeSlot),
+    )
+    .filter((val) => val > 0);
+
+  // Calculate min and max for relative scaling
+  const minCongestion =
+    allCongestionValues.length > 0 ? Math.min(...allCongestionValues) : 0;
+  const maxCongestion =
+    allCongestionValues.length > 0 ? Math.max(...allCongestionValues) : 1;
+  const range = maxCongestion - minCongestion || 1;
+
+  // Helper function to get congestion level for specific spot
+  const getCongestionLevel = (
+    congestionArray: number[],
+    timeSlot: "午前" | "午後" | "夜",
+  ) => {
+    const average = getAverageCongestion(congestionArray, timeSlot);
+
+    if (average === 0 || allCongestionValues.length === 0) return 1;
+
+    // If all values are the same, return middle value
+    if (range === 0) return 3;
+
+    // Calculate relative position (0 to 1)
+    const relativePosition = (average - minCongestion) / range;
+
+    // Map to 1-5 scale with better distribution
+    const scaled = relativePosition * 4 + 1;
+
+    return Math.round(scaled);
+  };
+
+  // Helper function to render congestion level
+  const renderCongestionLevel = (level: number) => {
+    const maxLevel = 5;
+    const filledStars = Math.min(level, maxLevel);
+    const emptyStars = maxLevel - filledStars;
+
+    return (
+      <>
+        {"★".repeat(filledStars)}
+        {"☆".repeat(emptyStars)}
+        <Text as="span" ml={1}>
+          ({level}/{maxLevel})
+        </Text>
+      </>
+    );
+  };
   return (
     <VStack width="100%" gap={4}>
       {/* Time Slot Selector */}
@@ -110,12 +186,16 @@ const SpotDetail = ({
 
               <HStack gap={2} fontSize="xs" color="gray.500">
                 <HStack gap={1}>
-                  <Text>💰</Text>
-                  <Text>¥{pin.details.price.toLocaleString()}</Text>
-                </HStack>
-                <HStack gap={1}>
                   <Text>👥</Text>
-                  <Text>混雑度: {pin.details.congestion[0]}/5</Text>
+                  <Text>
+                    混雑度:{" "}
+                    {renderCongestionLevel(
+                      getCongestionLevel(
+                        pin.details.congestion,
+                        selectedTimeSlot,
+                      ),
+                    )}
+                  </Text>
                 </HStack>
               </HStack>
             </Box>
