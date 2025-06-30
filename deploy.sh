@@ -3,17 +3,23 @@
 # Frontend를 Cloud Run에 배포하는 스크립트
 
 PROJECT_ID="ai-agent-hack"
-SERVICE_NAME="VibePlanning"
+SERVICE_NAME="vibe-planning-service"
 REGION="asia-northeast1"
 IMAGE_NAME="gcr.io/$PROJECT_ID/$SERVICE_NAME"
 
 echo "Building Docker image..."
 
-# Load environment variables from .env file (excluding GOOGLE_PRIVATE_KEY)
+# Load environment variables from .env file
 if [ -f ./.env ]; then
+    # Load all variables except GOOGLE_PRIVATE_KEY first
     export $(grep -v '^#' ./.env | grep -v 'GOOGLE_PRIVATE_KEY' | xargs)
+    
+    # Load GOOGLE_PRIVATE_KEY separately to handle multiline content
+    export GOOGLE_PRIVATE_KEY=$(grep 'GOOGLE_PRIVATE_KEY=' ./.env | cut -d'=' -f2- | sed 's/^"//' | sed 's/"$//')
+    
     echo "Loaded environment variables from .env file"
     echo "NEXT_PUBLIC_FIREBASE_API_KEY: ${NEXT_PUBLIC_FIREBASE_API_KEY:0:10}..."
+    echo "GOOGLE_PRIVATE_KEY: [LOADED]"
 else
     echo "Warning: .env file not found!"
 fi
