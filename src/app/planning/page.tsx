@@ -1,13 +1,23 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: FIXME: This is a temporary use of any type */
 "use client";
 
-import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  IconButton,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 import GoogleMap, { type MapPin } from "@/components/google-map";
 import type { RecommendedSpots } from "@/types/mastra";
 import { getInitialRecommendedSpots, getPreInfo, saveTrip } from "./action";
 import ChatPane from "./chat-pane";
 import DetailPane from "./detail-pane";
+import RouteDetail from "./route-detail";
 
 export default function Planning() {
   const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
@@ -23,17 +33,31 @@ export default function Planning() {
   const [triggerMessage, setTriggerMessage] = useState<string | null>(null);
   const [polyline, setPolyline] = useState<string>("");
   const [isSaving, setIsSaving] = useState(false);
+  const [orderedSpots, setOrderedSpots] = useState<any[]>([]);
+  const [isRouteShown, setIsRouteShown] = useState<boolean>(false);
+  const [routeGenerationAttempted, setRouteGenerationAttempted] =
+    useState<boolean>(false);
   const preInfoId = useSearchParams().get("pre_info_id");
+
+  const selectedSpots =
+    recommendedSpots?.recommend_spots.flatMap((timeSlot) =>
+      timeSlot.spots
+        .filter((spot) => spot.selected)
+        .map((spot, index) => ({
+          pinId: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
+          spotId: spot.spot_id,
+          name: spot.details.name,
+          timeSlot: timeSlot.time_slot,
+        })),
+    ) ?? [];
 
   useEffect(() => {
     (async () => {
       if (!preInfoId) return;
 
       try {
-        // Fetch pre-info data
         const preInfo = await getPreInfo(preInfoId);
 
-        // Create initial message from preInfo
         const message = `
 **こんにちは！**
 
@@ -99,6 +123,7 @@ ${preInfo.participants_count}人
   const handleRecommendSpotUpdate = useCallback(
     (recommendSpot: RecommendedSpots) => {
       setRecommendedSpots(recommendSpot);
+      setIsRouteShown(false);
 
       const pins: MapPin[] = recommendSpot.recommend_spots.flatMap((timeSlot) =>
         timeSlot.spots.map((spot, index) => ({
@@ -136,7 +161,6 @@ ${preInfo.participants_count}人
 
       setRecommendedSpots(updatedSpots);
 
-      // Update mapPins immediately
       const pins: MapPin[] = updatedSpots.recommend_spots.flatMap((timeSlot) =>
         timeSlot.spots.map((spot, index) => ({
           id: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
@@ -161,6 +185,14 @@ ${preInfo.participants_count}人
     setPolyline(polyline);
   }, []);
 
+  const handleOrderedSpotsUpdate = useCallback((orderedSpots: any[]) => {
+    setOrderedSpots(orderedSpots);
+    setRouteGenerationAttempted(true);
+    if (orderedSpots && orderedSpots.length > 0) {
+      setIsRouteShown(true);
+    }
+  }, []);
+
   return (
     <Box height="100vh" p={4}>
       <HStack height="100%" gap={"15px"} position="relative">
@@ -177,13 +209,19 @@ ${preInfo.participants_count}人
         >
           <GoogleMap
             apiKey={GOOGLE_MAPS_API_KEY}
-            pins={mapPins.filter((pin) => pin.id.startsWith(selectedTimeSlot))}
+            pins={
+              isRouteShown && orderedSpots && orderedSpots.length > 0
+                ? mapPins
+                : mapPins.filter((pin) => pin.id.startsWith(selectedTimeSlot))
+            }
             onSpotSelect={handleSpotSelect}
             selectedPinId={selectedPinId}
             setSelectedPinId={setSelectedPinId}
             polyline={polyline}
             setTriggerMessage={setTriggerMessage}
+            isRouteView={isRouteShown}
           />
+
           <Box
             position="absolute"
             bottom={4}
@@ -222,6 +260,51 @@ ${preInfo.participants_count}人
               {isSaving ? "保存中..." : "選択中のスポットでルートを作成"}
             </Button>
           </Box>
+
+          <Box
+            position="absolute"
+            top={2}
+            left={2}
+            zIndex={10}
+            bg="white"
+            p={0.5}
+            borderRadius="xl"
+            shadow="0px 0px 15px rgba(0, 0, 0, 0.2)"
+            width="30%"
+            maxHeight="80%"
+            display="flex"
+            flexDirection="column"
+          >
+            <HStack mb={2} mt={2} flexShrink={0} ml={2} width="100%">
+              <IconButton
+                size="xs"
+                minW="24px"
+                height="24px"
+                onClick={() => setIsRouteShown(!isRouteShown)}
+              >
+                {isRouteShown ? (
+                  <LuChevronUp size={14} />
+                ) : (
+                  <LuChevronDown size={14} />
+                )}
+              </IconButton>
+              <Text color={"black"} fontSize="sm" fontWeight="medium">
+                ルートの詳細
+              </Text>
+            </HStack>
+            {isRouteShown && (
+              <Box flex="1" overflowY="auto" overflowX="hidden">
+                <RouteDetail
+                  selectedSpots={selectedSpots}
+                  onPinClick={handlePinClick}
+                  recommendedSpots={recommendedSpots ?? undefined}
+                  onTimeSlotChange={setSelectedTimeSlot}
+                  orderedSpots={orderedSpots}
+                  routeGenerationAttempted={routeGenerationAttempted}
+                />
+              </Box>
+            )}
+          </Box>
         </Box>
 
         {/* Details Section */}
@@ -239,14 +322,14 @@ ${preInfo.participants_count}人
           <Box width="100%" p={4} borderBottom="1px solid" borderColor="border">
             <HStack gap={2}>
               <Text fontWeight="bold" fontSize="lg" color="purple.fg">
-                スポット詳細
+                おすすめスポット
               </Text>
             </HStack>
             <Text fontSize="sm" color="purple.fg" mt={1}>
-              お気に入りの場所をチェックしてください
+              気になるスポットをチェックしましょう。
             </Text>
           </Box>
-          <Box width="100%" flex="1" overflowY="auto">
+          <Box width="90%" flex="1" overflowY="auto">
             {recommendedSpots ? (
               <DetailPane
                 recommendedSpots={recommendedSpots}
@@ -254,6 +337,7 @@ ${preInfo.participants_count}人
                 onTimeSlotChange={setSelectedTimeSlot}
                 onSpotSelect={handleSpotSelect}
                 onPinClick={handlePinClick}
+                setSelectedPinId={setSelectedPinId}
               />
             ) : (
               <Box p={6} textAlign="center">
@@ -291,6 +375,7 @@ ${preInfo.participants_count}人
             <ChatPane
               onRecommendSpotUpdate={handleRecommendSpotUpdate}
               onPolylineUpdate={handlePolylineUpdate}
+              onOrderedSpotsUpdate={handleOrderedSpotsUpdate}
               initialMessage={initialMessage}
               recommendedSpots={recommendedSpots}
               planId={planId}
@@ -303,4 +388,3 @@ ${preInfo.participants_count}人
     </Box>
   );
 }
-// End of file src/app/planning/page.tsx

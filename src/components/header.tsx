@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   return (
     <HStack w={"100%"} justify="space-between" mb={4}>
       <Heading size="lg">
-        <a href="/">Trip Agent</a>
+        <a href="/">Vibe Planning</a>
       </Heading>
       {user && <UserMenu />}
     </HStack>

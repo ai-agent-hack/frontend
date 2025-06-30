@@ -43,6 +43,7 @@ interface GoogleMapProps {
   setSelectedPinId: React.Dispatch<React.SetStateAction<string | null>>;
   polyline?: string;
   setTriggerMessage?: (message: string) => void;
+  isRouteView?: boolean;
 }
 
 const mapContainerStyle = {
@@ -89,6 +90,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   setSelectedPinId,
   polyline,
   setTriggerMessage,
+  isRouteView = false,
 }) => {
   const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
   const [zoom, setZoom] = useState(10);
@@ -125,6 +127,60 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     [],
   );
 
+  const calculateBounds = useCallback((pins: MapPin[]) => {
+    if (pins.length === 0) return null;
+
+    const bounds = {
+      north: -90,
+      south: 90,
+      east: -180,
+      west: 180,
+    };
+
+    for (const pin of pins) {
+      bounds.north = Math.max(bounds.north, pin.position.lat);
+      bounds.south = Math.min(bounds.south, pin.position.lat);
+      bounds.east = Math.max(bounds.east, pin.position.lng);
+      bounds.west = Math.min(bounds.west, pin.position.lng);
+    }
+
+    return bounds;
+  }, []);
+
+  const calculateZoomLevel = useCallback(
+    (bounds: { north: number; south: number; east: number; west: number }) => {
+      const WORLD_DIM = { height: 256, width: 256 };
+      const ZOOM_MAX = 21;
+
+      const latDiff = bounds.north - bounds.south;
+      const lngDiff = bounds.east - bounds.west;
+
+      // Add padding (10% on each side)
+      const latPadding = latDiff * 0.1;
+      const lngPadding = lngDiff * 0.1;
+
+      const paddedLatDiff = latDiff + latPadding * 2;
+      const paddedLngDiff = lngDiff + lngPadding * 2;
+
+      // Assume a map container size (you might want to get the actual size)
+      const mapWidth = 800; // Default width
+      const mapHeight = 600; // Default height
+
+      const latZoom = Math.floor(
+        Math.log2((mapHeight * 360) / paddedLatDiff / WORLD_DIM.height),
+      );
+      const lngZoom = Math.floor(
+        Math.log2((mapWidth * 360) / paddedLngDiff / WORLD_DIM.width),
+      );
+
+      const zoom = Math.min(latZoom, lngZoom, ZOOM_MAX);
+
+      // Return a reasonable zoom level
+      return Math.max(1, Math.min(zoom, 18));
+    },
+    [],
+  );
+
   const handleMarkerClick = useCallback(
     (pin: MapPin) => {
       setSelectedPin(pin);
@@ -153,8 +209,29 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     if (pins.length > 0) {
       const newCenter = calculateAveragePosition(pins);
       setCenter(newCenter);
+
+      // Calculate and set zoom based on pin distribution
+      if (pins.length === 1) {
+        // For single pin, use a reasonable default zoom
+        setZoom(15);
+      } else {
+        const bounds = calculateBounds(pins);
+        if (bounds) {
+          // Check if all pins are at the same location
+          const latDiff = bounds.north - bounds.south;
+          const lngDiff = bounds.east - bounds.west;
+
+          if (latDiff < 0.0001 && lngDiff < 0.0001) {
+            // All pins are very close together
+            setZoom(15);
+          } else {
+            const newZoom = calculateZoomLevel(bounds);
+            setZoom(newZoom);
+          }
+        }
+      }
     }
-  }, [pins, calculateAveragePosition]);
+  }, [pins, calculateAveragePosition, calculateBounds, calculateZoomLevel]);
 
   // Handle external pin selection
   useEffect(() => {
@@ -220,7 +297,8 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
         <Map
           mapId={"DEMO_MAP_ID"}
           style={mapContainerStyle}
-          streetViewControl={false}
+          disableDefaultUI
+          fullscreenControl
           zoomControl
           zoom={zoom}
           onZoomChanged={(e) => setZoom(e.detail.zoom)}
@@ -228,22 +306,44 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
           center={center}
           defaultZoom={10}
         >
-          {pins.map((pin) => {
-            return (
-              <AdvancedMarker
-                key={pin.id}
-                position={pin.position}
-                title={pin.title}
-                onClick={() => handleMarkerClick(pin)}
-              >
-                <Pin
-                  background={pin.selected ? "#4F46E5" : "#FBBC04"}
-                  borderColor={pin.selected ? "#3730A3" : "#F29900"}
-                  glyphColor={pin.selected ? "#FFFFFF" : "#000000"}
-                />
-              </AdvancedMarker>
-            );
-          })}
+          {pins
+            .filter((pin) => !pin.selected)
+            .map((pin) => {
+              return (
+                <AdvancedMarker
+                  key={pin.id}
+                  position={pin.position}
+                  title={pin.title}
+                  onClick={() => handleMarkerClick(pin)}
+                >
+                  <div style={{ opacity: isRouteView ? 0.5 : 1 }}>
+                    <Pin
+                      background={isRouteView ? "#E5E7EB" : "#FBBC04"}
+                      borderColor={isRouteView ? "#D1D5DB" : "#F29900"}
+                      glyphColor={isRouteView ? "#6B7280" : "#000000"}
+                    />
+                  </div>
+                </AdvancedMarker>
+              );
+            })}
+          {pins
+            .filter((pin) => pin.selected)
+            .map((pin) => {
+              return (
+                <AdvancedMarker
+                  key={pin.id}
+                  position={pin.position}
+                  title={pin.title}
+                  onClick={() => handleMarkerClick(pin)}
+                >
+                  <Pin
+                    background="#4F46E5"
+                    borderColor="#3730A3"
+                    glyphColor="#FFFFFF"
+                  />
+                </AdvancedMarker>
+              );
+            })}
 
           {infoWindowOpen && selectedPin && (
             <InfoWindow
@@ -286,7 +386,6 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                     color="gray.700"
                     boxShadow="0 2px 8px rgba(0, 0, 0, 0.15)"
                     _hover={{
-                      bg: "gray.100",
                       transform: "scale(1.1)",
                     }}
                     transition="all 0.2s"
@@ -388,6 +487,38 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                   </Box>
                 )}
 
+                {setTriggerMessage && selectedPin.id && (
+                  <Box
+                    as="button"
+                    width="100%"
+                    bg="purple.50"
+                    color="purple.700"
+                    border="1px solid"
+                    borderColor="purple.200"
+                    borderRadius="xl"
+                    p={3}
+                    transition="all 0.2s"
+                    _hover={{
+                      bg: "purple.100",
+                      borderColor: "purple.300",
+                      transform: "translateY(-1px)",
+                    }}
+                    onClick={() =>
+                      setTriggerMessage(
+                        `「${selectedPin.title}」について教えて\n${selectedPin.id ? ` (place_id: ${selectedPin.id})` : ""}`,
+                      )
+                    }
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    gap={2}
+                  >
+                    <Text fontSize="sm" fontWeight="medium">
+                      この場所について教えて
+                    </Text>
+                  </Box>
+                )}
+
                 {onSpotSelect && (
                   <Box pt={2} borderTop="1px solid" borderColor="border">
                     <Box
@@ -441,40 +572,6 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                         {selectedPin.selected
                           ? "選択済み"
                           : "このスポットに行く"}
-                      </Text>
-                    </Box>
-                  </Box>
-                )}
-
-                {setTriggerMessage && (
-                  <Box pt={2} borderTop="1px solid" borderColor="border">
-                    <Box
-                      as="button"
-                      width="100%"
-                      bg="purple.50"
-                      color="purple.700"
-                      border="1px solid"
-                      borderColor="purple.200"
-                      borderRadius="xl"
-                      p={3}
-                      transition="all 0.2s"
-                      _hover={{
-                        bg: "purple.100",
-                        borderColor: "purple.300",
-                        transform: "translateY(-1px)",
-                      }}
-                      onClick={() =>
-                        setTriggerMessage(
-                          `「${selectedPin.title}」について教えて\n${selectedPin.id ? ` (place_id: ${selectedPin.id})` : ""}`,
-                        )
-                      }
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      gap={2}
-                    >
-                      <Text fontSize="sm" fontWeight="medium">
-                        この場所について教えて
                       </Text>
                     </Box>
                   </Box>

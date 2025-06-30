@@ -28,6 +28,7 @@ export default function UserMenu() {
         variant="outline"
         size="sm"
         colorScheme="red"
+        borderRadius="xl"
       >
         ログアウト
       </Button>

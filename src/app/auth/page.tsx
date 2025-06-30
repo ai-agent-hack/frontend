@@ -4,7 +4,6 @@ import {
   Alert,
   Box,
   Button,
-  Card,
   Center,
   Heading,
   HStack,
@@ -33,7 +32,7 @@ export default function AuthPage() {
 
   useEffect(() => {
     if (user && !initializing) {
-      router.push("/");
+      router.push("/register");
     }
   }, [user, initializing, router]);
 
@@ -92,104 +91,108 @@ export default function AuthPage() {
   return (
     <VStack h="100%" gap={0} p={4}>
       <Header />
-      <Center p={4}>
-        <Card.Root maxW="md" w="full" p={8}>
-          <VStack gap={6}>
-            <VStack gap={2}>
-              <Heading size="lg" textAlign="center">
-                {isSignUp ? "アカウント作成" : "サインイン"}
-              </Heading>
-              <Text color="gray.600" textAlign="center">
-                {isSignUp
-                  ? "アカウント作成をして始めましょう"
-                  : "サインインしてアカウントにアクセス"}
-              </Text>
-            </VStack>
+      <Center p={4} w={"100%"} maxW={"400px"}>
+        <VStack gap={6} w={"100%"}>
+          <VStack gap={2} w={"100%"}>
+            <Heading size="lg" textAlign="center">
+              {isSignUp ? "アカウント作成" : "サインイン"}
+            </Heading>
+            <Text color="gray.600" textAlign="center">
+              {isSignUp
+                ? "アカウント作成をして始めましょう"
+                : "サインインしてアカウントにアクセス"}
+            </Text>
+          </VStack>
 
-            {error && (
-              <Alert.Root status="error" w="full">
-                <Alert.Description>{error}</Alert.Description>
-              </Alert.Root>
-            )}
+          {error && (
+            <Alert.Root status="error" w={"100%"}>
+              <Alert.Description>{error}</Alert.Description>
+            </Alert.Root>
+          )}
 
-            <Box as="form" onSubmit={handleSubmit} w="full">
-              <Stack gap={4}>
-                {isSignUp && (
-                  <Input
-                    type="text"
-                    placeholder="ユーザー名"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                    size="lg"
-                  />
-                )}
-
+          <Box as="form" onSubmit={handleSubmit} w={"100%"}>
+            <Stack gap={4}>
+              {isSignUp && (
                 <Input
-                  type="email"
-                  placeholder="メールアドレス"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  type="text"
+                  placeholder="ユーザー名"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                   size="lg"
+                  borderRadius="xl"
                 />
+              )}
 
+              <Input
+                type="email"
+                placeholder="メールアドレス"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                size="lg"
+                borderRadius="xl"
+              />
+
+              <Input
+                type="password"
+                placeholder="パスワード"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                size="lg"
+                borderRadius="xl"
+              />
+
+              {isSignUp && (
                 <Input
                   type="password"
-                  placeholder="パスワード"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="パスワードを確認"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                   size="lg"
+                  borderRadius="xl"
                 />
+              )}
 
-                {isSignUp && (
-                  <Input
-                    type="password"
-                    placeholder="パスワードを確認"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                    size="lg"
-                  />
-                )}
-
-                <Button
-                  type="submit"
-                  colorScheme="blue"
-                  size="lg"
-                  loading={isLoading}
-                  w="full"
-                >
-                  {isSignUp ? "アカウント作成" : "サインイン"}
-                </Button>
-              </Stack>
-            </Box>
-
-            <HStack>
-              <Text color="gray.600">
-                {isSignUp
-                  ? "アカウントをお持ちですか?"
-                  : "アカウントをお持ちでないですか?"}
-              </Text>
               <Button
-                variant="ghost"
+                type="submit"
                 colorScheme="blue"
-                onClick={() => {
-                  setIsSignUp(!isSignUp);
-                  setError("");
-                  setEmail("");
-                  setPassword("");
-                  setConfirmPassword("");
-                  setUsername("");
-                }}
-                size="sm"
+                size="lg"
+                loading={isLoading}
+                w="full"
+                borderRadius="xl"
               >
-                {isSignUp ? "サインイン" : "サインアップ"}
+                {isSignUp ? "アカウント作成" : "サインイン"}
               </Button>
-            </HStack>
-          </VStack>
-        </Card.Root>
+            </Stack>
+          </Box>
+
+          <HStack>
+            <Text color="gray.600">
+              {isSignUp
+                ? "アカウントをお持ちですか?"
+                : "アカウントをお持ちでないですか?"}
+            </Text>
+            <Button
+              variant="ghost"
+              colorScheme="blue"
+              borderRadius="xl"
+              onClick={() => {
+                setIsSignUp(!isSignUp);
+                setError("");
+                setEmail("");
+                setPassword("");
+                setConfirmPassword("");
+                setUsername("");
+              }}
+              size="sm"
+            >
+              {isSignUp ? "サインイン" : "サインアップ"}
+            </Button>
+          </HStack>
+        </VStack>
       </Center>
     </VStack>
   );

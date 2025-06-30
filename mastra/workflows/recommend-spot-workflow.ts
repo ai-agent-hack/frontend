@@ -99,10 +99,6 @@ const nonSpotResponseStep = createStep({
     
     return {
       message: result.text || "申し訳ございません。お手伝いできることがありましたらお申し付けください。",
-      recommendSpotObject: recommendSpotObject || {
-        recommend_spot_id: "",
-        recommend_spots: [],
-      }
     };
   },
 });
@@ -229,14 +225,12 @@ const spotDetailStep = createStep({
       
       return {
         message: explanationResult.text || `${reviewData.place_name}についての詳細情報です。`,
-        recommendSpotObject: recommendSpotObject,
       };
       
     } catch (error) {
       console.error('スポット詳細取得エラー:', error);
       return {
         message: "スポット情報の取得中にエラーが発生しました。もう一度お試しください。",
-        recommendSpotObject: recommendSpotObject,
       };
     }
   },
@@ -253,8 +247,8 @@ const routeCreationExecuteStep = createStep({
     planId: z.string(),
   }),
   outputSchema: outputSchema,
-  execute: async ({ inputData }) => {
-    const { recommendSpotObject, planId } = inputData;
+  execute: async ({ inputData, mastra }) => {
+    const { recommendSpotObject, planId, messages } = inputData;
     
     // 選択されているスポットを確認
     const selectedSpots = recommendSpotObject?.recommend_spots?.flatMap((timeSlot: any) =>
@@ -273,20 +267,47 @@ const routeCreationExecuteStep = createStep({
     
     try {
       // route-toolを使用してルート座標を取得
-      const coordinates = await routeTool({ planId });
+      const { polyline, orderedSpots } = await routeTool({ planId });
+
+      if (orderedSpots.length === 0) {
+        return {
+          message: "1日では回りきれないスポット数でした。もう少しスポットを減らしてみてください！",
+        };
+      }
+
+      // conciseRouteExplanationAgentを使用して簡潔で魅力的なルート説明を生成
+      const routeExplanationAgent = mastra.getAgent('conciseRouteExplanationAgent');
       
-      const spotsInfo = selectedSpots.map((spot: any) => `${spot.details.name}（${spot.time_slot}）`).join('、');
+      // チャット履歴から旅行の文脈を抽出
+      const recentMessages = messages.slice(-5);
+      const chatContext = recentMessages.map(msg => `${msg.role}: ${msg.content}`).join('\n');
+      
+      const routeExplanationResult = await routeExplanationAgent.generate(
+        [
+          {
+            id: crypto.randomUUID(),
+            role: 'user' as const,
+            content: `
+以下の観光ルートについて、ユーザーがワクワクする魅力的な説明を生成してください。
+
+チャット履歴（旅行の文脈）:
+${chatContext}
+
+実際の観光ルート（この順番で回ります）:
+${orderedSpots.map((spot: any, index: number) => `${index + 1}. ${spot.name}${spot.time ? ` (${spot.time})` : ''}`).join('\n')}`,
+          }
+        ]
+      );
       
       return {
-        message: `次のスポットで旅行ルートを作成しました！\n\n${spotsInfo}\n\n素敵な旅行になりますように！`,
-        recommendSpotObject: recommendSpotObject,
-        coordinates: coordinates,
+        message: routeExplanationResult.text || `旅行ルートを作成しました！選択されたスポットを効率的に巡れるルートです。`,
+        polyline: polyline,
+        orderedSpots: orderedSpots,
       };
     } catch (error) {
       console.error('ルート作成エラー:', error);
       return {
         message: "ルート作成中にエラーが発生しました。もう一度お試しください。",
-        recommendSpotObject: recommendSpotObject,
       };
     }
   },

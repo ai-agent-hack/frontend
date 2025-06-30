@@ -1,13 +1,6 @@
-import { Agent } from "@mastra/core/agent";
-import { Memory } from "@mastra/memory";
-import { LibSQLStore } from "@mastra/libsql";
-import { webSearchTool } from "../tools/web-search-tool";
-import { vertex } from "../model/google";
-
-const MASTRA_DEBUG = process.env.MASTRA_DEBUG === "true";
-const storage_url = MASTRA_DEBUG
-    ? "file:../../mastra/mastra.db"
-    : "file:./mastra/mastra.db";
+import { Agent } from '@mastra/core/agent';
+import { webSearchTool } from '../tools/web-search-tool';
+import { vertex } from '../model/google';
 
 export const recommendSpotAgent = new Agent({
     name: "General Travel Information Assistant",
@@ -62,13 +55,8 @@ export const recommendSpotAgent = new Agent({
       - お客様のご要望を楽しくお伺いすることに注力します
       - 今日の日付は${new Date().toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })}です
 `,
-    model: vertex("gemini-2.5-flash"),
-    tools: {
-        webSearchTool,
-    },
-    memory: new Memory({
-        storage: new LibSQLStore({
-            url: storage_url,
-        }) as any,
-    }),
+  model: vertex('gemini-2.5-flash'),
+  tools: {
+    webSearchTool,
+  }
 });

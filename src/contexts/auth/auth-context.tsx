@@ -53,8 +53,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         try {
           const firebaseToken = await firebaseUser.getIdToken(true);
           const backendUser = await apiSessionLogin(firebaseToken);
-          console.log("Backend user:", backendUser);
-
           setUser(backendUser);
         } catch (error) {
           console.error("Failed to sync with backend:", error);

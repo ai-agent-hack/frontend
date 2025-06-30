@@ -40,9 +40,9 @@ const RegisterPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [destination, setDestination] = useState<string>("");
-  const [date, setDate] = useState<Date | null>(null);
+  const [date, setDate] = useState<Date>(new Date());
   const [participantsCount, setParticipantsCount] = useState<number>(1);
-  const [budget, setBudget] = useState<number>(0);
+  const [budget, setBudget] = useState<number>(10000);
   const [atmosphere, setAtmosphere] = useState<string>("");
   const router = useRouter();
 
@@ -118,6 +118,8 @@ const RegisterPage: React.FC = () => {
               onChange={(e) => setDestination(e.target.value)}
               placeholder="例: 北海道、沖縄、京都"
               disabled={isLoading}
+              size="lg"
+              borderRadius="xl"
             />
           </Box>
 
@@ -131,9 +133,11 @@ const RegisterPage: React.FC = () => {
               type="date"
               value={formatDate(date)}
               onChange={(e) =>
-                setDate(e.target.value ? new Date(e.target.value) : null)
+                setDate(e.target.value ? new Date(e.target.value) : new Date())
               }
               disabled={isLoading}
+              size="lg"
+              borderRadius="xl"
             />
           </Box>
 
@@ -143,10 +147,19 @@ const RegisterPage: React.FC = () => {
             </Text>
             <Input
               value={participantsCount}
-              onChange={(e) => setParticipantsCount(Number(e.target.value))}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                if (Number.isNaN(value) || value < 0) {
+                  setParticipantsCount(0);
+                  return;
+                }
+                setParticipantsCount(value);
+              }}
               min={0}
-              placeholder="例: 50000"
+              placeholder="例: 3"
               disabled={isLoading}
+              size="lg"
+              borderRadius="xl"
             />
           </Box>
 
@@ -156,10 +169,19 @@ const RegisterPage: React.FC = () => {
             </Text>
             <Input
               value={budget}
-              onChange={(e) => setBudget(Number(e.target.value))}
-              min={0}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                if (Number.isNaN(value) || value < 10000) {
+                  setBudget(10000);
+                  return;
+                }
+                setBudget(value);
+              }}
+              min={10000}
               placeholder="例: 50000"
               disabled={isLoading}
+              size="lg"
+              borderRadius="xl"
             />
           </Box>
 
@@ -201,10 +223,17 @@ const RegisterPage: React.FC = () => {
               placeholder="タグをクリックして選択、または自由に入力してください"
               rows={4}
               disabled={isLoading}
+              size="lg"
+              borderRadius="xl"
             />
           </Box>
 
-          <Button onClick={handleSubmit} disabled={isLoading}>
+          <Button
+            onClick={handleSubmit}
+            disabled={isLoading}
+            size="lg"
+            borderRadius="xl"
+          >
             <HStack>
               {isLoading && <Spinner size="sm" />}
               <Text>旅行計画ページへ行く!</Text>
