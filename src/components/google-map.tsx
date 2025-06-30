@@ -386,7 +386,6 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                     color="gray.700"
                     boxShadow="0 2px 8px rgba(0, 0, 0, 0.15)"
                     _hover={{
-                      bg: "gray.100",
                       transform: "scale(1.1)",
                     }}
                     transition="all 0.2s"

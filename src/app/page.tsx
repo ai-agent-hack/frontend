@@ -22,13 +22,10 @@ export default function Home() {
   useEffect(() => {
     const fetchTrips = async () => {
       try {
-        // 사용자가 로그인하지 않은 경우 등 에러 핸들링이 필요할 수 있습니다.
         const fetchedTrips = await getMyTrips();
-        console.log("Fetched trips data:", fetchedTrips);
         setTrips(fetchedTrips);
       } catch (error) {
         console.error("Failed to fetch trips:", error);
-        // 사용자에게 에러를 알리는 UI를 추가할 수 있습니다.
       } finally {
         setIsLoading(false);
       }
@@ -38,7 +35,7 @@ export default function Home() {
   }, []);
 
   return (
-    <VStack h="100vh" w="100%" gap={0} align="stretch" bg="gray.100">
+    <VStack h="100vh" w="100%" gap={0} align="stretch">
       <Box px={4} pt={4}>
         <Header />
       </Box>
@@ -50,21 +47,18 @@ export default function Home() {
         gap={4}
         h="calc(100vh - 80px)"
       >
-        {/* 여행 기록을 위한 사이드바 */}
         <VStack
           w="280px"
           h="full"
-          bg="white"
+          bg="bg.subtle"
           p={4}
           gap={4}
           align="stretch"
-          borderRadius="lg"
+          borderRadius="xl"
           shadow="sm"
           overflow="hidden"
         >
-          <Heading size="md" color="gray.700">
-            私の旅行記録
-          </Heading>
+          <Heading size="md">あなたの旅行記録</Heading>
           <VStack
             gap={3}
             align="stretch"
@@ -98,20 +92,17 @@ export default function Home() {
                   <Box
                     as="a"
                     p={3}
-                    bg="gray.50"
-                    borderRadius="md"
+                    bg="bg.emphasized"
+                    borderRadius="lg"
                     _hover={{
-                      bg: "gray.200",
                       cursor: "pointer",
                     }}
                     transition="background-color 0.2s"
                     w="full"
                     display="block"
                   >
-                    <Text fontWeight="medium" color="gray.800">
-                      {trip.region} 旅行
-                    </Text>
-                    <Text fontSize="sm" color="gray.500">
+                    <Text fontWeight="medium">{trip.region} 旅行</Text>
+                    <Text fontSize="sm">
                       {new Date(trip.start_date).toLocaleDateString("ja-JP")}
                     </Text>
                   </Box>
@@ -123,10 +114,9 @@ export default function Home() {
           </VStack>
         </VStack>
 
-        {/* 메인 컨텐츠 */}
         <Center flex={1} flexDirection="column">
           <VStack gap={6}>
-            <Heading as="h1" size="2xl" textAlign="center" color="gray.800">
+            <Heading as="h1" size="2xl" textAlign="center">
               次の旅行はどこへ行きますか？
             </Heading>
             <Link href="/register" passHref>
@@ -139,12 +129,10 @@ export default function Home() {
                 fontWeight="bold"
                 fontSize="xl"
                 borderRadius="full"
-                shadow="md"
                 _hover={{
-                  transform: "scale(1.05)",
-                  shadow: "lg",
+                  transform: "scale(1.1)",
                 }}
-                transition="all 0.2s"
+                shadow="md"
               >
                 旅行を始める
               </Button>
