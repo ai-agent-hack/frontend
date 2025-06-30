@@ -118,6 +118,8 @@ const RegisterPage: React.FC = () => {
               onChange={(e) => setDestination(e.target.value)}
               placeholder="例: 北海道、沖縄、京都"
               disabled={isLoading}
+              size="lg"
+              borderRadius="xl"
             />
           </Box>
 
@@ -134,6 +136,8 @@ const RegisterPage: React.FC = () => {
                 setDate(e.target.value ? new Date(e.target.value) : null)
               }
               disabled={isLoading}
+              size="lg"
+              borderRadius="xl"
             />
           </Box>
 
@@ -154,6 +158,8 @@ const RegisterPage: React.FC = () => {
               min={0}
               placeholder="例: 3"
               disabled={isLoading}
+              size="lg"
+              borderRadius="xl"
             />
           </Box>
 
@@ -174,6 +180,8 @@ const RegisterPage: React.FC = () => {
               min={0}
               placeholder="例: 50000"
               disabled={isLoading}
+              size="lg"
+              borderRadius="xl"
             />
           </Box>
 
@@ -215,10 +223,17 @@ const RegisterPage: React.FC = () => {
               placeholder="タグをクリックして選択、または自由に入力してください"
               rows={4}
               disabled={isLoading}
+              size="lg"
+              borderRadius="xl"
             />
           </Box>
 
-          <Button onClick={handleSubmit} disabled={isLoading}>
+          <Button
+            onClick={handleSubmit}
+            disabled={isLoading}
+            size="lg"
+            borderRadius="xl"
+          >
             <HStack>
               {isLoading && <Spinner size="sm" />}
               <Text>旅行計画ページへ行く!</Text>
