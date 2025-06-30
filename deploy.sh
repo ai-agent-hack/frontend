@@ -9,24 +9,21 @@ IMAGE_NAME="gcr.io/$PROJECT_ID/$SERVICE_NAME"
 
 echo "Building Docker image..."
 
-# Load environment variables from .env file
-if [ -f ./.env ]; then
-    # Load all variables except GOOGLE_PRIVATE_KEY first
-    export $(grep -v '^#' ./.env | grep -v 'GOOGLE_PRIVATE_KEY' | xargs)
-    
-    # Load GOOGLE_PRIVATE_KEY separately to handle multiline content
-    export GOOGLE_PRIVATE_KEY=$(grep 'GOOGLE_PRIVATE_KEY=' ./.env | cut -d'=' -f2- | sed 's/^"//' | sed 's/"$//')
-    
-    echo "Loaded environment variables from .env file"
-    echo "NEXT_PUBLIC_FIREBASE_API_KEY: ${NEXT_PUBLIC_FIREBASE_API_KEY:0:10}..."
-    echo "GOOGLE_PRIVATE_KEY: [LOADED]"
-else
-    echo "Warning: .env file not found!"
-fi
+echo "Fetching secrets from Google Secret Manager for build..."
 
-docker build --platform linux/amd64 -t $IMAGE_NAME \
-  --build-arg GOOGLE_PROJECT_ID="$GOOGLE_PROJECT_ID" \
-  --build-arg GOOGLE_VERTEX_PROJECT="$GOOGLE_PROJECT_ID" \
+# Fetch NEXT_PUBLIC_ secrets for build time (these get baked into the build)
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$(gcloud secrets versions access latest --secret="google-maps-api-key")
+NEXT_PUBLIC_API_URL=$(gcloud secrets versions access latest --secret="next-public-api-url")
+NEXT_PUBLIC_FIREBASE_API_KEY=$(gcloud secrets versions access latest --secret="firebase-api-key")
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=$(gcloud secrets versions access latest --secret="firebase-auth-domain")
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=$(gcloud secrets versions access latest --secret="firebase-project-id")
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=$(gcloud secrets versions access latest --secret="firebase-storage-bucket")
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=$(gcloud secrets versions access latest --secret="firebase-messaging-sender-id")
+NEXT_PUBLIC_FIREBASE_APP_ID=$(gcloud secrets versions access latest --secret="firebase-app-id")
+
+echo "Building image with real NEXT_PUBLIC_ values from Secret Manager..."
+
+docker build --no-cache --platform linux/amd64 -t $IMAGE_NAME \
   --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY" \
   --build-arg NEXT_PUBLIC_API_URL="$NEXT_PUBLIC_API_URL" \
   --build-arg NEXT_PUBLIC_FIREBASE_API_KEY="$NEXT_PUBLIC_FIREBASE_API_KEY" \
@@ -35,22 +32,25 @@ docker build --platform linux/amd64 -t $IMAGE_NAME \
   --build-arg NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="$NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET" \
   --build-arg NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="$NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID" \
   --build-arg NEXT_PUBLIC_FIREBASE_APP_ID="$NEXT_PUBLIC_FIREBASE_APP_ID" \
-  --build-arg GOOGLE_CLIENT_EMAIL="$GOOGLE_CLIENT_EMAIL" \
-  --build-arg MASTRA_DEBUG="$MASTRA_DEBUG" \
-  --build-arg FIRECRAWL_API_KEY="$FIRECRAWL_API_KEY" \
-  --build-arg GOOGLE_PRIVATE_KEY="$GOOGLE_PRIVATE_KEY" \
-  .
+  . || { echo "Docker build failed"; exit 1; }
 
 echo "Pushing image to Google Container Registry..."
 docker push $IMAGE_NAME
 
-echo "Deploying to Cloud Run..."
+echo "Deploying to Cloud Run with runtime secrets..."
 gcloud run deploy $SERVICE_NAME \
   --image $IMAGE_NAME \
   --platform managed \
   --region $REGION \
   --allow-unauthenticated \
-  --port 3000
+  --port 3000 \
+  --set-env-vars="NODE_ENV=production" \
+  --set-secrets="GOOGLE_PROJECT_ID=google-project-id:latest" \
+  --set-secrets="GOOGLE_VERTEX_PROJECT=google-project-id:latest" \
+  --set-secrets="GOOGLE_CLIENT_EMAIL=google-client-email:latest" \
+  --set-secrets="GOOGLE_PRIVATE_KEY=google-private-key:latest" \
+  --set-secrets="MASTRA_DEBUG=mastra-debug:latest" \
+  --set-secrets="FIRECRAWL_API_KEY=firecrawl-api-key:latest"
 
 echo "Deployment completed!"
 echo "Your frontend should be available at the Cloud Run URL." 
