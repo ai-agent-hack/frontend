@@ -488,6 +488,38 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                   </Box>
                 )}
 
+                {setTriggerMessage && selectedPin.id && (
+                  <Box
+                    as="button"
+                    width="100%"
+                    bg="purple.50"
+                    color="purple.700"
+                    border="1px solid"
+                    borderColor="purple.200"
+                    borderRadius="xl"
+                    p={3}
+                    transition="all 0.2s"
+                    _hover={{
+                      bg: "purple.100",
+                      borderColor: "purple.300",
+                      transform: "translateY(-1px)",
+                    }}
+                    onClick={() =>
+                      setTriggerMessage(
+                        `「${selectedPin.title}」について教えて\n${selectedPin.id ? ` (place_id: ${selectedPin.id})` : ""}`,
+                      )
+                    }
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    gap={2}
+                  >
+                    <Text fontSize="sm" fontWeight="medium">
+                      この場所について教えて
+                    </Text>
+                  </Box>
+                )}
+
                 {onSpotSelect && (
                   <Box pt={2} borderTop="1px solid" borderColor="border">
                     <Box
@@ -541,40 +573,6 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                         {selectedPin.selected
                           ? "選択済み"
                           : "このスポットに行く"}
-                      </Text>
-                    </Box>
-                  </Box>
-                )}
-
-                {setTriggerMessage && (
-                  <Box pt={2} borderTop="1px solid" borderColor="border">
-                    <Box
-                      as="button"
-                      width="100%"
-                      bg="purple.50"
-                      color="purple.700"
-                      border="1px solid"
-                      borderColor="purple.200"
-                      borderRadius="xl"
-                      p={3}
-                      transition="all 0.2s"
-                      _hover={{
-                        bg: "purple.100",
-                        borderColor: "purple.300",
-                        transform: "translateY(-1px)",
-                      }}
-                      onClick={() =>
-                        setTriggerMessage(
-                          `「${selectedPin.title}」について教えて\n${selectedPin.id ? ` (place_id: ${selectedPin.id})` : ""}`,
-                        )
-                      }
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      gap={2}
-                    >
-                      <Text fontSize="sm" fontWeight="medium">
-                        この場所について教えて
                       </Text>
                     </Box>
                   </Box>
