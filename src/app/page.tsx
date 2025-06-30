@@ -10,6 +10,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Header from "@/components/header";
 import type { PreInfo } from "@/types/pre-info";
@@ -18,8 +19,14 @@ import { getMyTrips } from "./action";
 export default function Home() {
   const [trips, setTrips] = useState<PreInfo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Unnecessary for initial redirect
   useEffect(() => {
+    router.push("/register");
+    return;
+
+    // biome-ignore lint/correctness/noUnreachable: FIXME: This is a temporary fix to redirect to register page
     const fetchTrips = async () => {
       try {
         const fetchedTrips = await getMyTrips();

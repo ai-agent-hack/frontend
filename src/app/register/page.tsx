@@ -40,9 +40,9 @@ const RegisterPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [destination, setDestination] = useState<string>("");
-  const [date, setDate] = useState<Date | null>(null);
+  const [date, setDate] = useState<Date>(new Date());
   const [participantsCount, setParticipantsCount] = useState<number>(1);
-  const [budget, setBudget] = useState<number>(0);
+  const [budget, setBudget] = useState<number>(10000);
   const [atmosphere, setAtmosphere] = useState<string>("");
   const router = useRouter();
 
@@ -133,7 +133,7 @@ const RegisterPage: React.FC = () => {
               type="date"
               value={formatDate(date)}
               onChange={(e) =>
-                setDate(e.target.value ? new Date(e.target.value) : null)
+                setDate(e.target.value ? new Date(e.target.value) : new Date())
               }
               disabled={isLoading}
               size="lg"
@@ -171,13 +171,13 @@ const RegisterPage: React.FC = () => {
               value={budget}
               onChange={(e) => {
                 const value = Number(e.target.value);
-                if (Number.isNaN(value) || value < 0) {
-                  setBudget(0);
+                if (Number.isNaN(value) || value < 10000) {
+                  setBudget(10000);
                   return;
                 }
                 setBudget(value);
               }}
-              min={0}
+              min={10000}
               placeholder="例: 50000"
               disabled={isLoading}
               size="lg"
