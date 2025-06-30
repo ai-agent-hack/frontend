@@ -9,7 +9,6 @@ interface RouteDetailProps {
     name: string;
     timeSlot: "午前" | "午後" | "夜";
   }>;
-  onGenerateRoute: () => void;
   isGeneratingRoute?: boolean;
   routeInfo?: {
     duration: string;
@@ -62,14 +61,12 @@ const RouteDetail = ({
   recommendedSpots,
   onTimeSlotChange,
 }: RouteDetailProps) => {
-  // Mapping between English and Japanese time slots
   const timeSlotMapping: Record<string, "午前" | "午後" | "夜"> = {
     MORNING: "午前",
     AFTERNOON: "午後",
     NIGHT: "夜",
   };
 
-  // Helper function to find pin ID for a spot
   const findPinIdForSpot = (spotId: string) => {
     if (!recommendedSpots) return null;
 
@@ -84,7 +81,6 @@ const RouteDetail = ({
     return null;
   };
 
-  // Group spots by time slot
   const spotsByTimeSlot =
     orderedSpots?.reduce(
       (acc, spot) => {
@@ -99,6 +95,7 @@ const RouteDetail = ({
       {} as Record<string, typeof orderedSpots>,
     ) || {};
 
+  // biome-ignore lint/suspicious/noExplicitAny: FIXME: This is a temporary use of any type
   const timeSlotConfig: Record<string, any> = {
     MORNING: {
       icon: LuSunrise,
@@ -124,10 +121,7 @@ const RouteDetail = ({
     未分類: { icon: LuSun, color: "gray", label: "ルート", bgColor: "gray.50" },
   };
 
-  // Define the order of time slots
   const timeSlotOrder = ["MORNING", "AFTERNOON", "NIGHT"];
-
-  // Get actual time slots from the data in the correct order
   const timeSlots = timeSlotOrder.filter(
     (slot) => spotsByTimeSlot[slot] && spotsByTimeSlot[slot].length > 0,
   );
@@ -136,7 +130,6 @@ const RouteDetail = ({
     <VStack width="100%" gap={4} p={4}>
       {orderedSpots && orderedSpots.length > 0 ? (
         <VStack width="100%" gap={0} position="relative">
-          {/* Timeline line */}
           <Box
             position="absolute"
             left="24px"
@@ -149,14 +142,13 @@ const RouteDetail = ({
 
           {timeSlots.map((timeSlot) => {
             const spots = spotsByTimeSlot?.[timeSlot] || [];
-            const config = timeSlotConfig[timeSlot] || timeSlotConfig["未分類"];
+            const config = timeSlotConfig[timeSlot] || timeSlotConfig.未分類;
             const Icon = config.icon;
 
             if (spots.length === 0) return null;
 
             return (
               <VStack key={timeSlot} width="100%" gap={3} mb={6}>
-                {/* Time slot header */}
                 <HStack width="100%" gap={3} mb={2}>
                   <Box
                     bg={`${config.color}.100`}
@@ -180,11 +172,9 @@ const RouteDetail = ({
                   </Text>
                 </HStack>
 
-                {/* Spots for this time slot */}
                 <VStack width="100%" gap={2} pl="56px">
                   {spots.map((spot, index) => (
                     <Box key={spot.spot_id} width="100%" position="relative">
-                      {/* Connection dot */}
                       <Box
                         position="absolute"
                         left="-34px"
@@ -197,7 +187,6 @@ const RouteDetail = ({
                         zIndex={1}
                       />
 
-                      {/* Spot card */}
                       <Box
                         p={4}
                         bg={config.bgColor}
@@ -210,13 +199,11 @@ const RouteDetail = ({
                         onClick={() => {
                           const pinId = findPinIdForSpot(spot.spot_id);
                           if (pinId && onPinClick) {
-                            // Update selected time slot if needed
                             const japaneseTimeSlot =
                               timeSlotMapping[spot.time_slot];
                             if (japaneseTimeSlot && onTimeSlotChange) {
                               onTimeSlotChange(japaneseTimeSlot);
                             }
-                            // Show pin info
                             onPinClick(pinId);
                           }
                         }}

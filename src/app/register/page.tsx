@@ -143,9 +143,16 @@ const RegisterPage: React.FC = () => {
             </Text>
             <Input
               value={participantsCount}
-              onChange={(e) => setParticipantsCount(Number(e.target.value))}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                if (Number.isNaN(value) || value < 0) {
+                  setParticipantsCount(0);
+                  return;
+                }
+                setParticipantsCount(value);
+              }}
               min={0}
-              placeholder="例: 50000"
+              placeholder="例: 3"
               disabled={isLoading}
             />
           </Box>
@@ -156,7 +163,14 @@ const RegisterPage: React.FC = () => {
             </Text>
             <Input
               value={budget}
-              onChange={(e) => setBudget(Number(e.target.value))}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                if (Number.isNaN(value) || value < 0) {
+                  setBudget(0);
+                  return;
+                }
+                setBudget(value);
+              }}
               min={0}
               placeholder="例: 50000"
               disabled={isLoading}

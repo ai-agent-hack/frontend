@@ -223,6 +223,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
           mapId={"DEMO_MAP_ID"}
           style={mapContainerStyle}
           streetViewControl={false}
+          mapTypeControl={false}
           zoomControl
           zoom={zoom}
           onZoomChanged={(e) => setZoom(e.detail.zoom)}
