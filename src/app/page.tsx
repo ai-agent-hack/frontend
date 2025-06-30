@@ -119,31 +119,18 @@ export default function Home() {
   };
 
   return (
-    <VStack h="100vh" w="100%" gap={0} align="stretch" bg="white">
-      <Box
-        px={4}
-        pt={4}
-        bg="white"
-        shadow="sm"
-        position="sticky"
-        top={0}
-        zIndex={10}
-      >
+    <VStack h="100vh" w="100%" gap={0} align="stretch">
+      <Box px={4} pt={4} shadow="sm" position="sticky" top={0} zIndex={10}>
         <Header />
       </Box>
 
       <Box ref={scrollContainerRef} flex={1} overflow="auto">
         {/* Hero Section */}
-        <Box
-          bg="white"
-          py={{ base: 16, md: 24 }}
-          position="relative"
-          overflow="hidden"
-        >
+        <Box py={{ base: 16, md: 24 }} position="relative" overflow="hidden">
           <Container maxW="container.xl">
             <VStack gap={8} position="relative" zIndex={1}>
               <VStack gap={6} maxW="800px" mx="auto">
-                <Badge colorScheme="purple" px={4} py={2} fontSize="lg">
+                <Badge px={4} py={2} fontSize="lg">
                   AI旅行プランナー
                 </Badge>
                 <Heading
@@ -161,7 +148,7 @@ export default function Home() {
                   fontSize={{ base: "lg", md: "xl" }}
                   textAlign="center"
                   maxW="700px"
-                  color="gray.700"
+                  color="fg.subtle"
                 >
                   リアルタイムの混雑・口コミデータを横断的に解析し、
                   曖昧な「こんな旅がしたい」という想いを最適ルートに変える
@@ -174,7 +161,7 @@ export default function Home() {
                   fontSize={{ base: "md", md: "lg" }}
                   textAlign="center"
                   maxW="600px"
-                  color="gray.600"
+                  color="fg.subtle"
                 >
                   気づかないところに眠る、もっと心地よく、
                   もっと効率的で、もっとワクワクする旅程を発見します
@@ -189,7 +176,7 @@ export default function Home() {
                   fontSize="xl"
                   fontWeight="bold"
                   bgGradient="linear(to-r, purple.500, pink.500)"
-                  color="white"
+                  color="fg.inverted"
                   borderRadius="full"
                   _hover={{
                     transform: "scale(1.05)",
@@ -220,7 +207,7 @@ export default function Home() {
         </Box>
 
         {/* User Personas Section */}
-        <Box bg="gray.50" py={20}>
+        <Box py={20} bg="gray.subtle">
           <Container maxW="container.xl">
             <VStack gap={12}>
               <VStack gap={4}>
@@ -233,10 +220,10 @@ export default function Home() {
                 {userPersonas.map((persona) => (
                   <VStack
                     key={persona.id}
-                    bg="white"
+                    bg="bg.emphasized"
                     p={6}
                     borderRadius="xl"
-                    shadow="sm"
+                    shadow={"0px 0px 15px rgba(0, 0, 0, 0.2)"}
                     align="start"
                     gap={4}
                   >
@@ -244,7 +231,7 @@ export default function Home() {
                     <Text fontWeight="bold" fontSize="lg">
                       {persona.title}
                     </Text>
-                    <Text color="gray.600" fontSize="sm">
+                    <Text color="fg.subtle" fontSize="sm">
                       {persona.description}
                     </Text>
                   </VStack>
@@ -264,7 +251,7 @@ export default function Home() {
                 </Heading>
                 <Text
                   fontSize="lg"
-                  color="gray.600"
+                  color="fg.subtle"
                   textAlign="center"
                   maxW="700px"
                 >
@@ -299,14 +286,14 @@ export default function Home() {
         </Box>
 
         {/* Features Section */}
-        <Box bg="purple.50" py={20}>
+        <Box bg="purple.100" py={20}>
           <Container maxW="container.xl">
             <VStack gap={12}>
               <VStack gap={4}>
-                <Badge colorScheme="purple" px={4} py={2} fontSize="lg">
+                <Badge px={4} py={2} fontSize="lg">
                   宣言型の体験
                 </Badge>
-                <Heading size="xl" textAlign="center">
+                <Heading color={"black"} size="xl" textAlign="center">
                   手続型から宣言型へ
                 </Heading>
                 <Text
@@ -327,15 +314,13 @@ export default function Home() {
                     bg="white"
                     p={6}
                     borderRadius="xl"
-                    shadow="md"
-                    _hover={{ shadow: "xl", transform: "translateY(-4px)" }}
-                    transition="all 0.3s"
+                    shadow={"0px 0px 15px rgba(0, 0, 0, 0.2)"}
                     gap={4}
                   >
                     <Center w={16} h={16} bg="purple.500" borderRadius="full">
                       <Icon as={feature.icon} boxSize={8} color="white" />
                     </Center>
-                    <Text fontWeight="bold" fontSize="lg">
+                    <Text color="black" fontWeight="bold" fontSize="lg">
                       {feature.title}
                     </Text>
                     <Text color="gray.600" textAlign="center" fontSize="sm">
@@ -349,7 +334,7 @@ export default function Home() {
         </Box>
 
         {/* Scroll to Top Section */}
-        <Box py={12} bg="gray.50">
+        <Box py={12}>
           <Center>
             <Button
               onClick={scrollToTop}
