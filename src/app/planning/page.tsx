@@ -35,6 +35,7 @@ export default function Planning() {
   const [isSaving, setIsSaving] = useState(false);
   const [orderedSpots, setOrderedSpots] = useState<any[]>([]);
   const [isRouteShown, setIsRouteShown] = useState<boolean>(false);
+  const [routeGenerationAttempted, setRouteGenerationAttempted] = useState<boolean>(false);
   const preInfoId = useSearchParams().get("pre_info_id");
 
   const selectedSpots =
@@ -121,6 +122,7 @@ ${preInfo.participants_count}人
   const handleRecommendSpotUpdate = useCallback(
     (recommendSpot: RecommendedSpots) => {
       setRecommendedSpots(recommendSpot);
+      setIsRouteShown(false);
 
       const pins: MapPin[] = recommendSpot.recommend_spots.flatMap((timeSlot) =>
         timeSlot.spots.map((spot, index) => ({
@@ -184,6 +186,7 @@ ${preInfo.participants_count}人
 
   const handleOrderedSpotsUpdate = useCallback((orderedSpots: any[]) => {
     setOrderedSpots(orderedSpots);
+    setRouteGenerationAttempted(true);
     if (orderedSpots && orderedSpots.length > 0) {
       setIsRouteShown(true);
     }
@@ -263,7 +266,7 @@ ${preInfo.participants_count}人
             left={2}
             zIndex={10}
             bg="white"
-            p={2}
+            p={0.5}
             borderRadius="xl"
             shadow="0px 0px 15px rgba(0, 0, 0, 0.2)"
             width="30%"
@@ -271,25 +274,28 @@ ${preInfo.participants_count}人
             display="flex"
             flexDirection="column"
           >
-            <HStack mb={2} flexShrink={0}>
+            <HStack mb={2} mt={2} flexShrink={0} ml={2} width="100%">
               <IconButton
-                size="sm"
+                size="xs"
+                minW="24px"
+                height="24px"
                 onClick={() => setIsRouteShown(!isRouteShown)}
               >
-                {isRouteShown ? <LuChevronUp /> : <LuChevronDown />}
+                {isRouteShown ? <LuChevronUp size={14} /> : <LuChevronDown size={14} />}
               </IconButton>
               <Text color={"black"} fontSize="sm" fontWeight="medium">
                 ルートの詳細
               </Text>
             </HStack>
             {isRouteShown && (
-              <Box flex="1" overflowY="scroll">
+              <Box flex="1" overflowY="auto" overflowX="hidden">
                 <RouteDetail
                   selectedSpots={selectedSpots}
                   onPinClick={handlePinClick}
                   recommendedSpots={recommendedSpots ?? undefined}
                   onTimeSlotChange={setSelectedTimeSlot}
                   orderedSpots={orderedSpots}
+                  routeGenerationAttempted={routeGenerationAttempted}
                 />
               </Box>
             )}
@@ -311,11 +317,11 @@ ${preInfo.participants_count}人
           <Box width="100%" p={4} borderBottom="1px solid" borderColor="border">
             <HStack gap={2}>
               <Text fontWeight="bold" fontSize="lg" color="purple.fg">
-                スポット/ルート詳細
+                おすすめスポット
               </Text>
             </HStack>
             <Text fontSize="sm" color="purple.fg" mt={1}>
-              スポットとルートの詳細を確認しましょう。
+              気になるスポットをチェックしましょう。
             </Text>
           </Box>
           <Box width="90%" flex="1" overflowY="auto">

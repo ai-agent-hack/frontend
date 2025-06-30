@@ -99,10 +99,6 @@ const nonSpotResponseStep = createStep({
     
     return {
       message: result.text || "申し訳ございません。お手伝いできることがありましたらお申し付けください。",
-      recommendSpotObject: recommendSpotObject || {
-        recommend_spot_id: "",
-        recommend_spots: [],
-      }
     };
   },
 });
@@ -229,14 +225,12 @@ const spotDetailStep = createStep({
       
       return {
         message: explanationResult.text || `${reviewData.place_name}についての詳細情報です。`,
-        recommendSpotObject: recommendSpotObject,
       };
       
     } catch (error) {
       console.error('スポット詳細取得エラー:', error);
       return {
         message: "スポット情報の取得中にエラーが発生しました。もう一度お試しください。",
-        recommendSpotObject: recommendSpotObject,
       };
     }
   },
@@ -275,6 +269,12 @@ const routeCreationExecuteStep = createStep({
       // route-toolを使用してルート座標を取得
       const { polyline, orderedSpots } = await routeTool({ planId });
 
+      if (orderedSpots.length === 0) {
+        return {
+          message: "1日では回りきれないスポット数でした。もう少しスポットを減らしてみてください！",
+        };
+      }
+
       // conciseRouteExplanationAgentを使用して簡潔で魅力的なルート説明を生成
       const routeExplanationAgent = mastra.getAgent('conciseRouteExplanationAgent');
       
@@ -301,7 +301,6 @@ ${orderedSpots.map((spot: any, index: number) => `${index + 1}. ${spot.name}${sp
       
       return {
         message: routeExplanationResult.text || `旅行ルートを作成しました！選択されたスポットを効率的に巡れるルートです。`,
-        recommendSpotObject: recommendSpotObject,
         polyline: polyline,
         orderedSpots: orderedSpots,
       };
@@ -309,7 +308,6 @@ ${orderedSpots.map((spot: any, index: number) => `${index + 1}. ${spot.name}${sp
       console.error('ルート作成エラー:', error);
       return {
         message: "ルート作成中にエラーが発生しました。もう一度お試しください。",
-        recommendSpotObject: recommendSpotObject,
       };
     }
   },

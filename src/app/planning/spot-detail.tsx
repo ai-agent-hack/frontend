@@ -22,7 +22,7 @@ const SpotDetail = ({
   return (
     <VStack width="100%" gap={4}>
       {/* Time Slot Selector */}
-      <Box width="100%" display="flex" justifyContent="center">
+      <Box width="100%" display="flex" justifyContent="center" pt={4}>
         <HStack gap={1} bg="gray.100" p={1} borderRadius="lg">
           {(["午前", "午後", "夜"] as const).map((slot) => (
             <Button

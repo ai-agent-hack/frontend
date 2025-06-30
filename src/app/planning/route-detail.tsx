@@ -10,6 +10,7 @@ interface RouteDetailProps {
     timeSlot: "午前" | "午後" | "夜";
   }>;
   isGeneratingRoute?: boolean;
+  routeGenerationAttempted?: boolean;
   routeInfo?: {
     duration: string;
     distance: string;
@@ -60,6 +61,7 @@ const RouteDetail = ({
   onPinClick,
   recommendedSpots,
   onTimeSlotChange,
+  routeGenerationAttempted,
 }: RouteDetailProps) => {
   const timeSlotMapping: Record<string, "午前" | "午後" | "夜"> = {
     MORNING: "午前",
@@ -121,21 +123,21 @@ const RouteDetail = ({
     未分類: { icon: LuSun, color: "gray", label: "ルート", bgColor: "gray.50" },
   };
 
-  const timeSlotOrder = ["MORNING", "AFTERNOON", "NIGHT"];
+  const timeSlotOrder = ["MORNING", "AFTERNOON", "NIGHT", "午前", "午後", "夜"];
   const timeSlots = timeSlotOrder.filter(
     (slot) => spotsByTimeSlot[slot] && spotsByTimeSlot[slot].length > 0,
   );
 
   return (
-    <VStack width="100%" gap={4} p={4}>
+    <VStack width="100%" gap={4} py={4} pl={4} >
       {orderedSpots && orderedSpots.length > 0 ? (
         <VStack width="100%" gap={0} position="relative">
           <Box
             position="absolute"
-            left="24px"
-            top="30px"
-            bottom="30px"
-            width="2px"
+            left="7.5px"
+            top="24px"
+            bottom="24px"
+            width="1px"
             bg="gray.200"
             zIndex={0}
           />
@@ -148,49 +150,57 @@ const RouteDetail = ({
             if (spots.length === 0) return null;
 
             return (
-              <VStack key={timeSlot} width="100%" gap={3} mb={6}>
-                <HStack width="100%" gap={3} mb={2}>
+              <VStack key={timeSlot} width="100%" gap={2} mb={4}>
+                <HStack width="100%" gap={2} mb={1} ml={-10} position="relative">
                   <Box
                     bg={`${config.color}.100`}
                     borderRadius="full"
-                    p={2}
+                    p={1.5}
                     zIndex={1}
-                    border="2px solid"
+                    border="1px solid"
                     borderColor={`${config.color}.300`}
+                    position="absolute"
+                    left="12px"
+                    width="32px"
+                    height="32px"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
                   >
                     <Icon
-                      size={20}
+                      size={16}
                       color={`var(--chakra-colors-${config.color}-600)`}
                     />
                   </Box>
                   <Text
-                    fontWeight="bold"
-                    fontSize="md"
+                    fontWeight="semibold"
+                    fontSize="sm"
                     color={`${config.color}.700`}
+                    ml="52px"
                   >
                     {config.label}
                   </Text>
                 </HStack>
 
-                <VStack width="100%" gap={2} pl="56px">
+                <VStack width="100%" gap={2} ml={-8} pl="52px">
                   {spots.map((spot, index) => (
                     <Box key={spot.spot_id} width="100%" position="relative">
                       <Box
                         position="absolute"
-                        left="-34px"
+                        left="-32px"
                         top="50%"
                         transform="translateY(-50%)"
-                        width="10px"
-                        height="10px"
+                        width="8px"
+                        height="8px"
                         borderRadius="full"
                         bg={`${config.color}.400`}
                         zIndex={1}
                       />
 
                       <Box
-                        p={4}
+                        p={2}
                         bg={config.bgColor}
-                        borderRadius="lg"
+                        borderRadius="md"
                         border="1px solid"
                         borderColor={`${config.color}.200`}
                         width="100%"
@@ -208,22 +218,22 @@ const RouteDetail = ({
                           }
                         }}
                         _hover={{
-                          transform: "translateX(4px)",
+                          transform: "translateX(3px)",
                           borderColor: `${config.color}.300`,
                           boxShadow: "sm",
                         }}
                       >
-                        <HStack gap={3} align="start">
+                        <HStack gap={2} align="start">
                           <Box
                             bg={`${config.color}.500`}
                             color="white"
-                            width="28px"
-                            height="28px"
+                            width="24px"
+                            height="24px"
                             borderRadius="md"
                             display="flex"
                             alignItems="center"
                             justifyContent="center"
-                            fontSize="sm"
+                            fontSize="xs"
                             fontWeight="bold"
                             flexShrink={0}
                           >
@@ -231,16 +241,17 @@ const RouteDetail = ({
                               ? spot.order + 1
                               : index + 1}
                           </Box>
-                          <VStack align="start" gap={1} flex={1}>
+                          <VStack align="start" gap={0.5} flex={1}>
                             <Text
                               fontSize="sm"
-                              fontWeight="semibold"
+                              fontWeight="medium"
                               color="gray.800"
+                              lineHeight="short"
                             >
                               {spot.details?.name || spot.name}
                             </Text>
                             {spot.details?.address && (
-                              <Text fontSize="xs" color="gray.600">
+                              <Text fontSize="xs" color="gray.600" lineHeight="short">
                                 {spot.details.address}
                               </Text>
                             )}
@@ -254,6 +265,20 @@ const RouteDetail = ({
             );
           })}
         </VStack>
+      ) : routeGenerationAttempted && orderedSpots?.length === 0 ? (
+        <Box p={6} textAlign="center">
+          <Text fontSize="2xl" color="red.400" mb={2}>
+            ⚠️
+          </Text>
+          <VStack gap={1}>
+            <Text color="red.500" fontSize="sm">
+              1日の中で収まりきらないためルートを作成できませんでした。
+            </Text>
+            <Text color="gray.400" fontSize="xs" mt={2}>
+              スポット数を減らして再度お試しください。
+            </Text>
+          </VStack>
+        </Box>
       ) : (
         <Box p={6} textAlign="center">
           <Text fontSize="2xl" color="gray.400" mb={2}>
