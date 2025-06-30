@@ -35,7 +35,8 @@ export default function Planning() {
   const [isSaving, setIsSaving] = useState(false);
   const [orderedSpots, setOrderedSpots] = useState<any[]>([]);
   const [isRouteShown, setIsRouteShown] = useState<boolean>(false);
-  const [routeGenerationAttempted, setRouteGenerationAttempted] = useState<boolean>(false);
+  const [routeGenerationAttempted, setRouteGenerationAttempted] =
+    useState<boolean>(false);
   const preInfoId = useSearchParams().get("pre_info_id");
 
   const selectedSpots =
@@ -281,7 +282,11 @@ ${preInfo.participants_count}人
                 height="24px"
                 onClick={() => setIsRouteShown(!isRouteShown)}
               >
-                {isRouteShown ? <LuChevronUp size={14} /> : <LuChevronDown size={14} />}
+                {isRouteShown ? (
+                  <LuChevronUp size={14} />
+                ) : (
+                  <LuChevronDown size={14} />
+                )}
               </IconButton>
               <Text color={"black"} fontSize="sm" fontWeight="medium">
                 ルートの詳細

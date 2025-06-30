@@ -129,7 +129,7 @@ const RouteDetail = ({
   );
 
   return (
-    <VStack width="100%" gap={4} py={4} pl={4} >
+    <VStack width="100%" gap={4} py={4} pl={4}>
       {orderedSpots && orderedSpots.length > 0 ? (
         <VStack width="100%" gap={0} position="relative">
           <Box
@@ -151,7 +151,13 @@ const RouteDetail = ({
 
             return (
               <VStack key={timeSlot} width="100%" gap={2} mb={4}>
-                <HStack width="100%" gap={2} mb={1} ml={-10} position="relative">
+                <HStack
+                  width="100%"
+                  gap={2}
+                  mb={1}
+                  ml={-10}
+                  position="relative"
+                >
                   <Box
                     bg={`${config.color}.100`}
                     borderRadius="full"
@@ -251,7 +257,11 @@ const RouteDetail = ({
                               {spot.details?.name || spot.name}
                             </Text>
                             {spot.details?.address && (
-                              <Text fontSize="xs" color="gray.600" lineHeight="short">
+                              <Text
+                                fontSize="xs"
+                                color="gray.600"
+                                lineHeight="short"
+                              >
                                 {spot.details.address}
                               </Text>
                             )}
