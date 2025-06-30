@@ -10,9 +10,13 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 import GoogleMap, { type MapPin } from "@/components/google-map";
+import TutorialPopover, {
+  type TutorialStep,
+} from "@/components/tutorial-popover";
+import { useTutorial } from "@/components/use-tutorial";
 import type { RecommendedSpots } from "@/types/mastra";
 import { getInitialRecommendedSpots, getPreInfo, saveTrip } from "./action";
 import ChatPane from "./chat-pane";
@@ -38,6 +42,59 @@ export default function Planning() {
   const [routeGenerationAttempted, setRouteGenerationAttempted] =
     useState<boolean>(false);
   const preInfoId = useSearchParams().get("pre_info_id");
+
+  // Tutorial steps
+  const tutorialSteps: TutorialStep[] = useMemo(
+    () => [
+      {
+        id: "step1",
+        title: "おすすめスポットを確認しましょう",
+        content:
+          "おすすめされたスポットを見てみましょう。AIにその場所について聞くことができます。気に入ったらチェックをつけてみましょう！",
+        position: "left",
+        targetSelector: "[data-tutorial='detail-pane']",
+      },
+      {
+        id: "step2",
+        title: "AIに質問してみましょう",
+        content:
+          "スポットについて追加の情報を聞いてみましょう。例えば「リラックスできる温泉を教えて」などと質問できます。\n\nチャットのボタンをクリックして、AIに質問してみましょう！",
+        position: "left",
+        targetSelector: "[data-tutorial='chat-pane']",
+      },
+      {
+        id: "step3",
+        title: "気に入ったスポットを選択しましょう",
+        content: "出てきた気に入った温泉を選択してルートを作成してみましょう！",
+        position: "top",
+        targetSelector: "[data-tutorial='create-route-button']",
+      },
+      {
+        id: "step4",
+        title: "旅行の準備は万全ですか？",
+        content:
+          "いい感じの予定ができました！そういえば、旅行中の天気は大丈夫でしょうか？チャットのボタンで聞いてみましょう。",
+        position: "left",
+        targetSelector: "[data-tutorial='chat-pane']",
+      },
+    ],
+    [],
+  );
+
+  const {
+    currentStep,
+    isOpen: isTutorialOpen,
+    isCompleted: isTutorialCompleted,
+    startTutorial,
+    nextStep,
+    prevStep,
+    closeTutorial,
+    skipTutorial,
+  } = useTutorial({
+    steps: tutorialSteps,
+    autoStart: false,
+    storageKey: "planning-tutorial-completed",
+  });
 
   const selectedSpots =
     recommendedSpots?.recommend_spots.flatMap((timeSlot) =>
@@ -114,11 +171,16 @@ ${preInfo.participants_count}人
         const planId = spots.plan_id;
         setPlanId(planId);
         setMapPins(pins);
+
+        // Start tutorial if not completed
+        if (!isTutorialCompleted) {
+          setTimeout(() => startTutorial(), 2000);
+        }
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }
     })();
-  }, [preInfoId]);
+  }, [preInfoId, isTutorialCompleted, startTutorial]);
 
   const handleRecommendSpotUpdate = useCallback(
     (recommendSpot: RecommendedSpots) => {
@@ -193,6 +255,32 @@ ${preInfo.participants_count}人
     }
   }, []);
 
+  // Tutorial step progression logic
+  useEffect(() => {
+    if (!isTutorialOpen) return;
+
+    const currentStepData = tutorialSteps[currentStep];
+
+    // Auto-advance tutorial based on user actions
+    if (currentStepData.id === "step1" && selectedSpots.length > 0) {
+      // User has selected some spots, move to step 2
+      setTimeout(() => nextStep(), 1000);
+    } else if (currentStepData.id === "step2" && selectedSpots.length >= 2) {
+      // User has selected multiple spots, move to step 3
+      setTimeout(() => nextStep(), 1000);
+    } else if (currentStepData.id === "step3" && routeGenerationAttempted) {
+      // Route has been generated, move to step 4
+      setTimeout(() => nextStep(), 1000);
+    }
+  }, [
+    currentStep,
+    selectedSpots.length,
+    routeGenerationAttempted,
+    isTutorialOpen,
+    nextStep,
+    tutorialSteps,
+  ]);
+
   return (
     <Box height="100vh" p={4}>
       <HStack height="100%" gap={"15px"} position="relative">
@@ -244,6 +332,7 @@ ${preInfo.participants_count}人
               }}
               transition="all 0.2s"
               disabled={!mapPins.some((pin) => pin.selected) || isSaving}
+              data-tutorial="create-route-button"
               onClick={async () => {
                 if (!recommendedSpots || !planId) return;
                 setIsSaving(true);
@@ -318,6 +407,7 @@ ${preInfo.participants_count}人
           border="1px solid"
           borderColor="border"
           shadow={"0px 0px 15px rgba(0, 0, 0, 0.2)"}
+          data-tutorial="detail-pane"
         >
           <Box width="100%" p={4} borderBottom="1px solid" borderColor="border">
             <HStack gap={2}>
@@ -360,6 +450,7 @@ ${preInfo.participants_count}人
           border="1px solid"
           borderColor="border"
           shadow="0px 0px 15px rgba(0, 0, 0, 0.2)"
+          data-tutorial="chat-pane"
         >
           <Box width="100%" p={4} borderBottom="1px solid" borderColor="border">
             <HStack gap={2}>
@@ -385,6 +476,19 @@ ${preInfo.participants_count}人
           </Box>
         </VStack>
       </HStack>
+
+      {/* Tutorial Popover */}
+      {!isTutorialCompleted && (
+        <TutorialPopover
+          steps={tutorialSteps}
+          currentStep={currentStep}
+          isOpen={isTutorialOpen}
+          onClose={closeTutorial}
+          onNext={nextStep}
+          onPrev={prevStep}
+          onSkip={skipTutorial}
+        />
+      )}
     </Box>
   );
 }
