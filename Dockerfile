@@ -48,8 +48,6 @@ ENV NEXT_PUBLIC_FIREBASE_APP_ID=$NEXT_PUBLIC_FIREBASE_APP_ID
 # Build the application
 RUN npm run build
 
-# Keep the container alive for debugging
-RUN echo "Builder container is running for debugging. Connect to it now." && sleep 3600
 
 # Production image, copy all the files and run next
 FROM base AS runner
@@ -74,9 +72,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # This is the crucial fix: copy the native LibSQL files that output tracing might miss
-# The path is now corrected for a standard 'npm' installation.
-RUN mkdir -p ./node_modules/@libsql/client/lib/
-COPY --from=builder /app/node_modules/@libsql/client/lib/libsql-linux-x64-gnu.node ./node_modules/@libsql/client/lib/
+# The path is based on the platform-specific package that @libsql/client depends on.
+# The `find` command on a local machine revealed the pattern is `node_modules/@libsql/<platform>/index.node`.
+# For the Debian-based linux container, the platform is `linux-x64-gnu`.
+RUN mkdir -p ./node_modules/@libsql/linux-x64-gnu/
+COPY --from=builder /app/node_modules/@libsql/linux-x64-gnu/index.node ./node_modules/@libsql/linux-x64-gnu/
 
 USER nextjs
 

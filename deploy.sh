@@ -37,20 +37,18 @@ docker build --no-cache --platform linux/amd64 -t $IMAGE_NAME \
 echo "Pushing image to Google Container Registry..."
 docker push $IMAGE_NAME
 
-echo "Deploying to Cloud Run with runtime secrets..."
+echo "Deploying to Cloud Run with vertex-ai Service Account..."
 gcloud run deploy $SERVICE_NAME \
   --image $IMAGE_NAME \
   --platform managed \
   --region $REGION \
   --allow-unauthenticated \
   --port 3000 \
+  --service-account vertex-ai@ai-agent-hack.iam.gserviceaccount.com \
   --set-env-vars="NODE_ENV=production" \
-  --set-secrets="GOOGLE_PROJECT_ID=google-project-id:latest" \
-  --set-secrets="GOOGLE_VERTEX_PROJECT=google-project-id:latest" \
-  --set-secrets="GOOGLE_CLIENT_EMAIL=google-client-email:latest" \
-  --set-secrets="GOOGLE_PRIVATE_KEY=google-private-key:latest" \
-  --set-secrets="MASTRA_DEBUG=mastra-debug:latest" \
-  --set-secrets="FIRECRAWL_API_KEY=firecrawl-api-key:latest"
+  --set-env-vars="GOOGLE_PROJECT_ID=ai-agent-hack" \
+  --set-secrets="FIRECRAWL_API_KEY=firecrawl-api-key:latest" \
+  --set-secrets="MASTRA_DEBUG=mastra-debug:latest"
 
 echo "Deployment completed!"
 echo "Your frontend should be available at the Cloud Run URL." 
