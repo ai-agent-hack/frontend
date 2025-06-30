@@ -21,10 +21,10 @@
     Create .env file and copy these keys.
 
     ```
-    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE
-    GOOGLE_PROJECT_ID=ai-agent-hack
-    MASTRA_DEBUG=false
-    GOOGLE_APPLICATION_CREDENTIALS=/Users/{project_path}/key.json
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=
+    GOOGLE_PROJECT_ID=
+    MASTRA_DEBUG=
+    GOOGLE_APPLICATION_CREDENTIALS=
     ```
 
 3. Run setup command.
