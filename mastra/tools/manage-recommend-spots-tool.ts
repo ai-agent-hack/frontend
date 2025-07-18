@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import { recommendedSpotsSchema } from '../schema/recommended-spots';
-import { RecommendedSpots } from '../../src/types/mastra';
+import { z } from "zod";
+import type { RecommendedSpots } from "../../src/types/mastra";
+import { recommendedSpotsSchema } from "../schema/recommended-spots";
 
 // このツールでrecommend_spotsを管理
 let sharedRecommendSpots: RecommendedSpots | null = null;
@@ -22,7 +22,7 @@ export function addRecommendSpots(data: RecommendedSpots) {
     for (const newGroup of data.recommend_spots) {
       // 既存の同じtime_slotグループを探す
       const existingGroup = sharedRecommendSpots.recommend_spots.find(
-        (group) => group.time_slot === newGroup.time_slot
+        (group) => group.time_slot === newGroup.time_slot,
       );
       if (existingGroup) {
         // 同じtime_slotがあればスポットを追加
@@ -36,11 +36,11 @@ export function addRecommendSpots(data: RecommendedSpots) {
 }
 
 export const manageRecommendSpotsTool = {
-  id: 'manageRecommendSpots',
-  name: 'Manage Recommend Spots',
-  description: 'recommend_spotsの取得、更新、操作を行うツール',
+  id: "manageRecommendSpots",
+  name: "Manage Recommend Spots",
+  description: "recommend_spotsの取得、更新、操作を行うツール",
   inputSchema: z.object({
-    action: z.enum(['get', 'set', 'updateSelection', 'addSpot', 'removeSpot']),
+    action: z.enum(["get", "set", "updateSelection", "addSpot", "removeSpot"]),
     data: recommendedSpotsSchema.optional(),
     spotId: z.string().optional(),
     timeSlot: z.string().optional(),
@@ -53,42 +53,45 @@ export const manageRecommendSpotsTool = {
   }),
   execute: async ({ context }: { context: any }) => {
     const { action, data, spotId, selected } = context;
-    
+
     switch (action) {
-      case 'get':
+      case "get":
         return {
           success: true,
           data: sharedRecommendSpots || undefined,
-          message: sharedRecommendSpots ? 'データを取得しました' : 'データがありません',
+          message: sharedRecommendSpots
+            ? "データを取得しました"
+            : "データがありません",
         };
-        
-      case 'set':
+
+      case "set":
         if (!data) {
           return {
             success: false,
-            message: 'データが提供されていません',
+            message: "データが提供されていません",
           };
         }
         sharedRecommendSpots = data;
         return {
           success: true,
           data: sharedRecommendSpots,
-          message: 'データを設定しました',
+          message: "データを設定しました",
         };
-        
-      case 'updateSelection':
+
+      case "updateSelection":
         if (!sharedRecommendSpots || !spotId) {
           return {
             success: false,
-            message: 'データまたはspotIdが不足しています',
+            message: "データまたはspotIdが不足しています",
           };
         }
-        
+
         // スポットの選択状態を更新
         for (const timeSlotGroup of sharedRecommendSpots.recommend_spots) {
           for (const spot of timeSlotGroup.spots) {
             if (spot.spot_id === spotId) {
-              spot.selected = selected !== undefined ? selected : !spot.selected;
+              spot.selected =
+                selected !== undefined ? selected : !spot.selected;
               return {
                 success: true,
                 data: sharedRecommendSpots,
@@ -97,16 +100,16 @@ export const manageRecommendSpotsTool = {
             }
           }
         }
-        
+
         return {
           success: false,
-          message: 'スポットが見つかりませんでした',
+          message: "スポットが見つかりませんでした",
         };
-        
+
       default:
         return {
           success: false,
-          message: '不明なアクションです',
+          message: "不明なアクションです",
         };
     }
   },

@@ -1,9 +1,9 @@
-import { Agent } from '@mastra/core/agent';
-import { vertex } from '../model/google';
+import { Agent } from "@mastra/core/agent";
+import { vertex } from "../model/google";
 
 export const intentClassifierAgent = new Agent({
-    name: "Intent Classifier Agent",
-    instructions: `あなたはユーザーの入力を分析し、スポット検索に関する意図があるかを高精度で判定する意図分類エージェントです。
+  name: "Intent Classifier Agent",
+  instructions: `あなたはユーザーの入力を分析し、スポット検索に関する意図があるかを高精度で判定する意図分類エージェントです。
 
 ## 主な機能
 1. ユーザーの入力テキストを意味的に分析
@@ -30,6 +30,6 @@ export const intentClassifierAgent = new Agent({
 1. 文脈を深く理解し、表面的なキーワードだけでなく意味を重視して判定する
 2. ユーザーが暗黙的に場所を探している可能性も考慮する
 3. 判定が難しい場合は、ユーザーの利便性を考慮してスポット検索として扱う`,
-  model: vertex('gemini-2.5-flash'),
-  tools: {}
+  model: vertex("gemini-2.5-flash"),
+  tools: {},
 });

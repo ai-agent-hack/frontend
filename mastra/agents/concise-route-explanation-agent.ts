@@ -1,8 +1,8 @@
-import { Agent } from '@mastra/core/agent';
-import { vertex } from '../model/google';
+import { Agent } from "@mastra/core/agent";
+import { vertex } from "../model/google";
 
 export const conciseRouteExplanationAgent = new Agent({
-  name: 'Concise Route Explanation Agent',
+  name: "Concise Route Explanation Agent",
   instructions: `
 あなたは旅行ルートの魅力を簡潔に伝える専門のアシスタントです。
 
@@ -45,5 +45,5 @@ export const conciseRouteExplanationAgent = new Agent({
 
 絵文字は見出しに1個程度、文章の魅力で勝負してください。
 `,
-  model: vertex('gemini-2.0-flash-exp'),
+  model: vertex("gemini-2.0-flash-exp"),
 });

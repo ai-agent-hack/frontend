@@ -1,8 +1,8 @@
-import { Agent } from '@mastra/core/agent';
-import { vertex } from '../model/google';
+import { Agent } from "@mastra/core/agent";
+import { vertex } from "../model/google";
 
 export const spotUpdateSummaryAgent = new Agent({
-  name: 'Spot Update Summary Agent',
+  name: "Spot Update Summary Agent",
   instructions: `
       あなたは追加・更新されたスポット情報を簡潔に説明する日本語のアシスタントです。
       ユーザーのリクエストに基づいて、特におすすめの2-3個のスポットのみをピックアップして魅力を伝えます。
@@ -52,5 +52,5 @@ export const spotUpdateSummaryAgent = new Agent({
       - 情報過多を避けて、読みやすくする
       - 行きたくなるような紹介をする
 `,
-  model: vertex('gemini-2.5-flash'),
+  model: vertex("gemini-2.5-flash"),
 });
