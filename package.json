@@ -10,7 +10,8 @@
     "format-staged": "biome format --staged --write --no-errors-on-unmatched",
     "lint": "biome check --write",
     "lint-staged": "biome check --staged --write --no-errors-on-unmatched",
-    "mastra": "mastra dev --dir mastra"
+    "mastra": "mastra dev --dir mastra",
+    "prepare": "husky"
   },
   "dependencies": {
     "@ai-sdk/google-vertex": "^2.2.24",
@@ -44,6 +45,13 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "husky": "^9",
+    "lint-staged": "^16.1.2",
     "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,md}": [
+      "bun run lint-staged",
+      "bun run format-staged"
+    ]
   }
 }
