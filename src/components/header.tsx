@@ -13,8 +13,15 @@ const Header: React.FC = () => {
       <Heading size="lg">
         <a href="/">Vibe Planning</a>
       </Heading>
-      {user ? (
-        <UserMenu />
+      {!user ? (
+        <HStack gap={3}>
+          <Link href="/register" passHref>
+            <Button colorScheme="purple" size="md">
+              AI と旅行を計画する
+            </Button>
+          </Link>
+          <UserMenu />
+        </HStack>
       ) : (
         <HStack gap={3}>
           <Link href="/auth" passHref>
