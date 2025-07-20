@@ -71,14 +71,11 @@ export default function TripHistory() {
             旅行履歴
           </Text>
           <Link href="/register" passHref>
-            <Button
-              as="a"
-              size="sm"
-              colorScheme="purple"
-              borderRadius="full"
-              leftIcon={<FaPlus />}
-            >
-              新規作成
+            <Button as="a" size="sm" colorScheme="purple" borderRadius="full">
+              <HStack gap={1}>
+                <Icon as={FaPlus} boxSize={3} />
+                <Text>新規作成</Text>
+              </HStack>
             </Button>
           </Link>
         </HStack>
@@ -89,13 +86,11 @@ export default function TripHistory() {
           <Center h="100%" flexDirection="column" gap={4}>
             <Text color="fg.subtle">まだ旅行計画がありません</Text>
             <Link href="/register" passHref>
-              <Button
-                as="a"
-                colorScheme="purple"
-                borderRadius="full"
-                leftIcon={<FaPlus />}
-              >
-                最初の旅行を計画する
+              <Button as="a" colorScheme="purple" borderRadius="full">
+                <HStack gap={2}>
+                  <Icon as={FaPlus} />
+                  <Text>最初の旅行を計画する</Text>
+                </HStack>
               </Button>
             </Link>
           </Center>
@@ -149,7 +144,7 @@ export default function TripHistory() {
                       <Text>・</Text>
                       <Text>¥{trip.budget.toLocaleString()}</Text>
                     </HStack>
-                    <Text fontSize="sm" color="fg.subtle" noOfLines={2}>
+                    <Text fontSize="sm" color="fg.subtle" lineClamp={2}>
                       {trip.atmosphere}
                     </Text>
                   </VStack>
