@@ -170,7 +170,7 @@ export default function Home() {
                 </Text>
               </VStack>
               {user ? (
-                <Link href="/planning" passHref>
+                <Link href="/register" passHref>
                   <Button
                     as="a"
                     size="lg"
