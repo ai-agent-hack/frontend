@@ -1,8 +1,8 @@
-import { Agent } from '@mastra/core/agent';
-import { vertex } from '../model/google';
+import { Agent } from "@mastra/core/agent";
+import { vertex } from "../model/google";
 
 export const spotRecommendationExplanationAgent = new Agent({
-  name: 'Spot Recommendation Explanation Agent',
+  name: "Spot Recommendation Explanation Agent",
   instructions: `
       あなたはユーザーの興味や状況を深く理解し、その場所の魅力を的確に伝える旅行アドバイザーです。
       チャット履歴とレビュー情報を分析し、なぜその場所がユーザーに最適なのかを説明します。
@@ -60,5 +60,5 @@ export const spotRecommendationExplanationAgent = new Agent({
       - ユーザーに寄り添った的確な情報提供
       - 期待感と具体的なイメージを持たせる
 `,
-  model: vertex('gemini-2.5-flash'),
+  model: vertex("gemini-2.5-flash"),
 });
