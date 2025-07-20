@@ -31,6 +31,7 @@ import {
   FaUserTie,
 } from "react-icons/fa";
 import Header from "@/components/header";
+import TripHistory from "@/components/trip-history";
 import { useAuth } from "@/contexts/auth/auth-context";
 
 export default function Home() {
@@ -126,50 +127,29 @@ export default function Home() {
         <Header />
       </Box>
 
-      <Box ref={scrollContainerRef} flex={1} overflow="auto">
-        {/* Hero Section */}
-        <Box py={{ base: 16, md: 24 }} position="relative" overflow="hidden">
-          <Container maxW="container.xl">
-            <VStack gap={8} position="relative" zIndex={1}>
-              <VStack gap={6} maxW="800px" mx="auto">
-                <Badge px={4} py={2} fontSize="lg">
-                  AI旅行プランナー
-                </Badge>
-                <Heading
-                  as="h1"
-                  size={{ base: "2xl", md: "3xl" }}
-                  textAlign="center"
-                  fontWeight="bold"
-                  lineHeight="1.2"
-                >
-                  「静かな湖でカヤックがしたい」
-                  <br />
-                  ひと言で理想の旅程が立ち上がる
-                </Heading>
-                <Text
-                  fontSize={{ base: "lg", md: "xl" }}
-                  textAlign="center"
-                  maxW="700px"
-                  color="fg.subtle"
-                >
-                  リアルタイムの混雑・口コミデータを横断的に解析し、
-                  曖昧な「こんな旅がしたい」という想いを最適ルートに変える
-                  <Text as="span" fontWeight="bold" color="purple.600">
-                    {" "}
-                    AI旅行プランナー
+      {user ? (
+        <HStack h="calc(100vh - 88px)" gap={0} align="stretch">
+          {/* Trip History Sidebar */}
+          <Box
+            w="350px"
+            h="100%"
+            borderRight="1px solid"
+            borderColor="border"
+            bg="bg.surface"
+          >
+            <TripHistory />
+          </Box>
+
+          {/* Main Content */}
+          <Box ref={scrollContainerRef} flex={1} overflow="auto">
+            <Center h="100%" p={8}>
+              <VStack gap={8} maxW="600px">
+                <VStack gap={4} textAlign="center">
+                  <Heading size="2xl">おかえりなさい！</Heading>
+                  <Text fontSize="lg" color="fg.subtle">
+                    左側の履歴から旅行計画を選択するか、新しい旅行を計画しましょう
                   </Text>
-                </Text>
-                <Text
-                  fontSize={{ base: "md", md: "lg" }}
-                  textAlign="center"
-                  maxW="600px"
-                  color="fg.subtle"
-                >
-                  気づかないところに眠る、もっと心地よく、
-                  もっと効率的で、もっとワクワクする旅程を発見します
-                </Text>
-              </VStack>
-              {user ? (
+                </VStack>
                 <Link href="/register" passHref>
                   <Button
                     as="a"
@@ -190,11 +170,58 @@ export default function Home() {
                   >
                     <HStack gap={3}>
                       <Icon as={FaStar} />
-                      <Text>旅のプランニングを開始</Text>
+                      <Text>新しい旅行を計画する</Text>
                     </HStack>
                   </Button>
                 </Link>
-              ) : (
+              </VStack>
+            </Center>
+          </Box>
+        </HStack>
+      ) : (
+        <Box ref={scrollContainerRef} flex={1} overflow="auto">
+          {/* Hero Section */}
+          <Box py={{ base: 16, md: 24 }} position="relative" overflow="hidden">
+            <Container maxW="container.xl">
+              <VStack gap={8} position="relative" zIndex={1}>
+                <VStack gap={6} maxW="800px" mx="auto">
+                  <Badge px={4} py={2} fontSize="lg">
+                    AI旅行プランナー
+                  </Badge>
+                  <Heading
+                    as="h1"
+                    size={{ base: "2xl", md: "3xl" }}
+                    textAlign="center"
+                    fontWeight="bold"
+                    lineHeight="1.2"
+                  >
+                    「静かな湖でカヤックがしたい」
+                    <br />
+                    ひと言で理想の旅程が立ち上がる
+                  </Heading>
+                  <Text
+                    fontSize={{ base: "lg", md: "xl" }}
+                    textAlign="center"
+                    maxW="700px"
+                    color="fg.subtle"
+                  >
+                    リアルタイムの混雑・口コミデータを横断的に解析し、
+                    曖昧な「こんな旅がしたい」という想いを最適ルートに変える
+                    <Text as="span" fontWeight="bold" color="purple.600">
+                      {" "}
+                      AI旅行プランナー
+                    </Text>
+                  </Text>
+                  <Text
+                    fontSize={{ base: "md", md: "lg" }}
+                    textAlign="center"
+                    maxW="600px"
+                    color="fg.subtle"
+                  >
+                    気づかないところに眠る、もっと心地よく、
+                    もっと効率的で、もっとワクワクする旅程を発見します
+                  </Text>
+                </VStack>
                 <VStack gap={4}>
                   <Link href="/auth?mode=signup" passHref>
                     <Button
@@ -234,173 +261,181 @@ export default function Home() {
                     </Link>
                   </Text>
                 </VStack>
-              )}
-            </VStack>
-          </Container>
+              </VStack>
+            </Container>
 
-          {/* Background decoration */}
-          <Box
-            position="absolute"
-            top="-20%"
-            right="-10%"
-            opacity={0.05}
-            transform="rotate(15deg)"
-          >
-            <Icon as={FaPlane} boxSize={400} color="purple.500" />
+            {/* Background decoration */}
+            <Box
+              position="absolute"
+              top="-20%"
+              right="-10%"
+              opacity={0.05}
+              transform="rotate(15deg)"
+            >
+              <Icon as={FaPlane} boxSize={400} color="purple.500" />
+            </Box>
+          </Box>
+
+          {/* User Personas Section */}
+          <Box py={20} bg="gray.subtle">
+            <Container maxW="container.xl">
+              <VStack gap={12}>
+                <VStack gap={4}>
+                  <Heading size="xl" textAlign="center">
+                    こんな方々の旅をサポート
+                  </Heading>
+                </VStack>
+
+                <SimpleGrid
+                  columns={{ base: 1, md: 2, lg: 4 }}
+                  gap={6}
+                  w="full"
+                >
+                  {userPersonas.map((persona) => (
+                    <VStack
+                      key={persona.id}
+                      bg="bg.emphasized"
+                      p={6}
+                      borderRadius="xl"
+                      shadow={"0px 0px 15px rgba(0, 0, 0, 0.2)"}
+                      align="start"
+                      gap={4}
+                    >
+                      <Icon as={persona.icon} boxSize={10} color="purple.500" />
+                      <Text fontWeight="bold" fontSize="lg">
+                        {persona.title}
+                      </Text>
+                      <Text color="fg.subtle" fontSize="sm">
+                        {persona.description}
+                      </Text>
+                    </VStack>
+                  ))}
+                </SimpleGrid>
+              </VStack>
+            </Container>
+          </Box>
+
+          {/* Problems Section */}
+          <Box py={20}>
+            <Container maxW="container.xl">
+              <VStack gap={12}>
+                <VStack gap={4}>
+                  <Heading size="xl" textAlign="center">
+                    旅行計画の4つの課題
+                  </Heading>
+                  <Text
+                    fontSize="lg"
+                    color="fg.subtle"
+                    textAlign="center"
+                    maxW="700px"
+                  >
+                    従来の旅行計画では解決できなかった課題を、AIが解決します
+                  </Text>
+                </VStack>
+
+                <VStack gap={4} w="full" maxW="800px" mx="auto">
+                  {problems.map((problem) => (
+                    <HStack
+                      key={problem.id}
+                      w="full"
+                      p={6}
+                      bg="red.50"
+                      borderRadius="xl"
+                      align="start"
+                      gap={4}
+                    >
+                      <Icon
+                        as={problem.icon}
+                        boxSize={6}
+                        color="red.500"
+                        flexShrink={0}
+                        mt={1}
+                      />
+                      <Text color="gray.700">{problem.text}</Text>
+                    </HStack>
+                  ))}
+                </VStack>
+              </VStack>
+            </Container>
+          </Box>
+
+          {/* Features Section */}
+          <Box bg="purple.100" py={20}>
+            <Container maxW="container.xl">
+              <VStack gap={12}>
+                <VStack gap={4}>
+                  <Badge px={4} py={2} fontSize="lg">
+                    宣言型の体験
+                  </Badge>
+                  <Heading color={"black"} size="xl" textAlign="center">
+                    手続型から宣言型へ
+                  </Heading>
+                  <Text
+                    fontSize="lg"
+                    color="gray.600"
+                    textAlign="center"
+                    maxW="700px"
+                  >
+                    従来の「検索→比較→取捨選択」という手続きを、
+                    「やりたいことを宣言するだけ」のシンプルな体験に置き換えます
+                  </Text>
+                </VStack>
+
+                <SimpleGrid
+                  columns={{ base: 1, md: 2, lg: 4 }}
+                  gap={8}
+                  w="full"
+                >
+                  {features.map((feature) => (
+                    <VStack
+                      key={feature.id}
+                      bg="white"
+                      p={6}
+                      borderRadius="xl"
+                      shadow={"0px 0px 15px rgba(0, 0, 0, 0.2)"}
+                      gap={4}
+                    >
+                      <Center w={16} h={16} bg="purple.500" borderRadius="full">
+                        <Icon as={feature.icon} boxSize={8} color="white" />
+                      </Center>
+                      <Text color="black" fontWeight="bold" fontSize="lg">
+                        {feature.title}
+                      </Text>
+                      <Text color="gray.600" textAlign="center" fontSize="sm">
+                        {feature.description}
+                      </Text>
+                    </VStack>
+                  ))}
+                </SimpleGrid>
+              </VStack>
+            </Container>
+          </Box>
+
+          {/* Scroll to Top Section */}
+          <Box py={12}>
+            <Center>
+              <Button
+                onClick={scrollToTop}
+                size="lg"
+                variant="outline"
+                colorScheme="purple"
+                borderRadius="full"
+                px={8}
+                _hover={{
+                  transform: "translateY(-2px)",
+                  shadow: "md",
+                }}
+                transition="all 0.2s"
+              >
+                <HStack gap={2}>
+                  <Icon as={FaArrowUp} />
+                  <Text>トップへ戻る</Text>
+                </HStack>
+              </Button>
+            </Center>
           </Box>
         </Box>
-
-        {/* User Personas Section */}
-        <Box py={20} bg="gray.subtle">
-          <Container maxW="container.xl">
-            <VStack gap={12}>
-              <VStack gap={4}>
-                <Heading size="xl" textAlign="center">
-                  こんな方々の旅をサポート
-                </Heading>
-              </VStack>
-
-              <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={6} w="full">
-                {userPersonas.map((persona) => (
-                  <VStack
-                    key={persona.id}
-                    bg="bg.emphasized"
-                    p={6}
-                    borderRadius="xl"
-                    shadow={"0px 0px 15px rgba(0, 0, 0, 0.2)"}
-                    align="start"
-                    gap={4}
-                  >
-                    <Icon as={persona.icon} boxSize={10} color="purple.500" />
-                    <Text fontWeight="bold" fontSize="lg">
-                      {persona.title}
-                    </Text>
-                    <Text color="fg.subtle" fontSize="sm">
-                      {persona.description}
-                    </Text>
-                  </VStack>
-                ))}
-              </SimpleGrid>
-            </VStack>
-          </Container>
-        </Box>
-
-        {/* Problems Section */}
-        <Box py={20}>
-          <Container maxW="container.xl">
-            <VStack gap={12}>
-              <VStack gap={4}>
-                <Heading size="xl" textAlign="center">
-                  旅行計画の4つの課題
-                </Heading>
-                <Text
-                  fontSize="lg"
-                  color="fg.subtle"
-                  textAlign="center"
-                  maxW="700px"
-                >
-                  従来の旅行計画では解決できなかった課題を、AIが解決します
-                </Text>
-              </VStack>
-
-              <VStack gap={4} w="full" maxW="800px" mx="auto">
-                {problems.map((problem) => (
-                  <HStack
-                    key={problem.id}
-                    w="full"
-                    p={6}
-                    bg="red.50"
-                    borderRadius="xl"
-                    align="start"
-                    gap={4}
-                  >
-                    <Icon
-                      as={problem.icon}
-                      boxSize={6}
-                      color="red.500"
-                      flexShrink={0}
-                      mt={1}
-                    />
-                    <Text color="gray.700">{problem.text}</Text>
-                  </HStack>
-                ))}
-              </VStack>
-            </VStack>
-          </Container>
-        </Box>
-
-        {/* Features Section */}
-        <Box bg="purple.100" py={20}>
-          <Container maxW="container.xl">
-            <VStack gap={12}>
-              <VStack gap={4}>
-                <Badge px={4} py={2} fontSize="lg">
-                  宣言型の体験
-                </Badge>
-                <Heading color={"black"} size="xl" textAlign="center">
-                  手続型から宣言型へ
-                </Heading>
-                <Text
-                  fontSize="lg"
-                  color="gray.600"
-                  textAlign="center"
-                  maxW="700px"
-                >
-                  従来の「検索→比較→取捨選択」という手続きを、
-                  「やりたいことを宣言するだけ」のシンプルな体験に置き換えます
-                </Text>
-              </VStack>
-
-              <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={8} w="full">
-                {features.map((feature) => (
-                  <VStack
-                    key={feature.id}
-                    bg="white"
-                    p={6}
-                    borderRadius="xl"
-                    shadow={"0px 0px 15px rgba(0, 0, 0, 0.2)"}
-                    gap={4}
-                  >
-                    <Center w={16} h={16} bg="purple.500" borderRadius="full">
-                      <Icon as={feature.icon} boxSize={8} color="white" />
-                    </Center>
-                    <Text color="black" fontWeight="bold" fontSize="lg">
-                      {feature.title}
-                    </Text>
-                    <Text color="gray.600" textAlign="center" fontSize="sm">
-                      {feature.description}
-                    </Text>
-                  </VStack>
-                ))}
-              </SimpleGrid>
-            </VStack>
-          </Container>
-        </Box>
-
-        {/* Scroll to Top Section */}
-        <Box py={12}>
-          <Center>
-            <Button
-              onClick={scrollToTop}
-              size="lg"
-              variant="outline"
-              colorScheme="purple"
-              borderRadius="full"
-              px={8}
-              _hover={{
-                transform: "translateY(-2px)",
-                shadow: "md",
-              }}
-              transition="all 0.2s"
-            >
-              <HStack gap={2}>
-                <Icon as={FaArrowUp} />
-                <Text>トップへ戻る</Text>
-              </HStack>
-            </Button>
-          </Center>
-        </Box>
-      </Box>
+      )}
     </VStack>
   );
 }
