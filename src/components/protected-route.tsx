@@ -14,13 +14,16 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const router = useRouter();
   const pathname = usePathname();
 
+  const publicRoutes = ["/", "/auth"];
+  const isPublicRoute = publicRoutes.includes(pathname);
+
   useEffect(() => {
-    if (!user && !loading && !initializing) {
+    if (!user && !loading && !initializing && !isPublicRoute) {
       router.push("/auth");
     }
-  }, [user, loading, initializing, router]);
+  }, [user, loading, initializing, router, isPublicRoute]);
 
-  if (loading) {
+  if (loading && !isPublicRoute) {
     return (
       <Center h="100vh">
         <Spinner size="xl" />
@@ -28,7 +31,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
-  if (!user && pathname !== "/auth") {
+  if (!user && !isPublicRoute) {
     return (
       <Center h="100vh">
         <Spinner size="xl" />

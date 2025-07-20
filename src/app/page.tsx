@@ -31,8 +31,10 @@ import {
   FaUserTie,
 } from "react-icons/fa";
 import Header from "@/components/header";
+import { useAuth } from "@/contexts/auth/auth-context";
 
 export default function Home() {
+  const { user } = useAuth();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const userPersonas = [
@@ -167,30 +169,72 @@ export default function Home() {
                   もっと効率的で、もっとワクワクする旅程を発見します
                 </Text>
               </VStack>
-              <Link href="/register" passHref>
-                <Button
-                  as="a"
-                  size="lg"
-                  px={12}
-                  py={8}
-                  fontSize="xl"
-                  fontWeight="bold"
-                  bgGradient="linear(to-r, purple.500, pink.500)"
-                  color="fg.inverted"
-                  borderRadius="full"
-                  _hover={{
-                    transform: "scale(1.05)",
-                    bgGradient: "linear(to-r, purple.600, pink.600)",
-                  }}
-                  transition="all 0.2s"
-                  shadow="xl"
-                >
-                  <HStack gap={3}>
-                    <Icon as={FaStar} />
-                    <Text>旅のプロローグを始める</Text>
-                  </HStack>
-                </Button>
-              </Link>
+              {user ? (
+                <Link href="/planning" passHref>
+                  <Button
+                    as="a"
+                    size="lg"
+                    px={12}
+                    py={8}
+                    fontSize="xl"
+                    fontWeight="bold"
+                    bgGradient="linear(to-r, purple.500, pink.500)"
+                    color="fg.inverted"
+                    borderRadius="full"
+                    _hover={{
+                      transform: "scale(1.05)",
+                      bgGradient: "linear(to-r, purple.600, pink.600)",
+                    }}
+                    transition="all 0.2s"
+                    shadow="xl"
+                  >
+                    <HStack gap={3}>
+                      <Icon as={FaStar} />
+                      <Text>旅のプランニングを開始</Text>
+                    </HStack>
+                  </Button>
+                </Link>
+              ) : (
+                <VStack gap={4}>
+                  <Link href="/auth?mode=signup" passHref>
+                    <Button
+                      as="a"
+                      size="lg"
+                      px={12}
+                      py={8}
+                      fontSize="xl"
+                      fontWeight="bold"
+                      bgGradient="linear(to-r, purple.500, pink.500)"
+                      color="fg.inverted"
+                      borderRadius="full"
+                      _hover={{
+                        transform: "scale(1.05)",
+                        bgGradient: "linear(to-r, purple.600, pink.600)",
+                      }}
+                      transition="all 0.2s"
+                      shadow="xl"
+                    >
+                      <HStack gap={3}>
+                        <Icon as={FaStar} />
+                        <Text>旅のプロローグを始める</Text>
+                      </HStack>
+                    </Button>
+                  </Link>
+                  <Text fontSize="sm" color="fg.subtle">
+                    すでにアカウントをお持ちの方は{" "}
+                    <Link href="/auth" passHref>
+                      <Text
+                        as="span"
+                        color="purple.600"
+                        fontWeight="bold"
+                        textDecoration="underline"
+                      >
+                        こちらからログイン
+                      </Text>
+                    </Link>
+                  </Text>
+                </VStack>
+              )}
             </VStack>
           </Container>
 

@@ -13,13 +13,19 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Header from "@/components/header";
 import { useAuth } from "@/contexts/auth/auth-context";
 
 export default function AuthPage() {
-  const [isSignUp, setIsSignUp] = useState(false);
+  enum AuthMode {
+    LogIn = "login",
+    SignUp = "signup",
+  }
+
+  const searchParams = useSearchParams();
+  const [mode, setMode] = useState(AuthMode.LogIn);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -31,6 +37,13 @@ export default function AuthPage() {
   const router = useRouter();
 
   useEffect(() => {
+    const mode = searchParams.get("mode");
+    if (mode === "signup") {
+      setMode(AuthMode.SignUp);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
     if (user && !initializing) {
       router.push("/");
     }
@@ -40,7 +53,7 @@ export default function AuthPage() {
     e.preventDefault();
     setError("");
 
-    if (isSignUp && password !== confirmPassword) {
+    if (mode === AuthMode.SignUp && password !== confirmPassword) {
       setError("パスワードが一致しません");
       return;
     }
@@ -50,7 +63,7 @@ export default function AuthPage() {
       return;
     }
 
-    if (isSignUp && username.trim().length < 3) {
+    if (mode === AuthMode.SignUp && username.trim().length < 3) {
       setError("ユーザー名は3文字以上で入力してください");
       return;
     }
@@ -58,11 +71,11 @@ export default function AuthPage() {
     setIsLoading(true);
 
     try {
-      if (isSignUp) {
+      if (mode === AuthMode.SignUp) {
         await signup(email, password, username);
-      } else {
-        await login(email, password);
+        return;
       }
+      await login(email, password);
     } catch (error: unknown) {
       setError(
         error instanceof Error ? error.message : "不明なエラーが発生しました",
@@ -95,12 +108,12 @@ export default function AuthPage() {
         <VStack gap={6} w={"100%"}>
           <VStack gap={2} w={"100%"}>
             <Heading size="lg" textAlign="center">
-              {isSignUp ? "アカウント作成" : "サインイン"}
+              {mode === AuthMode.SignUp ? "アカウント作成" : "ログイン"}
             </Heading>
             <Text color="gray.600" textAlign="center">
-              {isSignUp
+              {mode === AuthMode.SignUp
                 ? "アカウント作成をして始めましょう"
-                : "サインインしてアカウントにアクセス"}
+                : "ログインしてアカウントにアクセス"}
             </Text>
           </VStack>
 
@@ -112,7 +125,7 @@ export default function AuthPage() {
 
           <Box as="form" onSubmit={handleSubmit} w={"100%"}>
             <Stack gap={4}>
-              {isSignUp && (
+              {mode === AuthMode.SignUp && (
                 <Input
                   type="text"
                   placeholder="ユーザー名"
@@ -144,7 +157,7 @@ export default function AuthPage() {
                 borderRadius="xl"
               />
 
-              {isSignUp && (
+              {mode === AuthMode.SignUp && (
                 <Input
                   type="password"
                   placeholder="パスワードを確認"
@@ -164,14 +177,14 @@ export default function AuthPage() {
                 w="full"
                 borderRadius="xl"
               >
-                {isSignUp ? "アカウント作成" : "サインイン"}
+                {mode === AuthMode.SignUp ? "アカウント作成" : "ログイン"}
               </Button>
             </Stack>
           </Box>
 
           <HStack>
             <Text color="gray.600">
-              {isSignUp
+              {mode === AuthMode.SignUp
                 ? "アカウントをお持ちですか?"
                 : "アカウントをお持ちでないですか?"}
             </Text>
@@ -180,7 +193,9 @@ export default function AuthPage() {
               colorScheme="blue"
               borderRadius="xl"
               onClick={() => {
-                setIsSignUp(!isSignUp);
+                setMode(
+                  mode === AuthMode.SignUp ? AuthMode.LogIn : AuthMode.SignUp,
+                );
                 setError("");
                 setEmail("");
                 setPassword("");
@@ -189,7 +204,7 @@ export default function AuthPage() {
               }}
               size="sm"
             >
-              {isSignUp ? "サインイン" : "サインアップ"}
+              {mode === AuthMode.SignUp ? "ログイン" : "アカウント作成"}
             </Button>
           </HStack>
         </VStack>
