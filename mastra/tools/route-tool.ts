@@ -1,3 +1,5 @@
+import { readFileSync } from "fs";
+import { join } from "path";
 import type { RouteFullDetail } from "../../src/types/mastra";
 
 export async function routeTool(input: {
@@ -7,44 +9,15 @@ export async function routeTool(input: {
 
   console.log("[RouteTool] Starting route calculation for planId:", planId);
 
-  // BACKEND_API_URLが設定されていない場合のデフォルト値
-  const backendUrl = process.env.NEXT_PUBLIC_API_URL;
-  console.log("[RouteTool] Backend URL:", backendUrl);
-
-  const url = `${backendUrl}/route/calculate-detailed`;
-  console.log("[RouteTool] Request URL:", url);
-
-  const requestBody = {
-    plan_id: planId,
-    travel_mode: "driving",
-    optimize_for: "distance",
-  };
-  console.log("[RouteTool] Request body:", JSON.stringify(requestBody));
-
   try {
-    const response = await fetch(url, {
-      method: "POST",
-      credentials: "include", // session cookie
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    });
-
-    console.log("[RouteTool] Response status:", response.status);
-    console.log("[RouteTool] Response ok:", response.ok);
-
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.error("[RouteTool] Response error body:", errorBody);
-      throw new Error(
-        `HTTP error! status: ${response.status}, body: ${errorBody}`,
-      );
-    }
-
-    const data: RouteFullDetail = await response.json();
+    // Read response from file
+    const fileName = "route-tool-response.json";
+    const filePath = join(process.cwd(), "mastra", "tool-responses", fileName);
+    const fileContent = readFileSync(filePath, "utf-8");
+    const data: RouteFullDetail = JSON.parse(fileContent);
+    console.log("[RouteTool] Response loaded from:", filePath);
     console.log(
-      "[RouteTool] Full route data received:",
+      "[RouteTool] Full route data loaded:",
       JSON.stringify(data, null, 2),
     );
 

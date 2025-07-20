@@ -1,0 +1,1892 @@
+{
+  "recommend_spot_id": "rec_1752992829",
+  "recommend_spots": [
+    {
+      "time_slot": "午前",
+      "spots": [
+        {
+          "spot_id": "ChIJgRAoMDgoAWARd9OKPnHGdDY",
+          "longitude": 135.6173264,
+          "latitude": 34.5334841,
+          "recommendation_reason": "評価4.0（1813件以上のレビュー）です。現在営業中、羽曳野市エリア、名所。",
+          "details": {
+            "name": "天然温泉 延羽の湯 本店",
+            "congestion": [
+              14, 9, 5, 5, 5, 9, 19, 29, 39, 44, 49, 54, 59, 64, 69, 64, 59, 49,
+              39, 34, 29, 24, 19, 14
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpdJXPHj2v9o1EaNkkoQ9HHeS-lD6deWTwsJbtd1aXsWbJsJBSDpHd0i6Lkqh3rgzUkRN7sVJqIIWfBD-xSqfCOwGbQARx45zEuxvoGE1QjfhhHcyW0OwNNKzqoflJYCBopxQAk7jughh0gIUTSgdjHR8sqpToJAtH1NYiBrf7Jbe6dE4_k7PUHB7jov2ZE05wMF37BSD9iNXV_wIRE3uwZxkvsU8YsoJoSwqy9CtXKP0_QMqDbxRgqPWgvjlKJKtNFl8AkOm7irTwO_qqMWP0Q3p-mHSZoYAkF46AFlspIusE9ExwK7wzj4y56I1Z0a_3UwqO-H33O5-5zPL0L6gCcMkkOp8QoXm4AdCAsYxlBW9Y02kFEnKodaFDjhw8WcScsOwgdAqKIu6yqei8MtpX2vJAQQOgitNkAT75fdl3cM4g&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.nobuta123.co.jp/nobehahabikino/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJf91t9mXnAGARNp-g9-ZxtcM",
+          "longitude": 135.499965,
+          "latitude": 34.6568642,
+          "recommendation_reason": "評価4.0（2734件以上のレビュー）です。現在営業中、大阪市浪速区エリア、名所。",
+          "details": {
+            "name": "湯源郷 太平のゆ なんば店",
+            "congestion": [
+              15, 10, 5, 5, 5, 10, 20, 30, 40, 45, 50, 55, 60, 65, 70, 65, 60,
+              50, 40, 35, 30, 25, 20, 15
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpfAAF9phD9MAu3iRLZ8Wgyz9SU1B7SmhX4rDbU_mLDHkHQt7YMbWAuY-laUlixmYLk763rc_nDQ4kCewxOPq1MA6s37kAM-eu7J2bmIjCgW6lbtCEAqeVOlCp5bKHMLlwmP9qUISPkm_ZLaTJ2vt5DH8gvCaJmAwF8BlMwxHOcH90V9IkzmB-sgpJPA44amw8b64CGlgSFrbDDpS2BDqWct4lhD12mXjW5is2G2sfjAJssm8GWeqER6_cQnwCSxQmtZgUHFyTnJRL1iEJQ3gRdyJsQxIJ1reUcwzBCoQJC7VejQor5QDHaDx92eP26tnkIaakv91oU2GXGmj3LM5vIVMhbSp9PHLdBL7dc_qKpAPJ7f0Lng8wMBY_BaA8d3Ti0-GvI9ZU_NfKVhhiac7ebzO7ocFNIO3O1Wrp0W-jDliA&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.taiheinoyu.jp/mysite13/indexn.html",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJFxqmCnvXAGARnKSqeDiZSdc",
+          "longitude": 135.5556395,
+          "latitude": 34.5257191,
+          "recommendation_reason": "評価4.0（1681件以上のレビュー）です。現在営業中、大阪狭山市エリア、名所。",
+          "details": {
+            "name": "狭山郷温泉 虹の湯 大阪狭山店",
+            "congestion": [
+              16, 11, 6, 5, 6, 11, 21, 31, 41, 46, 51, 56, 61, 66, 71, 66, 61,
+              51, 41, 36, 31, 26, 21, 16
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpfJctYhiCQAp1b1wjJNzXyODORFfDtXBwgbkQhM0UqeJApEuDLbMX9ptGTrY5y9tET4zUqm7P9W5zP3QjX_kamEFEjB-nvKS9tozs_NrQ_E48hGVhegSnRkMq_06HYpOClfIUmL9HPfAht9t1h7GV_n3UXN7Vm01N9diH296rErTvQcevH5zlD_iTw2Zq5mbkxX38WbURxqEvBnOpqQeniFvtXS6_zxtNA8ZlBylPFmAAnIP4kfCHgY46y1t4X_ZTbcfLKKN0R-pv0-gvcu7HlcjqLpvptjsePGPJrtxKaHWg&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://spa-sauna.jp/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJ49TFovHdAGARQhkAk1N0E1A",
+          "longitude": 135.5122685,
+          "latitude": 34.6464822,
+          "recommendation_reason": "評価4.2です。現在営業中、大阪市阿倍野区エリア、名所。",
+          "details": {
+            "name": "フォレスト",
+            "congestion": [
+              17, 12, 7, 5, 7, 12, 22, 32, 42, 47, 52, 57, 62, 67, 72, 67, 62,
+              52, 42, 37, 32, 27, 22, 17
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpege1ZQNeWfa4fCBL-FMIeTwHo4I-laIhA04otdCi8tOW9Jee4yNMbYoGHYWqcHx0EupJ1HLZHyNj7h9rwJAGAop6WfF_IL4WAwf-FPBqCBLpomCkTvGMVuqzc1YgaU7vnOpasFzm6NJ9FVoztq0paSTjyBhYam30ByFF57IMI0-xEmBhxlzaahUFvRMKAhMIXVPHhxIgiCRJZDnpa0z0Ud7iVMtSs5NfKAFXo9EiPJYRKcs07tX2BsOoathcR_VVR1PAS-R7aaO2mP8JODZkL0InMSsrcSiQlXf3_SQNVZjQ&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://forest919.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJGUjwY68qB2ARdNmrAowGCK8",
+          "longitude": 135.59452,
+          "latitude": 34.39742,
+          "recommendation_reason": "評価4.3（568件のレビュー）です。河内長野市エリア、名所。",
+          "details": {
+            "name": "天見温泉 南天苑",
+            "congestion": [
+              18, 13, 8, 6, 8, 13, 23, 33, 43, 48, 53, 58, 63, 68, 73, 68, 63,
+              53, 43, 38, 33, 28, 23, 18
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpeoR4XXdLz5iJpIfBknq_PxtKCYE2gRUL8ltCCmFPwQORX89Toplaw8A69hqYBdYhWStbPlCRqUPHF3WfGUBvM-OmZFFud4TrZK11u7qqeO3BHlqRE8zgA12m0kiWzwr156-Al-n9NEC1rbmJjf66sYfuZpwdZiVA2eDDI0xD6AJEjxgRVTPJEv-_iktwNvUbpYAZBv4U1Ry5XOEniNPhS9ghT2r9QqG8oHgAVHMeEKP2-wZOZY-Wo0vcuqHoHNyESjWqzfWjb9AB9jSPowsJ1rE3X6PAz_Y9ma1OAIWBTwUzPPZEVUkQzUotQry7S1aorEcX44sOg_Kqj65hhZW5ypqrNCBdsxb5hnkpdhg6h04cuDgVHOGi2h2AZyaJO-s3UKdq1L90CI7HhAiUOlmfhJYXi8FLLCMG71uvMi-Im0UA&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.e-oyu.com/",
+          "selected": false,
+          "similarity_score": 0
+        }
+      ]
+    },
+    {
+      "time_slot": "午後",
+      "spots": [
+        {
+          "spot_id": "ChIJy4-wQArnAGAR3Ajs0Ngt9xk",
+          "longitude": 135.4888394,
+          "latitude": 34.6640305,
+          "recommendation_reason": "スパです。評価4.0（822件のレビュー）、現在営業中、大阪市浪速区エリア、名所。",
+          "details": {
+            "name": "ヘルシー温泉タテバ",
+            "congestion": [
+              14, 9, 5, 5, 5, 9, 19, 29, 39, 44, 49, 54, 59, 64, 69, 64, 59, 49,
+              39, 34, 29, 24, 19, 14
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpfK0OlEr0pL0NUkANiRfx_uQUkddta6JmyKpp2jbj6NulDfrxMijaukldwUBWGdZDPPc8N7Yz-UdGRgLGZcWFACt53PV_OJUoVdnQWgAAhgYXkKrgQQWDre4S7aKcFdw07ye9JSbx-X2yTtEcgyq87Tbyxcxk9wWOzLov6761oj3wFtHC1SHA6wZ97CAcJc9Iz64lGjFFFQhJcPyA7jM3-FX4okdFrDmtQlLrZsQz23qLFxO130tKWmD0NplLQWnNZQG9VPZBffzy1crIFJpRP1QCX39wUnUzKPb5oGXKpo3Q&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.tateba.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJ_xCClpLgAGARViydJ9PS5nQ",
+          "longitude": 135.5526271,
+          "latitude": 34.6887317,
+          "recommendation_reason": "スパです。評価4.1（493件のレビュー）、現在営業中、大阪市城東区エリア、名所。",
+          "details": {
+            "name": "天然温泉 不動の湯",
+            "congestion": [
+              15, 10, 5, 5, 5, 10, 20, 30, 40, 45, 50, 55, 60, 65, 70, 65, 60,
+              50, 40, 35, 30, 25, 20, 15
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpeNUatx2YAitwmfuVZVg5PNjI0iNpV-A8K1LO954gxol2YQfIVQIoR4Eq14HMUZPUbdpPYi-_jUvakakHE4TyzSd6o_wgDpROPUiEzJq3PgUlNQdyvhPqZRPibez7Egdamgvxj1bP_2VroZGuHOfleCzoH6Gw2o8X0BQQsdJYBUqK3sNuTEy7eBtpaFKzCarrXJL8PNR73cSPaUajmjQ2c6Obic6tX5m1paByb_4R7BoUGE9b1FgaIWOMpGGC3-5r8YxNbpbvjj-gZi8UsInEYrROZ2H8X8NXBDZk7I6GWUvoF00dQBmy6HTOrjLqTL-v0ORJeVAupPS6zTLpX88BEKM0JvXF0-ja4zGx3P1gsw-D3UnIYCb3n5oTYA3-aS6qyde1kIrRae8WULT0xi0e3NrwPvyVXAIjloF3rEYEtVL8yZ&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://fudouyu.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJPUVMxe7hAGARw1QmoAZsufE",
+          "longitude": 135.5817929,
+          "latitude": 34.7364785,
+          "recommendation_reason": "評価4.9です。門真市栄町エリア、名所。",
+          "details": {
+            "name": "ホテルアインズ大阪門真市駅前ととのい乃湯",
+            "congestion": [
+              16, 11, 6, 5, 6, 11, 21, 31, 41, 46, 51, 56, 61, 66, 71, 66, 61,
+              51, 41, 36, 31, 26, 21, 16
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpeZbDaYjB5tt5elyK3owuyC6ncryj2KHf-RBf0a9uYxSgdTTHY3xpcyxPigoMHlb1YCLZnt-SYHL939X-RKaUko4KB1ccCMfDS8tSaADrPr2Af8drAeDGgOYjEcCdgvOGlHyTyA2-eMWVFpJml9pLn6onoEm8v2sXV5Bm-iKvRUnAsQZrzrmcelZBta5AjUrQa_BEQ3V3Qrn3PYqMRXg6HdQ5aj8a-kaKR-rQgSL7X9ZrXY6J-aCNMDhakedWj76DKZEWybUf5kOQ8GFwwjvB5inQSl8eDorwHFhzm8k38&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://hoteleins.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJAXttZjfMAGARgcqp7i6dKGQ",
+          "longitude": 135.4032246,
+          "latitude": 34.3751413,
+          "recommendation_reason": "レストランです。評価4.0（427件のレビュー）、貝塚市エリア、名所。",
+          "details": {
+            "name": "奥水間温泉",
+            "congestion": [
+              5, 5, 5, 5, 5, 5, 9, 14, 19, 24, 29, 59, 79, 69, 49, 39, 44, 54,
+              84, 89, 79, 59, 39, 19
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpck6c73-i4g89OlSKrcQqAO1Gr_Z0m7PKZ_eFlZfwg0XRVRTz7AdL-y2YBg9dYrO_oedeQiOvCa6EPqKkiTV6-w622ndSg6Al3Oa7BNh4Y9XmuBbmV1g21WsO1DtKD5A3La4TqXPSMFzPwuGYPM1IYXxyk12FeDXqjV0C498jEJFDzK33QkZxkAx35uFQ63xDmaIX97Gz5c0lA9BKJvrKNhG0xYKO8mSOjsP9T8plilnWVckFxkJXTDlSM6FtWgmTV3qZJthBAup5WAnO3N523M2gEdNTZU8QgaX7uTT9MshA&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://www.okumizuma.jp/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJGUjwY68qB2ARdNmrAowGCK8",
+          "longitude": 135.59452,
+          "latitude": 34.39742,
+          "recommendation_reason": "評価4.3（568件のレビュー）です。河内長野市エリア、名所。",
+          "details": {
+            "name": "天見温泉 南天苑",
+            "congestion": [
+              18, 13, 8, 6, 8, 13, 23, 33, 43, 48, 53, 58, 63, 68, 73, 68, 63,
+              53, 43, 38, 33, 28, 23, 18
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpeoR4XXdLz5iJpIfBknq_PxtKCYE2gRUL8ltCCmFPwQORX89Toplaw8A69hqYBdYhWStbPlCRqUPHF3WfGUBvM-OmZFFud4TrZK11u7qqeO3BHlqRE8zgA12m0kiWzwr156-Al-n9NEC1rbmJjf66sYfuZpwdZiVA2eDDI0xD6AJEjxgRVTPJEv-_iktwNvUbpYAZBv4U1Ry5XOEniNPhS9ghT2r9QqG8oHgAVHMeEKP2-wZOZY-Wo0vcuqHoHNyESjWqzfWjb9AB9jSPowsJ1rE3X6PAz_Y9ma1OAIWBTwUzPPZEVUkQzUotQry7S1aorEcX44sOg_Kqj65hhZW5ypqrNCBdsxb5hnkpdhg6h04cuDgVHOGi2h2AZyaJO-s3UKdq1L90CI7HhAiUOlmfhJYXi8FLLCMG71uvMi-Im0UA&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.e-oyu.com/",
+          "selected": false,
+          "similarity_score": 0
+        }
+      ]
+    },
+    {
+      "time_slot": "夜",
+      "spots": [
+        {
+          "spot_id": "ChIJhY5E_7cYAWARePUhPo0oiAk",
+          "longitude": 135.6857624,
+          "latitude": 34.7507744,
+          "recommendation_reason": "公園です。評価4.3（587件のレビュー）、現在営業中、交野市エリア、名所。",
+          "details": {
+            "name": "府民の森ほしだ園地",
+            "congestion": [
+              5, 5, 5, 5, 5, 5, 12, 22, 27, 32, 37, 42, 47, 52, 57, 67, 72, 67,
+              62, 77, 67, 47, 27, 12
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpcCb-kPGz60YI5PUj1dQ5WEZOmdFWfgQz_-DF96CnMSOv_TY0XZo9poZcvkX9h8YcSuW4OU3DTwDpENTE_L42bWpRtEoLSOr_eGlBvdIQoeJ5xVGRZcBKJPmh3PWCHHlFC8o0DmGGXThYyTweiwIRUbVTD39WFARit8koZUSiNzE-dVLgDdHhdqhlGbzRDj1cjtEfQQOxrxLdM8rWYiGjz3u1C8k3tY1uDlsD6ltsDUnCYRDL2v0yyIDPvFjMqK9CsOB4VrXAPl-sxw_r0fv52oX9Ntm9Ne6wTYsRy0spL7Qjcn6GxGW2djHpdkmI7OZKoFruy8QsC6v9DVYc7ByT2CIkpkFWelemI1DoOYtv7KFsDJ6BabhpPh5NrMj9hJdYeyZaJh6GcpY7ZayOSEtxVKFu_xkMd5M8ueagHr_o2IbQ&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://o-wonderforest.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJCQcTg1fmAGAReKZPfsgM8Ug",
+          "longitude": 135.4853434,
+          "latitude": 34.6853129,
+          "recommendation_reason": "観光スポットです。評価4.0、現在営業中、大阪市西区エリア、名所。",
+          "details": {
+            "name": "なにわ天然温泉 花乃井",
+            "congestion": [
+              6, 5, 5, 5, 5, 5, 11, 16, 21, 26, 31, 36, 76, 86, 91, 86, 81, 66,
+              46, 36, 26, 21, 16
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpeWwxKNYp-CdFuqnqgSL094CNS0s69Dn_yemMJUSiKvge92dE7Gx54oELm-pjFoOHVTfm85Yq0Fuahzz-WdGu3uSJvt-bUPfheh8R0Tv_3msUAZetCVKFwYSHB7MBbOJO67Y5ZpXosnINlA1PzO7Dx4L17hEeJ0_biFxHaN47NB1a7gDEF-YoTQfHz_n5NbkgU3ii1YVwMkrhBJlhwxqr3u9XK-2dDD043qszb0Ta3owPF3cgbO2JSb7X-QEWycypq7AMu50asq-8nAspqigN2g9Ba1_kynGyDkgo8SeUeyVySFGtYV8iFdFFi_PGN0KxlUb4K2Eo31RW37I45rA-dzC4FzgwqMBpDKmfXEX2bMgvE-p9nenh_dA_5mS-JZTiToCAnZ_EwuI-PjkGajs7fRImWOjZ0ken4UfABkXAL5Nw&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.osakaspa-hananoi.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJXynwDS3nAGARX40TQ_UmyM8",
+          "longitude": 135.5234455,
+          "latitude": 34.6867809,
+          "recommendation_reason": "観光スポットです。評価4.2（2041件以上のレビュー）、現在営業中、大阪市中央区エリア、名所。",
+          "details": {
+            "name": "西の丸庭園",
+            "congestion": [
+              7, 5, 5, 5, 5, 5, 12, 17, 22, 27, 32, 37, 77, 87, 92, 87, 82, 67,
+              47, 37, 27, 22, 17
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpfaQoARuKG2sl5yVG7cgRhNpSjtbzVbw__SlkX9VlPrGVKoRB-Yg9otZ6HAmVj7WnhlVQ_WJhJlC5Kz2Pmgtfx2C-gaXpGrgssJJlbg5JIPqeYcpfrIAK3P5l3OKbBCzPnXNrv00XhR7vygLQtUMn5gGRl1OxazsgUMF0Ij5MGTv_kfGc4-6ij6uF6Z8ebC2PIRsPdWCBX5xiul7wa34pBaO2Nu3qNhvszd9glSwSmUFEhO1LjKIOT8n6NOQ3u1ldUatwATk75hhF-728R1YCqfwKOUHN7kAG7Pg3N0ohwpbUku_RyI67d_Zd49OaQyiNIQJICEMEJmGR1BBRO6GDaCSAd_g8u3hfLREHzjvyX0NY8sJP8WEmy_BCINwx_0Td-qTpzAQqVYIAawAlZhf3V4r7HMaWdNkKEn2LphWKE_Gg&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://www.osakacastlepark.jp/articles/detail.html?id=72",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJwVmCZ-3nAGAR66tr8YB5ZfI",
+          "longitude": 135.5047689,
+          "latitude": 34.6918078,
+          "recommendation_reason": "評価4.5（513件のレビュー）です。大阪市中央区エリア、名所。",
+          "details": {
+            "name": "御宿 野乃大阪淀屋橋",
+            "congestion": [
+              17, 12, 7, 5, 7, 12, 22, 32, 42, 47, 52, 57, 62, 67, 72, 67, 62,
+              52, 42, 37, 32, 27, 22, 17
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpfT95z3MTyFscYQ22ccatSoclpbr9iEpHQTCug3v8nMiP-4FM68Tt1u_NbvEPUnw__6ZZFGiBH_E3knl3dCkXeBuPXR09gsq4LqBWVAMsdZSuX1l4g7e6Esd769SkihgmrQ19X55pQaU_uTQcRYDPGNmcsn5TzexwAeLCka7lQsrsTyHXRm2X2SD5sNj2_kYblfzIMmWfln1JFjmHAqkuTKy5itA6Ouh5x2RM8DTwqj8xV5RfM0taraD11Ga5RRmb_92qh9d7R_RbJzUG9ldUxmGc_SjDUSKUFdkcDIo0D3WQ&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://dormy-hotels.com/dormyinn/hotels/nono_yodoyabashi/?utm_source=google&utm_medium=gbp&utm_campaign=gbpurl",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJ0W2eHRbdAGAR1y9fZSd3xMU",
+          "longitude": 135.4686584,
+          "latitude": 34.6103477,
+          "recommendation_reason": "スパです。評価4.1（3177件以上のレビュー）、現在営業中、大阪市住之江区エリア、名所。",
+          "details": {
+            "name": "天然露天温泉 スパスミノエ",
+            "congestion": [
+              18, 13, 8, 6, 8, 13, 23, 33, 43, 48, 53, 58, 63, 68, 73, 68, 63,
+              53, 43, 38, 33, 28, 23, 18
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpdr8drnifFITsL3s22qiLvJH0-KwgV-ZXtbJd1A42RnGMOb_5kB5ggNBvRGPiPd3rZFq_-nppixR01rKyMHCffHeEJyUMY85GxHKmZ1GDddKCt1TEjYGlP2SzirqOzM02mrgw2wPmeUeK3ZjPleGngvDk-IZDXe8NIsoO8UwlaNH59UW6TsfT_Sr2iBY1F-YLHUMhpM790CYmCNaTNTtwgNWwd2YWVm3H_wzPybjKJXszTSV1rBgfOCpxoHBSXAKsw7DcVGETjBHLcO8k79shAdZ61R1hE1N8dWqjp9d6foEyAiRXkYhyRLl_xiCcejkL6jQBwb9LMBY-E-X5BgHG2VXDTlueuF_C6A_sqRDxUee7qk5a1guJjUv67_9cFVoq9HtvooL-9g9CqJNjGdFw_EzqnaV0LABLTVkR2KJh0f1g&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.spasuminoe.jp/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJcdskglfmAGARPIIT80Ig4bs",
+          "longitude": 135.4852494,
+          "latitude": 34.6854311,
+          "recommendation_reason": "評価4.2（1273件以上のレビュー）です。大阪市西区エリア、名所。",
+          "details": {
+            "name": "湯元「花乃井」スーパーホテル大阪天然温泉",
+            "congestion": [
+              19, 14, 9, 7, 9, 14, 24, 34, 44, 49, 54, 59, 64, 69, 74, 69, 64,
+              54, 44, 39, 34, 29, 24, 19
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpdV13GIHoGtd-97kukyv7SgFlzLAkYZ97XJGyIhtvV5QX57vHu02sdDk3SG4ofsAoYDM06JlWUC4AlI6FSXSfeFtzwRHHxEskUMwgKEXl14J6VPxyIZ_RTc3syvCJdMIMjV-iBUVVuPf5OnqkrUhciLnFIDjGCuNqOHuIk2rn9ZT9CmMxvjT_H6tFyqY7dE56H_tyzvGQANiYaG0-xvZdGr0F-OC8UJCm4G6gyeLvBZuCGFBVEMQFAgeQukEZtngQE9CPFjgvLtUPEzVhprdlHQ0VIUneTzbXnUanK-aYQ0yA&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://www.superhotel.co.jp/s_hotels/osakaspa/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJ_SthnoX5AGARVrM6AM5_Vnw",
+          "longitude": 135.478947,
+          "latitude": 34.8580905,
+          "recommendation_reason": "公園です。評価3.7、現在営業中、24時間営業、箕面市エリア、名所。",
+          "details": {
+            "name": "東海自然歩道 西の起点",
+            "congestion": [
+              8, 6, 5, 5, 6, 11, 18, 28, 33, 38, 43, 48, 53, 58, 63, 73, 78, 73,
+              68, 83, 73, 53, 33, 18
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpcpexcoeilwJkpeVcYE7mlAPIBzUEB_4EG5bRciB9TKmEjAyVLaIZPVlz2F0SYlLDjW_ybTrvA0DwHYfoVgsmCLtWBbfAcd6Rsa9Yg-4RRwzH1pKDhYKZaeKDSg754u6qiUEt0K2YRc98gpFjNy2V_wZahgG4nZ6yrulGR6eQe25191OzUtZK0Zrp8bUouwcGb6m1jma90DDDMBW1h4I2XgTbWVkk6OsjctTy2GhqDo1AjoCQ98n5DQEZSrtljD8TTp5WOsmb7J0CsnuQbVsFnOAb42t8xRYz17GGfPmHzLuJTqaxuQHRYX90zNaiPP20nNtylUv-GUal5txjpzmTw2TDpjpNxrWXhmC99NDvhl6FDJtqFPVqfIe725CR4h7FeUdfnj56tybJDtQde7Rj0NAPjfN2Jqb8EjHYavnN-GOA&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.tokai-walk.jp/course_guide/course22.html",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJVVVV4rrmAGARQajJLFAPlFY",
+          "longitude": 135.5135576,
+          "latitude": 34.7150085,
+          "recommendation_reason": "観光スポットです。評価4.2（7016件以上のレビュー）、現在営業中、大阪市北区エリア、名所。",
+          "details": {
+            "name": "天然温泉 なにわの湯",
+            "congestion": [
+              12, 10, 7, 5, 7, 10, 17, 22, 27, 32, 37, 42, 82, 92, 97, 92, 87,
+              72, 52, 42, 32, 27, 22
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpeW9B4rlOpfPilxYcukgZkiRtNSmnu8AIxP5WOCddSvQf0A7LWaxl2ulUjCZlESGFzT7usmDwORN4W6xepu0zsuWL47lfBLp0LRFAvUQXG4iYG3POvfcMH_FAi1EMcnZPoWcjy3AQnSDDbyRWflgRtfrWqrfXaS5l9A_9OixKTBPBP5ly55ml5dZSkYQKrQ3Crj6qiw6XWh8kSoD92DYPCthcpa-ViruVdt_ILSyKu3IVN_tDacCfA-3C2Vgfo7gpxpLsk7et-EqfpZg1nhwdWuSVRqUYeSYMIO-1ZZRJZ10xwDVVWt6zFIVU_ef6hkcG1Yo1b3unXEr_LWsyEzxy-Pe8IURgsQc0650wNpl7MDS8iJzxMa0CM1FRhWdf8AXviYgicakGyN9JpxWKxcAW6hfEdjE-1KfQcFQKdjEX8kqQ&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://www.naniwanoyu.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJsR9Zt4rdAGARqlF3kRuWnMI",
+          "longitude": 135.5056078,
+          "latitude": 34.6499029,
+          "recommendation_reason": "スパです。評価4.0（7395件以上のレビュー）、現在営業中、24時間営業、大阪市浪速区エリア、名所。",
+          "details": {
+            "name": "スパワールド ホテルアンドリゾート",
+            "congestion": [
+              22, 17, 12, 10, 12, 17, 27, 37, 47, 52, 57, 62, 67, 72, 77, 72,
+              67, 57, 47, 42, 37, 32, 27, 22
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpf0NQAN5xzboKGZGlzF6UQGITarUfFDfkA7GYTkZhZqGyGtCp_to6wnx_pJIY3jMAvQ0jMeW0g8jLnlbzQEHz1QJSYSGM8Pn1Ytv6TYVR-jxWcwwHuZPsE6cMNSj8GP3z0AEuORe64j8RJvabRa3R6k6NLDiIF8QK5diouZn1QKjBPkGZ53Gv-jij001JT3-QY5wf8guJ116zWhFvIvwahE2uhKD041mg5x4Qr1J5n3dxAkxYjzmZL2Xx84KdB0yAUYzIe1tzJJj_dqQk57AjV_3B3JU8if6pbJ0FDx0D5qtA&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://www.spaworld.co.jp/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJh2z_4A3nAGARROaafpvGXBQ",
+          "longitude": 135.4595476,
+          "latitude": 34.6703579,
+          "recommendation_reason": "スパです。評価3.9（4224件以上のレビュー）、現在営業中、大阪市港区エリア、名所。",
+          "details": {
+            "name": "空庭温泉 OSAKA BAY TOWER",
+            "congestion": [
+              5, 5, 5, 5, 5, 7, 14, 24, 29, 34, 39, 44, 49, 54, 59, 69, 74, 69,
+              64, 79, 69, 49, 29, 14
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpdacK2ibE7oa-6cKGqpxJ_fHjvvbCLUKsNTZCPe9i3g5pjTcgk0p1na1DJmufr2OQpGTzGWgts9kGxYiElTAKer_UrQaB-Kfq90YObkXSRbSxucl6OoyGIWqRMz_rd1lVMfR0xG7QTZnfoYSNh-jnJNnmHqftbajYTA2g8WPO_sfleC9Y7VQ8iuPsY0IKeCWFFrNwgmmd6stb8eU91r-SMD9gMZj-39wDmDs2KzcvDTqz9kJPnmV0fJsFL5x5XTLahTy1ph6W6Yi_13rih3sJ8-6i-cOmukzliJLVJ4SsBmZg&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.solaniwa.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJB6xXskzRAGAR_FEUIk33Aeo",
+          "longitude": 135.525524,
+          "latitude": 34.4598977,
+          "recommendation_reason": "公園です。評価3.8（171件のレビュー）、現在営業中、堺市南区エリア、名所。",
+          "details": {
+            "name": "堺自然ふれあいの森",
+            "congestion": [
+              5, 5, 5, 5, 5, 5, 10, 15, 20, 25, 30, 35, 75, 85, 90, 85, 80, 65,
+              45, 35, 25, 20, 15
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpeFMs3mJ5Qox9tSHqsaysEoIpY8jKySASrY9OBG_oDmcynX8WwJtq16jrONWErjp3vlwaYl6Q190vXrm0q51BnrUpLyf2NgVjKXWX2XCyd16TI4GElgaLrS5FeUBBWCsR9xGMmv9ZDrjB1gzNLeYNGLqZMvLVrTpCt7SCjB0dRQfmjGinTv74DCUvulg-s4aph1sJ3rRTLnsscvCGn9mUCBVdlGgMFb1CNpC_MeZLVsBsjzXnzzJ-0tuK9lzXSeFvNiCmpMUkdF81f4xcQwl1YGlce87Xu1ThsFQkU8FzOt1Q&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.sakai-fureainomori.jp/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJ7VqIAZT9AGARJeiBCZnmvaY",
+          "longitude": 135.5864791,
+          "latitude": 34.8788033,
+          "recommendation_reason": "評価3.9（384件のレビュー）です。高槻市エリア、名所。",
+          "details": {
+            "name": "摂津峡 花の里温泉 山水館",
+            "congestion": [
+              25, 20, 15, 13, 15, 20, 30, 40, 50, 55, 60, 65, 70, 75, 80, 75,
+              70, 60, 50, 45, 40, 35, 30, 25
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpc-HyBl2HHtdl5OA9GRiStEO7ya1jvUAQvvusrSzTohIqMgNuh8YbUzELb5e5fujjazb3mArdn6gFlkktfZr3wtxrb9rdZr7bQFX8h-0yRuSdvA5KNihmND1FCrrEFBDpr1T648gmK4wrKvAmWSmUd6yvZSCjgTHbgqIwx7w4EMhrUIshZpOddpm_57fL-Jf4zhuvbPnG2l3RQpcDjIzpAHJUpWVJCsomCZSagpWE5hUbQW08FEMhOu2n5Nj9zNiU8ApTh6aUDXhN-ZVqvAtuqQ5LOcTd_foEJifiUhBvZOLVN9qGL39pyS6Be1BhR5VoUhTjUH8qrylTy6m1DhFdsA6iMarb1rUkpxokMALDst8nVeG3FsXHqixu0OZl_WryMp4JjytSLxESNq47NfukA_3hIcAKA5zWcJLlZfsUI8lw&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.sansuikan.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJUehCZafgAGARljY7ZislDBY",
+          "longitude": 135.535947,
+          "latitude": 34.6657935,
+          "recommendation_reason": "スパです。評価3.9（3498件以上のレビュー）、現在営業中、大阪市東成区エリア、名所。",
+          "details": {
+            "name": "天然温泉 延羽の湯 鶴橋店",
+            "congestion": [
+              14, 9, 5, 5, 5, 9, 19, 29, 39, 44, 49, 54, 59, 64, 69, 64, 59, 49,
+              39, 34, 29, 24, 19, 14
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpdV43W4VOZEYDdtqGedjH8Ph9rz2Wy7l63UtDrnvB1S5q6YQ4cYIwWlTjLAXIVss9-AgPxVyyI4QHvZ2fWzzal0Ap4GQNqrkbzA5GakKCRZsGTtUxKy1QRfKA21ZlP9o9vctV9Yu6VVMIuN50mP7Z7ubAN-H_ubzvW2tbuU-GmiMZLXEqcL_Z0RmZLzOMAfNMJCJLxxGm9W12mV1To6U2xWDkv8zc3J-o2FIafSBta5kv7DTKBeiY6G2pTHOLCTsZhLuLkH22WTuW6VzFTWP9-g1ZJxSZF_W-svHyfstcWXm5Vii_9p-Nr7OTi-xPZquWHcFkXugXuHiDaBCCnc4lUc-Pq-CllpaikmynEXn-Yoa0sixunbguzQJuo4U1wjhuGTSwb5rLZThVFdpY1GUTnZJ3OmpP9IilHY9ASXpXCI4w&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.nobuta123.co.jp/nobehatsuruhashi/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJF5qjFrfoAGARngrirkr1sJg",
+          "longitude": 135.4342716,
+          "latitude": 34.6814512,
+          "recommendation_reason": "スパです。評価3.9（2493件以上のレビュー）、現在営業中、大阪市此花区エリア、名所。",
+          "details": {
+            "name": "上方温泉 一休",
+            "congestion": [
+              15, 10, 5, 5, 5, 10, 20, 30, 40, 45, 50, 55, 60, 65, 70, 65, 60,
+              50, 40, 35, 30, 25, 20, 15
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpevmkgBFBb_tK9EXSqTAgKvKa4eQxTA7vSUCaLi1OFKUjU9UtiCHHEuhbLNJ2HLv44c_PLTodv8yNty4TDADOjOP56thJLPU1em8qMfLxxBnTAx6gNpPTQNfAgMq-08Xk5V6uJ7FB-6JEcumE16QQGeXP_A-2M3LAlB72MUjQx8N828-EBpKZMXmyNtQk9J_e95XbEpacSALfxZzFzzLZTaTmd6JZi4wmCrvJs0YgHIuUY9sZ5EKb1LuDvrQN1b4fBjXJzbGADD7kRQoP-_2-Gs5oqD0hhgolFaZBokDoQ0J_UvNxLRvWvMYWbA-kyd6FkUD9yivpJeZxJRsLQbVXDJJNTM1v88uo0MfvpG3vXY8Sy0iI1y4fX7XAGvnVvmEkgFvGqvdckuwgcF22tvK5L0kqnpRChWfG2ne9crfiD-vz-i&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.onsen19.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJG_-QhGLnAGARbshmAjufZdo",
+          "longitude": 135.5093036,
+          "latitude": 34.6674161,
+          "recommendation_reason": "スパです。評価5.0（108件のレビュー）、現在営業中、24時間営業、大阪市中央区エリア、名所。",
+          "details": {
+            "name": "貸切風呂サウナ旅館 竹のや",
+            "congestion": [
+              16, 11, 6, 5, 6, 11, 21, 31, 41, 46, 51, 56, 61, 66, 71, 66, 61,
+              51, 41, 36, 31, 26, 21, 16
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpcOvOPmJbbDsNdqTViZTSbexsmhkRiQDzbUy0LiU6ZLQ4hnb2W-FIkKnHOVIT9glgMetazv84T_EvtAbH62GNBxZPbS9CKr3O3MX-HfExn90T0GDpdWihtzz_cqdfnszxo968Hvc6rRmU3-bZkDhlLthKIpDyEq8_IERRRV-LXBsmlbADI0SUA-9eRIDIYD2bGPIeOEt0ht9cNvUzKaO-lGxmy4vCoOixWk-6zDo4rJzx_BbHs5K2UmZaeTmKACIz6QiFt_ETXoGif6vG6hvt8SOYMLsHfWEIk4wjJ86G7EIw&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://takeno-ya.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJjyhRolXHAGAR8Q1Elmh7PiU",
+          "longitude": 135.2981337,
+          "latitude": 34.4148462,
+          "recommendation_reason": "スパです。評価4.2（2272件以上のレビュー）、現在営業中、泉佐野市エリア、名所。",
+          "details": {
+            "name": "天然温泉 泉州の湯 関西空港",
+            "congestion": [
+              17, 12, 7, 5, 7, 12, 22, 32, 42, 47, 52, 57, 62, 67, 72, 67, 62,
+              52, 42, 37, 32, 27, 22, 17
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpdevRzaoJEZrE8jNVHPKvu0hRTINHEnWWqJPIlSluGzCpRGH_hxl_P2wab83PoXeHFC_Mkq1FSUjAzzH3O1rrH3ZDYhnzvs3TQ7KjdhoHd3toiO58A-hzUBosK08jLzEsg6EP5aUBNkWZlgnRAQRuJVtVZ5G7M48sxgnjsGgHJ6fpr4e6M8-XgO_AfufLsYdbJhNt6ax5iMh0ildE98-M2IOiV4NIUacClVTwKHqFsBicV1b4mOfaNRhlmvAtiJJCOTGxHf2T8gn8EhENvKPBF13yCDGBmj8OholQOe9htJOA&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://senshu-onsen.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJ8eyYdqHnAGAR6Bb4nSQfkHw",
+          "longitude": 135.50753,
+          "latitude": 34.7061798,
+          "recommendation_reason": "評価3.9（423件のレビュー）です。現在営業中、24時間営業、大阪市北区山崎町エリア、名所。",
+          "details": {
+            "name": "天然温泉ホテルリブマックスPREMIUM梅田EAST",
+            "congestion": [
+              18, 13, 8, 6, 8, 13, 23, 33, 43, 48, 53, 58, 63, 68, 73, 68, 63,
+              53, 43, 38, 33, 28, 23, 18
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpe7jNbN4md4X2BXaxHsd2bRRwqV7GJRd2k8O9Dv38fTREnALIbQXhhrrrDzPCDMRp98ft1tTkW2qpfdD2nRMLMrVgB3czoumi8bKOUJBCKbfDIUw5aHGVkmqcWlyQfikADWOzoVe4H5Y6LbGeZuPYX3G0LUSQPtPj2mQIQqGyjMtPbiZgT57zgH155_vgQMoTpE6BKCD1cfCdekPrlYLMMeaKQPQSH7jLlDr0aDNOVv7nf0P72UBMCNYynRnECY4khcV2BwOZVkyFebn1OkLUPhZpHRbUaJy_LwVxb2qGlhFg&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://www.hotel-livemax.com/osaka/umeda-east/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJPXiMg97mAGARsiccqVj_Os8",
+          "longitude": 135.507323,
+          "latitude": 34.6924709,
+          "recommendation_reason": "公園です。評価4.2（6021件以上のレビュー）、現在営業中、24時間営業、大阪市北区エリア、名所。",
+          "details": {
+            "name": "中之島公園",
+            "congestion": [
+              12, 10, 7, 5, 7, 10, 17, 22, 27, 32, 37, 42, 82, 92, 97, 92, 87,
+              72, 52, 42, 32, 27, 22
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpdVKdRHsXtPRi89URQGnIFx5nwh9Z9Gk1WKVb5E1zlqvTyZbnItquVFK7dI6LTOSP3SGsBMRBlCe-QctrYqBYa3SLByW5bBtJzJTEQ-B3OVeh79wkZ3At3Cj67hz94o8n2OhU1kBmgQyrRqvicGf2RCblor0xEn5CYPfbavoEUfBRO5iNiB-jaMVllbzfhRHkrLIDk4-1wBLnzVC5bRNFDSz3OUmfO-wtuHWwHJmNtB8H1gx01USC1GS1oh0NXY30OYB4qYgQzCbO0OZ8-pwk3Byl3RsqRY39v46ONnucFuMXHSUX3Z66t8QT_mpsN9l_7iqVImoiy0x0SEHRGd8r9TLjQsUx80R-ql_3LO2c70KifIVBwbeIr1dCAsf8hFkd63EAsedM-H9QVZj0aWOiyhsw3Kz1w-xkLwLKR5-vk&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://www.osakapark.osgf.or.jp/nakanoshima/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJ3Qi3Mjv6AGARv2Fu5UNBd-4",
+          "longitude": 135.4750513,
+          "latitude": 34.8409116,
+          "recommendation_reason": "評価4.3（723件のレビュー）です。現在営業中、24時間営業、箕面市エリア、名所。",
+          "details": {
+            "name": "山荘 風の杜",
+            "congestion": [
+              20, 15, 10, 8, 10, 15, 25, 35, 45, 50, 55, 60, 65, 70, 75, 70, 65,
+              55, 45, 40, 35, 30, 25, 20
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpcToAKEZxjmOsx5V5ltt0Bmgrbjz1FjSa2-WMwed2F4hm0iWPhN-OT3AXS9V1mnzYznLZCKqWn9rCXU34eNijKFY_f0eJUzJfGnew1p_vweNyCn5bc_aJZXXL3olXp5Hq1yCZKbZ07YOs-Cz1mGeDaPQ3S05CEaj0PB7vh4Fc5oTkckDfGR1bbx-Gb7liTiSDYT4SqTWbWba5fo0TOu7kjtK5j6R9EVhPLXXCdiDsBIctiM7j_Zd69rLvm5kbT2rm01-djJedI0MpwryIXQNSCfXeVqUtH2uRvXOapwXqo_1Q&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://www.minoo-kazenomori.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJWycYzY35AGAR6rz9QCA7shE",
+          "longitude": 135.4723464,
+          "latitude": 34.8470706,
+          "recommendation_reason": "観光スポットです。評価4.5（2228件以上のレビュー）、現在営業中、24時間営業、箕面市エリア、名所。",
+          "details": {
+            "name": "箕面公園",
+            "congestion": [
+              14, 12, 9, 7, 9, 12, 19, 24, 29, 34, 39, 44, 84, 94, 99, 94, 89,
+              74, 54, 44, 34, 29, 24
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpeqjkWvEZyA5Sm2g0NIbbCcEDSqLwuf9wj16LJM2c_TBC4YvUOenPnh1DnCq_2yiHGB-aMjHRyjPHY5qGRMCsZdcLmnWRLKIIVYRCZ_F4_j91_Gtk5X4CnUvLMSDzB15Fc7yOWFyxD0X3SAa-KvtFV7ZqE_neLzbDpbYhwJWYJaz_kgqCXtpXkm0vPsy7Bku-xpANYUmE-bOOwemSMaY5cKAq7Q2weL-a5r53qQvuT87NRGLkJtBr7YYLB7E4h5V3YNalup93DwLlnvDZLUdrXV8oz4ESOV3EwcjCviyPT6zG1qstJy8_4TnyqlFyg6Uxu_jAKil6HrD7ee1LqtMG-i3pN5xKE408GAkDjs13OKcPHaV1HrHxRrofn8lZC9-_zjmHiaA8JYP0Y0pbw_DjMvgGNBS1nvjr_ya4AM5qY&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.mino-park.jp/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJ_Y_022X3AGARE0LUcuCk8TE",
+          "longitude": 135.4416599,
+          "latitude": 34.8562569,
+          "recommendation_reason": "評価3.9（1282件以上のレビュー）です。池田市伏尾町エリア、名所。",
+          "details": {
+            "name": "大阪温泉旅館 伏尾温泉 不死王閣",
+            "congestion": [
+              22, 17, 12, 10, 12, 17, 27, 37, 47, 52, 57, 62, 67, 72, 77, 72,
+              67, 57, 47, 42, 37, 32, 27, 22
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpfhLQJm3gCC_dHse0WR9z46t48nWCIei2rGlHYJPsMthJnrV-JKufQLUs7RABDTnVciwZRvLrkSnmhmfw2SSu7xAXaBCIEhcOil2SwGr5nFnZwoUMa7mIgHd9bO3Tcn9F-yuMi0BIPXwUD9DisnpRkPWSlQb_AB90-hWTHQ7kRbhzLzKYwrjxF-nXLfjIMVqkyStQCOAR3IgwD-W671p785TOQ2BXAf__d4LckKPUfqiR0UNdZfsUxsCixPzdzM2nntuJVqgQAN7lpuRJnsPmMukIUgQOdLChoFWOxOWXYhOg&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://www.fushioukaku.co.jp/?utm_source=google_bp&utm_medium=organic",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJy4-wQArnAGAR3Ajs0Ngt9xk",
+          "longitude": 135.4888394,
+          "latitude": 34.6640305,
+          "recommendation_reason": "スパです。評価4.0（822件のレビュー）、現在営業中、大阪市浪速区エリア、名所。",
+          "details": {
+            "name": "ヘルシー温泉タテバ",
+            "congestion": [
+              23, 18, 13, 11, 13, 18, 28, 38, 48, 53, 58, 63, 68, 73, 78, 73,
+              68, 58, 48, 43, 38, 33, 28, 23
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpfK0OlEr0pL0NUkANiRfx_uQUkddta6JmyKpp2jbj6NulDfrxMijaukldwUBWGdZDPPc8N7Yz-UdGRgLGZcWFACt53PV_OJUoVdnQWgAAhgYXkKrgQQWDre4S7aKcFdw07ye9JSbx-X2yTtEcgyq87Tbyxcxk9wWOzLov6761oj3wFtHC1SHA6wZ97CAcJc9Iz64lGjFFFQhJcPyA7jM3-FX4okdFrDmtQlLrZsQz23qLFxO130tKWmD0NplLQWnNZQG9VPZBffzy1crIFJpRP1QCX39wUnUzKPb5oGXKpo3Q&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.tateba.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJ_xCClpLgAGARViydJ9PS5nQ",
+          "longitude": 135.5526271,
+          "latitude": 34.6887317,
+          "recommendation_reason": "スパです。評価4.1（493件のレビュー）、現在営業中、大阪市城東区エリア、名所。",
+          "details": {
+            "name": "天然温泉 不動の湯",
+            "congestion": [
+              24, 19, 14, 12, 14, 19, 29, 39, 49, 54, 59, 64, 69, 74, 79, 74,
+              69, 59, 49, 44, 39, 34, 29, 24
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpeNUatx2YAitwmfuVZVg5PNjI0iNpV-A8K1LO954gxol2YQfIVQIoR4Eq14HMUZPUbdpPYi-_jUvakakHE4TyzSd6o_wgDpROPUiEzJq3PgUlNQdyvhPqZRPibez7Egdamgvxj1bP_2VroZGuHOfleCzoH6Gw2o8X0BQQsdJYBUqK3sNuTEy7eBtpaFKzCarrXJL8PNR73cSPaUajmjQ2c6Obic6tX5m1paByb_4R7BoUGE9b1FgaIWOMpGGC3-5r8YxNbpbvjj-gZi8UsInEYrROZ2H8X8NXBDZk7I6GWUvoF00dQBmy6HTOrjLqTL-v0ORJeVAupPS6zTLpX88BEKM0JvXF0-ja4zGx3P1gsw-D3UnIYCb3n5oTYA3-aS6qyde1kIrRae8WULT0xi0e3NrwPvyVXAIjloF3rEYEtVL8yZ&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://fudouyu.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJPUVMxe7hAGARw1QmoAZsufE",
+          "longitude": 135.5817929,
+          "latitude": 34.7364785,
+          "recommendation_reason": "評価4.9です。門真市栄町エリア、名所。",
+          "details": {
+            "name": "ホテルアインズ大阪門真市駅前ととのい乃湯",
+            "congestion": [
+              25, 20, 15, 13, 15, 20, 30, 40, 50, 55, 60, 65, 70, 75, 80, 75,
+              70, 60, 50, 45, 40, 35, 30, 25
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpeZbDaYjB5tt5elyK3owuyC6ncryj2KHf-RBf0a9uYxSgdTTHY3xpcyxPigoMHlb1YCLZnt-SYHL939X-RKaUko4KB1ccCMfDS8tSaADrPr2Af8drAeDGgOYjEcCdgvOGlHyTyA2-eMWVFpJml9pLn6onoEm8v2sXV5Bm-iKvRUnAsQZrzrmcelZBta5AjUrQa_BEQ3V3Qrn3PYqMRXg6HdQ5aj8a-kaKR-rQgSL7X9ZrXY6J-aCNMDhakedWj76DKZEWybUf5kOQ8GFwwjvB5inQSl8eDorwHFhzm8k38&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://hoteleins.com/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJAXttZjfMAGARgcqp7i6dKGQ",
+          "longitude": 135.4032246,
+          "latitude": 34.3751413,
+          "recommendation_reason": "レストランです。評価4.0（427件のレビュー）、貝塚市エリア、名所。",
+          "details": {
+            "name": "奥水間温泉",
+            "congestion": [
+              5, 5, 5, 5, 5, 5, 6, 11, 16, 21, 26, 56, 76, 66, 46, 36, 41, 51,
+              81, 86, 76, 56, 36, 16
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpck6c73-i4g89OlSKrcQqAO1Gr_Z0m7PKZ_eFlZfwg0XRVRTz7AdL-y2YBg9dYrO_oedeQiOvCa6EPqKkiTV6-w622ndSg6Al3Oa7BNh4Y9XmuBbmV1g21WsO1DtKD5A3La4TqXPSMFzPwuGYPM1IYXxyk12FeDXqjV0C498jEJFDzK33QkZxkAx35uFQ63xDmaIX97Gz5c0lA9BKJvrKNhG0xYKO8mSOjsP9T8plilnWVckFxkJXTDlSM6FtWgmTV3qZJthBAup5WAnO3N523M2gEdNTZU8QgaX7uTT9MshA&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "https://www.okumizuma.jp/",
+          "selected": false,
+          "similarity_score": 0
+        },
+        {
+          "spot_id": "ChIJGUjwY68qB2ARdNmrAowGCK8",
+          "longitude": 135.59452,
+          "latitude": 34.39742,
+          "recommendation_reason": "評価4.3（568件のレビュー）です。河内長野市エリア、名所。",
+          "details": {
+            "name": "天見温泉 南天苑",
+            "congestion": [
+              15, 10, 5, 5, 5, 10, 20, 30, 40, 45, 50, 55, 60, 65, 70, 65, 60,
+              50, 40, 35, 30, 25, 20, 15
+            ],
+            "business_hours": {
+              "MONDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "TUESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "WEDNESDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "THURSDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "FRIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SATURDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "SUNDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              },
+              "HOLIDAY": {
+                "open_time": "09:00:00",
+                "close_time": "18:00:00"
+              }
+            },
+            "price": 0
+          },
+          "google_map_image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpeoR4XXdLz5iJpIfBknq_PxtKCYE2gRUL8ltCCmFPwQORX89Toplaw8A69hqYBdYhWStbPlCRqUPHF3WfGUBvM-OmZFFud4TrZK11u7qqeO3BHlqRE8zgA12m0kiWzwr156-Al-n9NEC1rbmJjf66sYfuZpwdZiVA2eDDI0xD6AJEjxgRVTPJEv-_iktwNvUbpYAZBv4U1Ry5XOEniNPhS9ghT2r9QqG8oHgAVHMeEKP2-wZOZY-Wo0vcuqHoHNyESjWqzfWjb9AB9jSPowsJ1rE3X6PAz_Y9ma1OAIWBTwUzPPZEVUkQzUotQry7S1aorEcX44sOg_Kqj65hhZW5ypqrNCBdsxb5hnkpdhg6h04cuDgVHOGi2h2AZyaJO-s3UKdq1L90CI7HhAiUOlmfhJYXi8FLLCMG71uvMi-Im0UA&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+          "website_url": "http://www.e-oyu.com/",
+          "selected": false,
+          "similarity_score": 0
+        }
+      ]
+    }
+  ]
+}

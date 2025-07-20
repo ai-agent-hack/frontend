@@ -1,3 +1,5 @@
+import { readFileSync } from "fs";
+import { join } from "path";
 import type { MessageSchema, RecommendedSpots } from "../../src/types/mastra";
 
 type Message = {
@@ -20,25 +22,12 @@ export async function searchSpots(input: {
 }): Promise<RecommendedSpots> {
   const { chat_history, recommend_spots, plan_id } = input;
 
-  // BACKEND_API_URLが設定されていない場合のデフォルト値
-  const backendUrl = process.env.NEXT_PUBLIC_API_URL;
-  const url = `${backendUrl}/trip/${plan_id}/refine`;
+  // Read response from file
+  const fileName = "spots-tool-response.json";
+  const filePath = join(process.cwd(), "mastra", "tool-responses", fileName);
+  const fileContent = readFileSync(filePath, "utf-8");
+  const data: RecommendedSpots = JSON.parse(fileContent);
+  console.log("[SpotsTool] Response loaded from:", filePath);
 
-  const response = await fetch(url, {
-    method: "POST",
-    credentials: "include", // session cookie
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      chat_history: chat_history.map(convertMessageSchemaToMessage),
-      recommend_spots,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return await response.json();
+  return data;
 }
