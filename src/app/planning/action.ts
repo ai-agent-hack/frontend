@@ -13,21 +13,11 @@ type GetInitialRecommendedSpotsOutput = {
 export const getInitialRecommendedSpots = async (
   input: GetInitialRecommendedSpotsInput,
 ): Promise<GetInitialRecommendedSpotsOutput> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/trip/seed`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(input),
-    credentials: "include",
-  });
-
-  const result = await response.json();
-
-  if (!response.ok)
-    throw new Error(result.message || "APIリクエストに失敗しました。");
-
-  return result as GetInitialRecommendedSpotsOutput;
+  // モックデータをインポートして返す
+  const mockResponse = await import(
+    "../../../mastra/tool-responses/getInitialRecommendedSpots-response.json"
+  );
+  return mockResponse.default as GetInitialRecommendedSpotsOutput;
 };
 
 export const getPreInfo = async (preInfoId: string): Promise<PreInfo> => {

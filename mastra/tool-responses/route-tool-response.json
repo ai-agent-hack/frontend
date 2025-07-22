@@ -1,0 +1,261 @@
+{
+  "plan_id": "rec_1752985167",
+  "version": 2,
+  "total_days": 1,
+  "departure_location": null,
+  "hotel_location": null,
+  "id": 91,
+  "total_distance_km": 22.13,
+  "total_duration_minutes": 39,
+  "total_spots_count": 3,
+  "calculated_at": "2025-07-20T06:31:05.610828",
+  "google_maps_data": {
+    "travel_mode": "driving",
+    "optimize_for": "distance",
+    "solutions_summary": {
+      "1": {
+        "solve_time": 0,
+        "distance_meters": 22132,
+        "duration_seconds": 2373
+      }
+    }
+  },
+  "route_days": [
+    {
+      "day_number": 1,
+      "start_location": "湯源郷 太平のゆ なんば店",
+      "end_location": "狭山郷温泉 虹の湯 大阪狭山店",
+      "ordered_spots": {
+        "spots": [
+          {
+            "name": "湯源郷 太平のゆ なんば店",
+            "order": 0,
+            "details": {
+              "price": 0,
+              "congestion": [
+                15, 10, 5, 5, 5, 10, 20, 30, 40, 45, 50, 55, 60, 65, 70, 65, 60,
+                50, 40, 35, 30, 25, 20, 15
+              ],
+              "business_hours": {
+                "FRIDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "MONDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "SUNDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "HOLIDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "TUESDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "SATURDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "THURSDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "WEDNESDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                }
+              }
+            },
+            "is_spot": true,
+            "spot_id": "ChIJf91t9mXnAGARNp-g9-ZxtcM",
+            "latitude": 34.6568642,
+            "selected": true,
+            "image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpfAAF9phD9MAu3iRLZ8Wgyz9SU1B7SmhX4rDbU_mLDHkHQt7YMbWAuY-laUlixmYLk763rc_nDQ4kCewxOPq1MA6s37kAM-eu7J2bmIjCgW6lbtCEAqeVOlCp5bKHMLlwmP9qUISPkm_ZLaTJ2vt5DH8gvCaJmAwF8BlMwxHOcH90V9IkzmB-sgpJPA44amw8b64CGlgSFrbDDpS2BDqWct4lhD12mXjW5is2G2sfjAJssm8GWeqER6_cQnwCSxQmtZgUHFyTnJRL1iEJQ3gRdyJsQxIJ1reUcwzBCoQJC7VejQor5QDHaDx92eP26tnkIaakv91oU2GXGmj3LM5vIVMhbSp9PHLdBL7dc_qKpAPJ7f0Lng8wMBY_BaA8d3Ti0-GvI9ZU_NfKVhhiac7ebzO7ocFNIO3O1Wrp0W-jDliA&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+            "longitude": 135.499965,
+            "spot_name": "湯源郷 太平のゆ なんば店",
+            "time_slot": "MORNING",
+            "website_url": "http://www.taiheinoyu.jp/mysite13/indexn.html",
+            "location_index": 0,
+            "similarity_score": null,
+            "recommendation_reason": "評価4.0（2734件以上のレビュー）です。現在営業中、大阪市浪速区エリア、名所。"
+          },
+          {
+            "name": "フォレスト",
+            "order": 1,
+            "details": {
+              "price": 0,
+              "congestion": [
+                17, 12, 7, 5, 7, 12, 22, 32, 42, 47, 52, 57, 62, 67, 72, 67, 62,
+                52, 42, 37, 32, 27, 22, 17
+              ],
+              "business_hours": {
+                "FRIDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "MONDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "SUNDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "HOLIDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "TUESDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "SATURDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "THURSDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "WEDNESDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                }
+              }
+            },
+            "is_spot": true,
+            "spot_id": "ChIJ49TFovHdAGARQhkAk1N0E1A",
+            "latitude": 34.6464822,
+            "selected": true,
+            "image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpege1ZQNeWfa4fCBL-FMIeTwHo4I-laIhA04otdCi8tOW9Jee4yNMbYoGHYWqcHx0EupJ1HLZHyNj7h9rwJAGAop6WfF_IL4WAwf-FPBqCBLpomCkTvGMVuqzc1YgaU7vnOpasFzm6NJ9FVoztq0paSTjyBhYam30ByFF57IMI0-xEmBhxlzaahUFvRMKAhMIXVPHhxIgiCRJZDnpa0z0Ud7iVMtSs5NfKAFXo9EiPJYRKcs07tX2BsOoathcR_VVR1PAS-R7aaO2mP8JODZkL0InMSsrcSiQlXf3_SQNVZjQ&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+            "longitude": 135.5122685,
+            "spot_name": "フォレスト",
+            "time_slot": "MORNING",
+            "website_url": "https://forest919.com/",
+            "location_index": 2,
+            "similarity_score": null,
+            "recommendation_reason": "評価4.2です。現在営業中、大阪市阿倍野区エリア、名所。"
+          },
+          {
+            "name": "狭山郷温泉 虹の湯 大阪狭山店",
+            "order": 2,
+            "details": {
+              "price": 0,
+              "congestion": [
+                16, 11, 6, 5, 6, 11, 21, 31, 41, 46, 51, 56, 61, 66, 71, 66, 61,
+                51, 41, 36, 31, 26, 21, 16
+              ],
+              "business_hours": {
+                "FRIDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "MONDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "SUNDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "HOLIDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "TUESDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "SATURDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "THURSDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                },
+                "WEDNESDAY": {
+                  "open_time": "09:00:00",
+                  "close_time": "18:00:00"
+                }
+              }
+            },
+            "is_spot": true,
+            "spot_id": "ChIJFxqmCnvXAGARnKSqeDiZSdc",
+            "latitude": 34.5257191,
+            "selected": true,
+            "image_url": "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATKogpfJctYhiCQAp1b1wjJNzXyODORFfDtXBwgbkQhM0UqeJApEuDLbMX9ptGTrY5y9tET4zUqm7P9W5zP3QjX_kamEFEjB-nvKS9tozs_NrQ_E48hGVhegSnRkMq_06HYpOClfIUmL9HPfAht9t1h7GV_n3UXN7Vm01N9diH296rErTvQcevH5zlD_iTw2Zq5mbkxX38WbURxqEvBnOpqQeniFvtXS6_zxtNA8ZlBylPFmAAnIP4kfCHgY46y1t4X_ZTbcfLKKN0R-pv0-gvcu7HlcjqLpvptjsePGPJrtxKaHWg&key=AIzaSyAV17N_2ekGk5xAaJHsMQ79cn0cDNRHTrE",
+            "longitude": 135.5556395,
+            "spot_name": "狭山郷温泉 虹の湯 大阪狭山店",
+            "time_slot": "MORNING",
+            "website_url": "https://spa-sauna.jp/",
+            "location_index": 1,
+            "similarity_score": null,
+            "recommendation_reason": "評価4.0（1681件以上のレビュー）です。現在営業中、大阪狭山市エリア、名所。"
+          }
+        ],
+        "total_spots": 3,
+        "optimization_info": {
+          "solve_time_seconds": 0,
+          "total_distance_meters": 22132,
+          "total_duration_seconds": 2373
+        }
+      },
+      "id": 77,
+      "route_id": 91,
+      "day_distance_km": 22.13,
+      "day_duration_minutes": 39,
+      "route_geometry": {
+        "polyline": "kyorE_z_zXvHQZaDf@_F?c@[wESqDB]X{BXsC|@eI^_DViE\\kGLcD?SG_EGmCAaABiA`B?dD@nAGbBSz@CtAR~B^~Hl@t@Hb@Bn@Br@F`BPzAVGfAYxBi@fDy@nF]fBm@dCKj@OEJk@p@{Dd@{Ch@gDl@cEXgCT{ARuAn@gEdB_Lt@{EZsBNo@f@gBxBLzBZnEl@NDf@?X@dALlC`@fAPHH@D`@FnC\\XDhKvAlG`A`B_BbCaCxBsBbDaDdD_DLKN@FEbB}AfCcCtDmDjMwLxOcOjH}GpF{Et@o@|@{@Z_@z@sAh@sAd@aBh@iCd@gCLoAHyB?c@GeBWeEQaCa@_Hu@cLaC__@IgBAu@BgAHeATeA^eAXe@p@w@t@k@PIf@Qr@Ov@IvAGzJChDArOGlLElRI`FCjCG`AG|AQjCe@jKmBbC_@zAMr@ApCAfB@fGD`FDlG@bFBnE?xD?tAEt@Kt@]d@a@l@y@Tg@La@N{ABy@?eACyE@eCJaDDaKBwJ?}QAcO?yI@gBB_AHyCHuBPgCf@_F`@}Cr@sDz@aDL]?Y?ELa@`@eAX_AJo@Bg@De@AmB?m@Dc@Lk@Te@RUVOVKt@Mf@Ab@BhARh@TTLp@h@d@b@tBrBTTHPd@f@v@x@vFzGfArALPLJvH`JnErFvFjHrGdInEhFp@n@~@z@rBrAvAp@jBf@vBXtADjCI~@Gx@Iv@IlNoAbK_AnNoAxKiAdUsBnZoCh@Gh@Sj@IbAKpAOfAGhC@xBJx@HZHr@T`B\\vB`@f@J`@LX@xAn@lElCxB~AfC|B`B|AxAxAvAzA`FzEn@n@z@MtB_@z@QfBKnFIdCErAMtHw@`KgArAKlBGpEG|ETd@?L@HPFP`@[ZSfCgBHp@FNFJHFRFlBErBEz@Hh@Pd@XnH~EfObKpAx@t@\\`AVnARjFt@XDCPDj@b@rF\\hFrAM"
+      },
+      "route_segments": [
+        {
+          "segment_order": 1,
+          "from_location": "湯源郷 太平のゆ なんば店",
+          "to_spot_id": null,
+          "to_spot_name": "フォレスト",
+          "travel_mode": "DRIVING",
+          "id": 221,
+          "route_day_id": 77,
+          "distance_meters": 11067,
+          "duration_seconds": 1187,
+          "directions_steps": null
+        },
+        {
+          "segment_order": 2,
+          "from_location": "フォレスト",
+          "to_spot_id": null,
+          "to_spot_name": "狭山郷温泉 虹の湯 大阪狭山店",
+          "travel_mode": "DRIVING",
+          "id": 222,
+          "route_day_id": 77,
+          "distance_meters": 11067,
+          "duration_seconds": 1187,
+          "directions_steps": null
+        }
+      ]
+    }
+  ],
+  "route_summary": {
+    "route_id": 91,
+    "plan_id": "rec_1752985167",
+    "version": 2
+  },
+  "daily_summary": [
+    {
+      "day_number": 1,
+      "spots_count": 3,
+      "distance_km": 22.13
+    }
+  ],
+  "optimization_details": {
+    "total_days": 1
+  },
+  "calculation_time_seconds": 5.697594881057739,
+  "created_by_calculation": true
+}
