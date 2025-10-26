@@ -35,7 +35,7 @@ export default function TripHistory() {
     const fetchTrips = async () => {
       try {
         const data = await getMyTrips();
-        setTrips(data.pre_infos || []);
+        setTrips(data);
       } catch (err) {
         setError("旅行履歴の取得に失敗しました");
         console.error(err);
