@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import type React from "react";
 import { useState } from "react";
 import Header from "@/components/header";
-import { registerPlanInfo } from "./action";
+import { apiClient } from "@/lib/api-client";
 
 const RequiredMark = () => (
   <Text as="span" color="red.500" ml={1} fontSize="lg">
@@ -75,7 +75,7 @@ const RegisterPage: React.FC = () => {
         atmosphere: atmosphere,
       };
 
-      const planInfo = await registerPlanInfo(
+      const planInfo = await apiClient.registerPlanInfo(
         requestBody,
         await user.getIdToken(),
       );

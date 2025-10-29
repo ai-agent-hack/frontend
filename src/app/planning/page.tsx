@@ -19,7 +19,7 @@ import TutorialPopover, {
 } from "@/components/tutorial-popover";
 import { useTutorial } from "@/components/use-tutorial";
 import type { RecommendedSpots } from "@/types/mastra";
-import { getInitialRecommendedSpots, getPlanInfo, saveTrip } from "./action";
+import { apiClient } from "@/lib/api-client";
 import ChatPane from "./chat-pane";
 import DetailPane from "./detail-pane";
 import RouteDetail from "./route-detail";
@@ -121,7 +121,7 @@ export default function Planning() {
       if (!planInfoId) return;
 
       try {
-        const planInfo = await getPlanInfo(planInfoId, await user.getIdToken());
+        const planInfo = await apiClient.getPlanInfo(planInfoId, await user.getIdToken());
 
         const message = `
 **こんにちは！**
@@ -145,7 +145,7 @@ ${planInfo.atmosphere}な感じ
 
         setInitialMessage(message);
 
-        const spots = await getInitialRecommendedSpots(
+        const spots = await apiClient.getInitialRecommendedSpots(
           {
             plan_info_id: planInfoId,
           },
@@ -337,7 +337,7 @@ ${planInfo.atmosphere}な感じ
                 if (!recommendedSpots || !planId) return;
                 setIsSaving(true);
                 try {
-                  await saveTrip(planId, recommendedSpots);
+                  await apiClient.saveTrip(planId, recommendedSpots, await user.getIdToken());
                   setTriggerMessage("旅行ルート作成を開始して");
                 } catch (error) {
                   console.error("Failed to save trip:", error);
