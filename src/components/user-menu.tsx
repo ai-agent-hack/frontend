@@ -20,7 +20,7 @@ export default function UserMenu() {
     <HStack gap={4}>
       <VStack align="start" gap={0}>
         <Text fontSize="sm" fontWeight="medium">
-          {user.username ?? "未登録"}さん
+          {user.displayName ?? user.email ?? "未登録"}さん
         </Text>
       </VStack>
       <Button

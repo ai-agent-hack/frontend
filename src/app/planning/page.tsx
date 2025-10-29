@@ -18,7 +18,7 @@ import TutorialPopover, {
 } from "@/components/tutorial-popover";
 import { useTutorial } from "@/components/use-tutorial";
 import type { RecommendedSpots } from "@/types/mastra";
-import { getInitialRecommendedSpots, getPreInfo, saveTrip } from "./action";
+import { getInitialRecommendedSpots, getPlanInfo, saveTrip } from "./action";
 import ChatPane from "./chat-pane";
 import DetailPane from "./detail-pane";
 import RouteDetail from "./route-detail";
@@ -41,7 +41,7 @@ export default function Planning() {
   const [isRouteShown, setIsRouteShown] = useState<boolean>(false);
   const [routeGenerationAttempted, setRouteGenerationAttempted] =
     useState<boolean>(false);
-  const preInfoId = useSearchParams().get("pre_info_id");
+  const planInfoId = useSearchParams().get("plan_info_id");
 
   // Tutorial steps
   const tutorialSteps: TutorialStep[] = useMemo(
@@ -110,10 +110,10 @@ export default function Planning() {
 
   useEffect(() => {
     (async () => {
-      if (!preInfoId) return;
+      if (!planInfoId) return;
 
       try {
-        const preInfo = await getPreInfo(preInfoId);
+        const planInfo = await getPlanInfo(planInfoId);
 
         const message = `
 **こんにちは！**
@@ -125,19 +125,10 @@ export default function Planning() {
 ### 📋 いただいた旅行プラン
 
 **📍 旅行先**  
-${preInfo.region}
-
-**📅 旅行日**  
-${new Date(preInfo.start_date).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" })}
+${planInfo.region}
 
 **✨ 雰囲気**  
-${preInfo.atmosphere}な感じ
-
-**💰 予算**  
-¥${preInfo.budget.toLocaleString()}
-
-**👥 人数**  
-${preInfo.participants_count}人
+${planInfo.atmosphere}な感じ
 
 ---
 
@@ -149,7 +140,7 @@ ${preInfo.participants_count}人
         // Fetch initial spots
         // TODO : pre_info id で紐づいているplanとrouteがあれば叩かない　代わりにgetを叩く
         const spots = await getInitialRecommendedSpots({
-          pre_info_id: preInfoId,
+          plan_info_id: planInfoId,
         });
 
         const pins: MapPin[] = spots.recommend_spots.recommend_spots.flatMap(
@@ -180,7 +171,7 @@ ${preInfo.participants_count}人
         console.error("Failed to fetch data:", error);
       }
     })();
-  }, [preInfoId, isTutorialCompleted, startTutorial]);
+  }, [planInfoId, isTutorialCompleted, startTutorial]);
 
   const handleRecommendSpotUpdate = useCallback(
     (recommendSpot: RecommendedSpots) => {

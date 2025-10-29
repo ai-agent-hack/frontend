@@ -99,7 +99,7 @@ export default function TripHistory() {
             {trips.map((trip) => (
               <Link
                 key={trip.id}
-                href={`/planning?pre_info_id=${trip.id}`}
+                href={`/planning?plan_info_id=${trip.id}`}
                 passHref
               >
                 <Box

@@ -1,8 +1,8 @@
 import type { RecommendedSpots } from "@/types/mastra";
-import type { PreInfo } from "@/types/pre-info";
+import type { PlanInfo } from "@/types/plan-info.ts";
 
 export interface GetInitialRecommendedSpotsInput {
-  pre_info_id: string;
+  plan_info_id: string;
 }
 
 type GetInitialRecommendedSpotsOutput = {
@@ -20,24 +20,30 @@ export const getInitialRecommendedSpots = async (
   return mockResponse.default as GetInitialRecommendedSpotsOutput;
 };
 
-export const getPreInfo = async (preInfoId: string): Promise<PreInfo> => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/pre_info/${preInfoId}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    },
-  );
+export const getPlanInfo = async (planInfoId: string): Promise<PlanInfo> => {
+  // const response = await fetch(
+  //   `${process.env.NEXT_PUBLIC_API_URL}/pre_info/${preInfoId}`,
+  //   {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     credentials: "include",
+  //   },
+  // );
 
-  const result = await response.json();
+  // const result = await response.json();
 
-  if (!response.ok)
-    throw new Error(result.message || "事前情報の取得に失敗しました。");
+  // if (!response.ok)
+  //   throw new Error(result.message || "事前情報の取得に失敗しました。");
+  const result = {
+    atmosphere: "自然を満喫したい",
+    region: "東京",
+    id: 1,
+    user_id: 1,
+  };
 
-  return result as PreInfo;
+  return result as PlanInfo;
 };
 
 export const saveTrip = (planId: string, spots: RecommendedSpots) => {

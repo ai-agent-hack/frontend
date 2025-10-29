@@ -1,32 +1,37 @@
-import type { PreInfo } from "@/types/pre-info";
+"use server";
 
-export interface RegisterPreInfoInput {
+import type { PlanInfo } from "@/types/plan-info.ts";
+
+export interface RegisterPlanInfoInput {
   region: string;
-  start_date: string;
-  end_date: string;
   atmosphere: string;
-  budget: number;
 }
 
-export const registerPreInfo = async (
-  input: RegisterPreInfoInput,
-): Promise<PreInfo> => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/pre_info/register`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(input),
-      credentials: "include",
-    },
-  );
+export const registerPlanInfo = async (
+  input: RegisterPlanInfoInput,
+  user_token: string,
+): Promise<PlanInfo> => {
+  // IDトークンを取得（期限切れなら自動リフレッシュ）
+  // const idToken = await user.getIdToken();
 
-  const result = await response.json();
+  // const response = await fetch(
+  //   `${process.env.NEXT_PUBLIC_API_URL}/pre_info/register`,
+  //   {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "Authorization": `Bearer ${idToken}`,
+  //     },
+  //     body: JSON.stringify(input),
+  //   },
+  // );
 
-  if (!response.ok)
-    throw new Error(result.message || "APIリクエストに失敗しました。");
+  // const result = await response.json();
 
-  return result as PreInfo;
+  // if (!response.ok) {
+  //   throw new Error(result.message || "APIリクエストに失敗しました。");
+  // }
+  const result = { id: 1 };
+
+  return result as PlanInfo;
 };

@@ -12,12 +12,12 @@ import {
   Textarea,
   VStack,
 } from "@chakra-ui/react";
+import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import type React from "react";
 import { useState } from "react";
 import Header from "@/components/header";
-import { formatDate } from "@/utils/format-date";
-import { registerPreInfo } from "./action";
+import { registerPlanInfo } from "./action";
 
 const RequiredMark = () => (
   <Text as="span" color="red.500" ml={1} fontSize="lg">
@@ -40,11 +40,15 @@ const RegisterPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [destination, setDestination] = useState<string>("");
-  const [date, setDate] = useState<Date>(new Date());
-  const [participantsCount, setParticipantsCount] = useState<number>(1);
-  const [budget, setBudget] = useState<number>(10000);
   const [atmosphere, setAtmosphere] = useState<string>("");
   const router = useRouter();
+  const auth = getAuth();
+
+  const user = auth.currentUser;
+
+  if (!user) {
+    throw new Error("ユーザーがログインしていません。");
+  }
 
   const handleTagClick = (tagText: string) => {
     if (atmosphere) {
@@ -59,7 +63,7 @@ const RegisterPage: React.FC = () => {
     setIsLoading(true);
     setError(null);
 
-    if (destination === "" || !date || participantsCount === 0 || !atmosphere) {
+    if (destination === "" || !atmosphere) {
       setError("必須項目をすべて入力してください。");
       setIsLoading(false);
       return;
@@ -68,19 +72,18 @@ const RegisterPage: React.FC = () => {
     try {
       const requestBody = {
         region: destination,
-        start_date: new Date(date.setHours(9, 0, 0, 0)).toISOString(),
-        end_date: new Date(date.setHours(21, 0, 0, 0)).toISOString(),
-        participants_count: participantsCount,
         atmosphere: atmosphere,
-        budget: budget,
       };
 
-      const preInfo = await registerPreInfo(requestBody);
-      if (!preInfo) {
+      const planInfo = await registerPlanInfo(
+        requestBody,
+        await user.getIdToken(),
+      );
+      if (!planInfo) {
         setError("旅行計画の登録に失敗しました。");
         return;
       }
-      router.push(`/planning?pre_info_id=${preInfo.id}`);
+      router.push(`/planning?plan_info_id=${planInfo.id}`);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message || "不明なエラーです。");
@@ -117,68 +120,6 @@ const RegisterPage: React.FC = () => {
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
               placeholder="例: 北海道、沖縄、京都"
-              disabled={isLoading}
-              size="lg"
-              borderRadius="xl"
-            />
-          </Box>
-
-          <Box>
-            <Text mb={3} fontSize="md" fontWeight="semibold">
-              旅行日
-              <RequiredMark />
-            </Text>
-
-            <Input
-              type="date"
-              value={formatDate(date)}
-              onChange={(e) =>
-                setDate(e.target.value ? new Date(e.target.value) : new Date())
-              }
-              disabled={isLoading}
-              size="lg"
-              borderRadius="xl"
-            />
-          </Box>
-
-          <Box>
-            <Text mb={3} fontWeight="semibold">
-              参加人数 (人)
-            </Text>
-            <Input
-              value={participantsCount}
-              onChange={(e) => {
-                const value = Number(e.target.value);
-                if (Number.isNaN(value) || value < 0) {
-                  setParticipantsCount(0);
-                  return;
-                }
-                setParticipantsCount(value);
-              }}
-              min={0}
-              placeholder="例: 3"
-              disabled={isLoading}
-              size="lg"
-              borderRadius="xl"
-            />
-          </Box>
-
-          <Box>
-            <Text mb={3} fontWeight="semibold">
-              予算 (円)
-            </Text>
-            <Input
-              value={budget}
-              onChange={(e) => {
-                const value = Number(e.target.value);
-                if (Number.isNaN(value) || value < 10000) {
-                  setBudget(10000);
-                  return;
-                }
-                setBudget(value);
-              }}
-              min={10000}
-              placeholder="例: 50000"
               disabled={isLoading}
               size="lg"
               borderRadius="xl"
