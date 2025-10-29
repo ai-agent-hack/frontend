@@ -9,7 +9,7 @@ export interface RegisterPlanInfoInput {
 
 export const registerPlanInfo = async (
   input: RegisterPlanInfoInput,
-  user_token: string,
+  userToken: string,
 ): Promise<PlanInfo> => {
   // IDトークンを取得（期限切れなら自動リフレッシュ）
   // const idToken = await user.getIdToken();

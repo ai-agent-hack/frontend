@@ -9,6 +9,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { getAuth } from "firebase/auth";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
@@ -42,6 +43,13 @@ export default function Planning() {
   const [routeGenerationAttempted, setRouteGenerationAttempted] =
     useState<boolean>(false);
   const planInfoId = useSearchParams().get("plan_info_id");
+  const auth = getAuth();
+
+  const user = auth.currentUser;
+
+  if (!user) {
+    throw new Error("ユーザーがログインしていません。");
+  }
 
   // Tutorial steps
   const tutorialSteps: TutorialStep[] = useMemo(
@@ -113,7 +121,7 @@ export default function Planning() {
       if (!planInfoId) return;
 
       try {
-        const planInfo = await getPlanInfo(planInfoId);
+        const planInfo = await getPlanInfo(planInfoId, await user.getIdToken());
 
         const message = `
 **こんにちは！**
@@ -137,11 +145,12 @@ ${planInfo.atmosphere}な感じ
 
         setInitialMessage(message);
 
-        // Fetch initial spots
-        // TODO : pre_info id で紐づいているplanとrouteがあれば叩かない　代わりにgetを叩く
-        const spots = await getInitialRecommendedSpots({
-          plan_info_id: planInfoId,
-        });
+        const spots = await getInitialRecommendedSpots(
+          {
+            plan_info_id: planInfoId,
+          },
+          await user.getIdToken(),
+        );
 
         const pins: MapPin[] = spots.recommend_spots.recommend_spots.flatMap(
           (timeSlot) =>

@@ -1,3 +1,5 @@
+"use server";
+
 import type { RecommendedSpots } from "@/types/mastra";
 import type { PlanInfo } from "@/types/plan-info.ts";
 
@@ -12,6 +14,7 @@ type GetInitialRecommendedSpotsOutput = {
 
 export const getInitialRecommendedSpots = async (
   input: GetInitialRecommendedSpotsInput,
+  userToken: string,
 ): Promise<GetInitialRecommendedSpotsOutput> => {
   // モックデータをインポートして返す
   const mockResponse = await import(
@@ -20,7 +23,10 @@ export const getInitialRecommendedSpots = async (
   return mockResponse.default as GetInitialRecommendedSpotsOutput;
 };
 
-export const getPlanInfo = async (planInfoId: string): Promise<PlanInfo> => {
+export const getPlanInfo = async (
+  planInfoId: string,
+  userToken: string,
+): Promise<PlanInfo> => {
   // const response = await fetch(
   //   `${process.env.NEXT_PUBLIC_API_URL}/pre_info/${preInfoId}`,
   //   {
@@ -46,13 +52,13 @@ export const getPlanInfo = async (planInfoId: string): Promise<PlanInfo> => {
   return result as PlanInfo;
 };
 
-export const saveTrip = (planId: string, spots: RecommendedSpots) => {
-  return fetch(`${process.env.NEXT_PUBLIC_API_URL}/trip/${planId}/save`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ recommend_spots: spots }),
-    credentials: "include",
-  });
+export const saveTrip = async (planId: string, spots: RecommendedSpots) => {
+  // return fetch(`${process.env.NEXT_PUBLIC_API_URL}/trip/${planId}/save`, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({ recommend_spots: spots }),
+  //   credentials: "include",
+  // });
 };
