@@ -277,23 +277,37 @@ export default function TutorialPopover({
         )}
 
         <HStack justify="space-between" pt={2}>
-          <Text fontSize="xs" color={"gray"}>
+          <Text fontSize="xs" color="gray.600">
             {currentStep + 1} / {steps.length}
           </Text>
           <HStack gap={2}>
-            <Button size="xs" color={"orange"} onClick={onSkip}>
+            <Button
+              size="xs"
+              variant="ghost"
+              colorScheme="orange"
+              onClick={onSkip}
+              fontWeight="medium"
+            >
               スキップ
             </Button>
             {!isFirstStep && (
-              <Button size="xs" color={"gray"} onClick={onPrev}>
+              <Button
+                size="xs"
+                variant="outline"
+                colorScheme="gray"
+                onClick={onPrev}
+                fontWeight="medium"
+              >
                 戻る
               </Button>
             )}
             <Button
               size="xs"
-              color={"black"}
+              variant="solid"
+              colorScheme="purple"
               onClick={onNext}
               disabled={isLastStep}
+              fontWeight="medium"
             >
               {isLastStep ? "完了" : "次へ"}
             </Button>
