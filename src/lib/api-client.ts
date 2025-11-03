@@ -1,5 +1,6 @@
 import type { RecommendedSpots } from "@/types/mastra";
 import type { PlanInfo } from "@/types/plan-info";
+import type { Trip } from "@/types/trip";
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") {
@@ -109,6 +110,24 @@ export const apiClient = {
 
     if (!response.ok) {
       throw new Error(result.error || "旅行の保存に失敗しました。");
+    }
+
+    return result;
+  },
+
+  async getMyTrips(userToken: string): Promise<Trip[]> {
+    const response = await fetch(`${getBaseUrl()}/api/my-trips`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "旅行履歴の取得に失敗しました。");
     }
 
     return result;
