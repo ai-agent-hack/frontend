@@ -4,8 +4,6 @@ import type { RecommendedSpots } from "@/types/mastra";
 
 interface SpotDetailProps {
   recommendedSpots: RecommendedSpots;
-  selectedTimeSlot: "午前" | "午後" | "夜";
-  onTimeSlotChange: (timeSlot: "午前" | "午後" | "夜") => void;
   onSpotSelect: (spotId: string, isSelected: boolean) => void;
   onPinClick: (pinId: string) => void;
   setSelectedPinId: (pinId: string | null) => void;
@@ -13,42 +11,19 @@ interface SpotDetailProps {
 
 const SpotDetail = ({
   recommendedSpots,
-  selectedTimeSlot,
-  onTimeSlotChange,
   onSpotSelect,
   onPinClick,
   setSelectedPinId,
 }: SpotDetailProps) => {
-  // Helper function to get average congestion for a specific time slot
-  const getAverageCongestion = (
-    congestionArray: number[],
-    timeSlot: "午前" | "午後" | "夜",
-  ) => {
-    // Map time slots to hour ranges and calculate average
-    const hourRanges = {
-      午前: [9, 10, 11], // 9-12
-      午後: [13, 14, 15, 16], // 13-17
-      夜: [18, 19, 20, 21], // 18-22
-    };
-
-    const hours = hourRanges[timeSlot];
-    const relevantCongestion = hours.map((hour) => congestionArray[hour] || 0);
-    const average =
-      relevantCongestion.reduce((sum, val) => sum + val, 0) /
-      relevantCongestion.length;
-
-    return average;
+  // Helper function to get average congestion across all hours
+  const getAverageCongestion = (congestionArray: number[]) => {
+    const sum = congestionArray.reduce((acc, val) => acc + val, 0);
+    return sum / congestionArray.length;
   };
 
-  // Get all congestion values for the current time slot
-  const currentTimeSlotSpots = recommendedSpots.recommend_spots
-    .filter((timeSlot) => timeSlot.time_slot === selectedTimeSlot)
-    .flatMap((timeSlot) => timeSlot.spots);
-
-  const allCongestionValues = currentTimeSlotSpots
-    .map((spot) =>
-      getAverageCongestion(spot.details.congestion, selectedTimeSlot),
-    )
+  // Get all congestion values
+  const allCongestionValues = recommendedSpots.spots
+    .map((spot) => getAverageCongestion(spot.details.congestion))
     .filter((val) => val > 0);
 
   // Calculate min and max for relative scaling
@@ -59,11 +34,8 @@ const SpotDetail = ({
   const range = maxCongestion - minCongestion || 1;
 
   // Helper function to get congestion level for specific spot
-  const getCongestionLevel = (
-    congestionArray: number[],
-    timeSlot: "午前" | "午後" | "夜",
-  ) => {
-    const average = getAverageCongestion(congestionArray, timeSlot);
+  const getCongestionLevel = (congestionArray: number[]) => {
+    const average = getAverageCongestion(congestionArray);
 
     if (average === 0 || allCongestionValues.length === 0) return 1;
 
@@ -96,44 +68,15 @@ const SpotDetail = ({
     );
   };
   return (
-    <VStack width="100%" gap={4}>
-      {/* Time Slot Selector */}
-      <Box width="100%" display="flex" justifyContent="center" pt={4}>
-        <HStack gap={1} bg="gray.100" p={1} borderRadius="lg">
-          {(["午前", "午後", "夜"] as const).map((slot) => (
-            <Button
-              key={slot}
-              size="sm"
-              variant={selectedTimeSlot === slot ? "solid" : "ghost"}
-              colorScheme={selectedTimeSlot === slot ? "purple" : "gray"}
-              onClick={() => {
-                onTimeSlotChange(slot);
-                setSelectedPinId(null);
-              }}
-              flex={1}
-              borderRadius="md"
-              fontWeight="medium"
-              _hover={{
-                bg: selectedTimeSlot === slot ? "purple.500" : "gray.200",
-              }}
-            >
-              {slot}
-            </Button>
-          ))}
-        </HStack>
-      </Box>
-
+    <VStack width="100%" gap={4} pt={4}>
       {/* Spots List */}
       <VStack width="100%" gap={3}>
-        {recommendedSpots.recommend_spots
-          .filter((timeSlot) => timeSlot.time_slot === selectedTimeSlot)
-          .flatMap((timeSlot) =>
-            timeSlot.spots.map((spot, index) => ({
-              ...spot,
-              pinId: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
-            })),
-          )
-          .map((pin) => (
+        {recommendedSpots.spots.map((spot, index) => {
+          const pin = {
+            ...spot,
+            pinId: `${spot.spot_id}-${index}`,
+          };
+          return (
             <Box
               key={pin.spot_id}
               p={4}
@@ -190,26 +133,22 @@ const SpotDetail = ({
                   <Text>
                     混雑度:{" "}
                     {renderCongestionLevel(
-                      getCongestionLevel(
-                        pin.details.congestion,
-                        selectedTimeSlot,
-                      ),
+                      getCongestionLevel(pin.details.congestion),
                     )}
                   </Text>
                 </HStack>
               </HStack>
             </Box>
-          ))}
+          );
+        })}
 
-        {recommendedSpots.recommend_spots
-          .filter((spot) => spot.time_slot === selectedTimeSlot)
-          .flatMap((spot) => spot.spots).length === 0 && (
+        {recommendedSpots.spots.length === 0 && (
           <Box p={6} textAlign="center">
             <Text fontSize="lg" color="gray.400" mb={2}>
               🕐
             </Text>
             <Text color="gray.500" fontSize="sm">
-              {selectedTimeSlot}のスポットはまだありません
+              スポットはまだありません
             </Text>
           </Box>
         )}

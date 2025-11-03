@@ -153,8 +153,8 @@ const spotSearchChain = createStep({
     const summaryAgent = mastra.getAgent("spotUpdateSummaryAgent");
     const userRequest =
       messages[messages.length - 1]?.content || "スポットを探してください";
-    const spotsInfo = spotResult.recommend_spots
-      ? JSON.stringify(spotResult.recommend_spots)
+    const spotsInfo = spotResult.spots
+      ? JSON.stringify(spotResult.spots)
       : "[]";
 
     const summaryResult = await summaryAgent.generate([

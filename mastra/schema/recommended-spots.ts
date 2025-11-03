@@ -29,12 +29,7 @@ export const spotItemSchema = z.object({
   website_url: z.string().nullable().optional(),
 });
 
-export const timeSlotSpotsSchema = z.object({
-  time_slot: z.enum(["午前", "午後", "夜"]),
-  spots: z.array(spotItemSchema),
-});
-
 export const recommendedSpotsSchema = z.object({
   recommend_spot_id: z.string(),
-  recommend_spots: z.array(timeSlotSpotsSchema),
+  spots: z.array(spotItemSchema),
 });

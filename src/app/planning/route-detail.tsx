@@ -7,7 +7,6 @@ interface RouteDetailProps {
     pinId: string;
     spotId: string;
     name: string;
-    timeSlot: "午前" | "午後" | "夜";
   }>;
   isGeneratingRoute?: boolean;
   routeGenerationAttempted?: boolean;
@@ -72,13 +71,11 @@ const RouteDetail = ({
   const findPinIdForSpot = (spotId: string) => {
     if (!recommendedSpots) return null;
 
-    for (const timeSlot of recommendedSpots.recommend_spots) {
-      const spotIndex = timeSlot.spots.findIndex(
-        (spot) => spot.spot_id === spotId,
-      );
-      if (spotIndex !== -1) {
-        return `${timeSlot.time_slot}-${spotId}-${spotIndex}`;
-      }
+    const spotIndex = recommendedSpots.spots.findIndex(
+      (spot) => spot.spot_id === spotId,
+    );
+    if (spotIndex !== -1) {
+      return `${spotId}-${spotIndex}`;
     }
     return null;
   };

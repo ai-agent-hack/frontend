@@ -30,9 +30,6 @@ function PlanningContent() {
   const [recommendedSpots, setRecommendedSpots] =
     useState<RecommendedSpots | null>(null);
   const [planId, setPlanId] = useState<string>("");
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState<
-    "午前" | "午後" | "夜"
-  >("午前");
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
   const [triggerMessage, setTriggerMessage] = useState<string | null>(null);
   const [polyline, setPolyline] = useState<string>("");
@@ -98,16 +95,13 @@ function PlanningContent() {
   });
 
   const selectedSpots =
-    recommendedSpots?.recommend_spots.flatMap((timeSlot) =>
-      timeSlot.spots
-        .filter((spot) => spot.selected)
-        .map((spot, index) => ({
-          pinId: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
-          spotId: spot.spot_id,
-          name: spot.details.name,
-          timeSlot: timeSlot.time_slot,
-        })),
-    ) ?? [];
+    recommendedSpots?.spots
+      .filter((spot) => spot.selected)
+      .map((spot, index) => ({
+        pinId: `${spot.spot_id}-${index}`,
+        spotId: spot.spot_id,
+        name: spot.details.name,
+      })) ?? [];
 
   useEffect(() => {
     (async () => {
@@ -145,21 +139,18 @@ ${decodedPlanInfo.atmosphere}な感じ
           plan_info_id: encodedPlanInfo,
         });
 
-        const pins: MapPin[] = spots.recommend_spots.recommend_spots.flatMap(
-          (timeSlot) =>
-            timeSlot.spots.map((spot, index) => ({
-              id: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
-              position: {
-                lat: spot.latitude,
-                lng: spot.longitude,
-              },
-              title: spot.details.name,
-              description: spot.recommendation_reason,
-              imageUrl: spot.google_map_image_url ?? undefined,
-              websiteUrl: spot.website_url ?? undefined,
-              selected: spot.selected,
-            })),
-        );
+        const pins: MapPin[] = spots.recommend_spots.spots.map((spot, index) => ({
+          id: `${spot.spot_id}-${index}`,
+          position: {
+            lat: spot.latitude,
+            lng: spot.longitude,
+          },
+          title: spot.details.name,
+          description: spot.recommendation_reason,
+          imageUrl: spot.google_map_image_url ?? undefined,
+          websiteUrl: spot.website_url ?? undefined,
+          selected: spot.selected,
+        }));
         setRecommendedSpots(spots.recommend_spots);
         const planId = spots.plan_id;
         setPlanId(planId);
@@ -180,17 +171,15 @@ ${decodedPlanInfo.atmosphere}な感じ
       setRecommendedSpots(recommendSpot);
       setIsRouteShown(false);
 
-      const pins: MapPin[] = recommendSpot.recommend_spots.flatMap((timeSlot) =>
-        timeSlot.spots.map((spot, index) => ({
-          id: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
-          position: { lat: spot.latitude, lng: spot.longitude },
-          title: spot.details.name,
-          description: spot.recommendation_reason,
-          imageUrl: spot.google_map_image_url ?? undefined,
-          websiteUrl: spot.website_url ?? undefined,
-          selected: spot.selected,
-        })),
-      );
+      const pins: MapPin[] = recommendSpot.spots.map((spot, index) => ({
+        id: `${spot.spot_id}-${index}`,
+        position: { lat: spot.latitude, lng: spot.longitude },
+        title: spot.details.name,
+        description: spot.recommendation_reason,
+        imageUrl: spot.google_map_image_url ?? undefined,
+        websiteUrl: spot.website_url ?? undefined,
+        selected: spot.selected,
+      }));
       setMapPins(pins);
     },
     [],
@@ -201,32 +190,25 @@ ${decodedPlanInfo.atmosphere}な感じ
       if (!recommendedSpots) return;
 
       const updatedSpots = { ...recommendedSpots };
-      updatedSpots.recommend_spots = updatedSpots.recommend_spots.map(
-        (timeSlot) => ({
-          ...timeSlot,
-          spots: timeSlot.spots.map((spot, index) => {
-            const pinId = `${timeSlot.time_slot}-${spot.spot_id}-${index}`;
-            if (pinId === spotId) {
-              return { ...spot, selected: isSelected };
-            }
-            return spot;
-          }),
-        }),
-      );
+      updatedSpots.spots = updatedSpots.spots.map((spot, index) => {
+        const pinId = `${spot.spot_id}-${index}`;
+        if (pinId === spotId) {
+          return { ...spot, selected: isSelected };
+        }
+        return spot;
+      });
 
       setRecommendedSpots(updatedSpots);
 
-      const pins: MapPin[] = updatedSpots.recommend_spots.flatMap((timeSlot) =>
-        timeSlot.spots.map((spot, index) => ({
-          id: `${timeSlot.time_slot}-${spot.spot_id}-${index}`,
-          position: { lat: spot.latitude, lng: spot.longitude },
-          title: spot.details.name,
-          description: spot.recommendation_reason,
-          imageUrl: spot.google_map_image_url ?? undefined,
-          websiteUrl: spot.website_url ?? undefined,
-          selected: spot.selected,
-        })),
-      );
+      const pins: MapPin[] = updatedSpots.spots.map((spot, index) => ({
+        id: `${spot.spot_id}-${index}`,
+        position: { lat: spot.latitude, lng: spot.longitude },
+        title: spot.details.name,
+        description: spot.recommendation_reason,
+        imageUrl: spot.google_map_image_url ?? undefined,
+        websiteUrl: spot.website_url ?? undefined,
+        selected: spot.selected,
+      }));
       setMapPins(pins);
     },
     [recommendedSpots],
@@ -290,11 +272,7 @@ ${decodedPlanInfo.atmosphere}な感じ
         >
           <GoogleMap
             apiKey={GOOGLE_MAPS_API_KEY}
-            pins={
-              isRouteShown && orderedSpots && orderedSpots.length > 0
-                ? mapPins
-                : mapPins.filter((pin) => pin.id.startsWith(selectedTimeSlot))
-            }
+            pins={mapPins}
             onSpotSelect={handleSpotSelect}
             selectedPinId={selectedPinId}
             setSelectedPinId={setSelectedPinId}
@@ -380,7 +358,6 @@ ${decodedPlanInfo.atmosphere}な感じ
                   selectedSpots={selectedSpots}
                   onPinClick={handlePinClick}
                   recommendedSpots={recommendedSpots ?? undefined}
-                  onTimeSlotChange={setSelectedTimeSlot}
                   orderedSpots={orderedSpots}
                   routeGenerationAttempted={routeGenerationAttempted}
                 />
@@ -416,8 +393,6 @@ ${decodedPlanInfo.atmosphere}な感じ
             {recommendedSpots ? (
               <DetailPane
                 recommendedSpots={recommendedSpots}
-                selectedTimeSlot={selectedTimeSlot}
-                onTimeSlotChange={setSelectedTimeSlot}
                 onSpotSelect={handleSpotSelect}
                 onPinClick={handlePinClick}
                 setSelectedPinId={setSelectedPinId}

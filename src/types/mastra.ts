@@ -13,7 +13,6 @@ import type {
   recommendedSpotsSchema,
   spotDetailsSchema,
   spotItemSchema,
-  timeSlotSpotsSchema,
 } from "../../mastra/schema/recommended-spots";
 
 // Output関連の型
@@ -27,7 +26,6 @@ export type RecommendSpotInputSchema = z.infer<typeof recommendSpotInputSchema>;
 export type BusinessHours = z.infer<typeof businessHoursSchema>;
 export type SpotDetails = z.infer<typeof spotDetailsSchema>;
 export type SpotItem = z.infer<typeof spotItemSchema>;
-export type TimeSlotSpots = z.infer<typeof timeSlotSpotsSchema>;
 export type RecommendedSpots = z.infer<typeof recommendedSpotsSchema>;
 
 export type Coordinates = z.infer<typeof coordinatesSchema>;
