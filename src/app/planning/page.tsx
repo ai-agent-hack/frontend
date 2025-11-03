@@ -3,15 +3,12 @@
 
 import {
   Box,
-  Button,
   HStack,
-  IconButton,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
-import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 import GoogleMap, { type MapPin } from "@/components/google-map";
 import TutorialPopover, {
   type TutorialStep,
@@ -21,7 +18,6 @@ import type { RecommendedSpots } from "@/types/mastra";
 import { apiClient } from "@/lib/api-client";
 import ChatPane from "./chat-pane";
 import DetailPane from "./detail-pane";
-import RouteDetail from "./route-detail";
 
 function PlanningContent() {
   const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
@@ -33,8 +29,6 @@ function PlanningContent() {
   const [selectedPinId, setSelectedPinId] = useState<string | null>(null);
   const [triggerMessage, setTriggerMessage] = useState<string | null>(null);
   const [polyline, setPolyline] = useState<string>("");
-  const [isSaving, setIsSaving] = useState(false);
-  const [orderedSpots, setOrderedSpots] = useState<any[]>([]);
   const [isRouteShown, setIsRouteShown] = useState<boolean>(false);
   const [routeGenerationAttempted, setRouteGenerationAttempted] =
     useState<boolean>(false);
@@ -223,7 +217,6 @@ ${decodedPlanInfo.atmosphere}な感じ
   }, []);
 
   const handleOrderedSpotsUpdate = useCallback((orderedSpots: any[]) => {
-    setOrderedSpots(orderedSpots);
     setRouteGenerationAttempted(true);
     if (orderedSpots && orderedSpots.length > 0) {
       setIsRouteShown(true);
@@ -280,90 +273,6 @@ ${decodedPlanInfo.atmosphere}な感じ
             setTriggerMessage={setTriggerMessage}
             isRouteView={isRouteShown}
           />
-
-          <Box
-            position="absolute"
-            bottom={4}
-            left="50%"
-            transform="translateX(-50%)"
-            zIndex={10}
-          >
-            <Button
-              size="lg"
-              colorScheme="purple"
-              shadow={"0px 0px 15px rgba(0, 0, 0, 0.2)"}
-              px={8}
-              py={7}
-              fontSize="lg"
-              fontWeight="bold"
-              borderRadius="full"
-              _hover={{
-                transform: "scale(1.05)",
-                shadow: "0px 0px 15px rgba(0, 0, 0, 0.5)",
-              }}
-              transition="all 0.2s"
-              disabled={!mapPins.some((pin) => pin.selected) || isSaving}
-              data-tutorial="create-route-button"
-              onClick={async () => {
-                if (!recommendedSpots || !planId) return;
-                setIsSaving(true);
-                try {
-                  await apiClient.saveTrip(planId, recommendedSpots);
-                  setTriggerMessage("旅行ルート作成を開始して");
-                } catch (error) {
-                  console.error("Failed to save trip:", error);
-                } finally {
-                  setIsSaving(false);
-                }
-              }}
-            >
-              {isSaving ? "保存中..." : "選択中のスポットでルートを作成"}
-            </Button>
-          </Box>
-
-          <Box
-            position="absolute"
-            top={2}
-            left={2}
-            zIndex={10}
-            bg="white"
-            p={0.5}
-            borderRadius="xl"
-            shadow="0px 0px 15px rgba(0, 0, 0, 0.2)"
-            width="30%"
-            maxHeight="80%"
-            display="flex"
-            flexDirection="column"
-          >
-            <HStack mb={2} mt={2} flexShrink={0} ml={2} width="100%">
-              <IconButton
-                size="xs"
-                minW="24px"
-                height="24px"
-                onClick={() => setIsRouteShown(!isRouteShown)}
-              >
-                {isRouteShown ? (
-                  <LuChevronUp size={14} />
-                ) : (
-                  <LuChevronDown size={14} />
-                )}
-              </IconButton>
-              <Text color={"black"} fontSize="sm" fontWeight="medium">
-                ルートの詳細
-              </Text>
-            </HStack>
-            {isRouteShown && (
-              <Box flex="1" overflowY="auto" overflowX="hidden">
-                <RouteDetail
-                  selectedSpots={selectedSpots}
-                  onPinClick={handlePinClick}
-                  recommendedSpots={recommendedSpots ?? undefined}
-                  orderedSpots={orderedSpots}
-                  routeGenerationAttempted={routeGenerationAttempted}
-                />
-              </Box>
-            )}
-          </Box>
         </Box>
 
         {/* Details Section */}
