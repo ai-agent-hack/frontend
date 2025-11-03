@@ -16,7 +16,6 @@ import { useRouter } from "next/navigation";
 import type React from "react";
 import { useState } from "react";
 import Header from "@/components/header";
-import { apiClient } from "@/lib/api-client";
 
 const RequiredMark = () => (
   <Text as="span" color="red.500" ml={1} fontSize="lg">
@@ -50,7 +49,7 @@ const RegisterPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
@@ -62,17 +61,17 @@ const RegisterPage: React.FC = () => {
     }
 
     try {
-      const requestBody = {
+      const planInfo = {
         region: destination,
         atmosphere: atmosphere,
       };
 
-      const planInfo = await apiClient.registerPlanInfo(requestBody);
-      if (!planInfo) {
-        setError("旅行計画の登録に失敗しました。");
-        return;
-      }
-      router.push(`/planning?plan_info_id=${planInfo.id}`);
+      // Base64エンコード
+      const encodedPlanInfo = btoa(
+        encodeURIComponent(JSON.stringify(planInfo))
+      );
+
+      router.push(`/planning?plan_info=${encodedPlanInfo}`);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message || "不明なエラーです。");

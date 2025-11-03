@@ -68,7 +68,7 @@ export const apiClient = {
     input: GetInitialRecommendedSpotsInput,
   ): Promise<GetInitialRecommendedSpotsOutput> {
     const response = await fetch(
-      `${getBaseUrl()}/api/plan/recommended-spots`,
+      `${getBaseUrl()}/api/initial-spots`,
       {
         method: "POST",
         headers: {

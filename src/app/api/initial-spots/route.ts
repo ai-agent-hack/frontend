@@ -14,6 +14,13 @@ export async function POST(req: Request) {
   try {
     const input: GetInitialRecommendedSpotsInput = await req.json();
 
+    // Base64デコードしてプラン情報を取得
+    const decodedPlanInfo = JSON.parse(
+      decodeURIComponent(atob(input.plan_info_id))
+    ) as { region: string; atmosphere: string };
+
+    console.log("Decoded plan info:", decodedPlanInfo);
+
     // TODO: 実際のAPI呼び出しを実装
     // モックデータをインポートして返す
     const mockResponse = await import(

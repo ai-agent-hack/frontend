@@ -41,7 +41,8 @@ function PlanningContent() {
   const [isRouteShown, setIsRouteShown] = useState<boolean>(false);
   const [routeGenerationAttempted, setRouteGenerationAttempted] =
     useState<boolean>(false);
-  const planInfoId = useSearchParams().get("plan_info_id");
+  const searchParams = useSearchParams();
+  const encodedPlanInfo = searchParams.get("plan_info");
 
   // Tutorial steps
   const tutorialSteps: TutorialStep[] = useMemo(
@@ -110,10 +111,13 @@ function PlanningContent() {
 
   useEffect(() => {
     (async () => {
-      if (!planInfoId) return;
+      if (!encodedPlanInfo) return;
 
       try {
-        const planInfo = await apiClient.getPlanInfo(planInfoId);
+        // Base64デコード
+        const decodedPlanInfo = JSON.parse(
+          decodeURIComponent(atob(encodedPlanInfo))
+        ) as { region: string; atmosphere: string };
 
         const message = `
 **こんにちは！**
@@ -125,10 +129,10 @@ function PlanningContent() {
 ### 📋 いただいた旅行プラン
 
 **📍 旅行先**
-${planInfo.region}
+${decodedPlanInfo.region}
 
 **✨ 雰囲気**
-${planInfo.atmosphere}な感じ
+${decodedPlanInfo.atmosphere}な感じ
 
 ---
 
@@ -138,7 +142,7 @@ ${planInfo.atmosphere}な感じ
         setInitialMessage(message);
 
         const spots = await apiClient.getInitialRecommendedSpots({
-          plan_info_id: planInfoId,
+          plan_info_id: encodedPlanInfo,
         });
 
         const pins: MapPin[] = spots.recommend_spots.recommend_spots.flatMap(
@@ -169,7 +173,7 @@ ${planInfo.atmosphere}な感じ
         console.error("Failed to fetch data:", error);
       }
     })();
-  }, [planInfoId, isTutorialCompleted, startTutorial]);
+  }, [encodedPlanInfo, isTutorialCompleted, startTutorial]);
 
   const handleRecommendSpotUpdate = useCallback(
     (recommendSpot: RecommendedSpots) => {
