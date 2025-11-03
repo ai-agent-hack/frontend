@@ -10,17 +10,6 @@ export async function POST(req: Request) {
   try {
     const input: RegisterPlanInfoInput = await req.json();
 
-    // Get authorization header
-    const authHeader = req.headers.get("Authorization");
-    const userToken = authHeader?.replace("Bearer ", "");
-
-    if (!userToken) {
-      return NextResponse.json(
-        { error: "認証が必要です" },
-        { status: 401 }
-      );
-    }
-
     // TODO: 実際のAPI呼び出しを実装
     // const response = await fetch(
     //   `${process.env.NEXT_PUBLIC_API_URL}/pre_info/register`,

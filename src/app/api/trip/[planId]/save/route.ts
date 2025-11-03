@@ -3,23 +3,12 @@ import { NextResponse } from "next/server";
 
 export async function POST(
   req: Request,
-  { params }: { params: { planId: string } }
+  { params }: { params: Promise<{ planId: string }> }
 ) {
   try {
-    const planId = params.planId;
+    const { planId } = await params;
     const body = await req.json();
     const spots: RecommendedSpots = body.recommend_spots;
-
-    // Get authorization header
-    const authHeader = req.headers.get("Authorization");
-    const userToken = authHeader?.replace("Bearer ", "");
-
-    if (!userToken) {
-      return NextResponse.json(
-        { error: "認証が必要です" },
-        { status: 401 }
-      );
-    }
 
     // TODO: 実際のAPI呼び出しを実装
     // const response = await fetch(

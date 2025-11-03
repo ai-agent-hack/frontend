@@ -3,17 +3,6 @@ import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   try {
-    // Get authorization header
-    const authHeader = req.headers.get("Authorization");
-    const userToken = authHeader?.replace("Bearer ", "");
-
-    if (!userToken) {
-      return NextResponse.json(
-        { error: "認証が必要です" },
-        { status: 401 }
-      );
-    }
-
     // TODO: 実際のAPI呼び出しを実装
     // const response = await fetch(
     //   `${process.env.NEXT_PUBLIC_API_URL}/trips/my`,

@@ -10,7 +10,6 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { getAuth } from "firebase/auth";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaCalendarAlt, FaMapMarkerAlt, FaPlus } from "react-icons/fa";
@@ -21,20 +20,11 @@ export default function TripHistory() {
   const [trips, setTrips] = useState<Trip[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const auth = getAuth();
-  const user = auth.currentUser;
 
   useEffect(() => {
     const fetchTrips = async () => {
-      if (!user) {
-        setError("ユーザーがログインしていません");
-        setIsLoading(false);
-        return;
-      }
-
       try {
-        const userToken = await user.getIdToken();
-        const data = await apiClient.getMyTrips(userToken);
+        const data = await apiClient.getMyTrips();
         setTrips(data);
       } catch (err) {
         setError("旅行履歴の取得に失敗しました");
@@ -45,7 +35,7 @@ export default function TripHistory() {
     };
 
     fetchTrips();
-  }, [user]);
+  }, []);
 
   if (isLoading) {
     return (

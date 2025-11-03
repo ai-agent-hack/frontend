@@ -1,34 +1,13 @@
 "use client";
 
-import { Button, Heading, HStack } from "@chakra-ui/react";
-import Link from "next/link";
-import { useAuth } from "@/contexts/auth/auth-context";
-import UserMenu from "./user-menu";
+import { Heading, HStack } from "@chakra-ui/react";
 
 const Header: React.FC = () => {
-  const { user } = useAuth();
-
   return (
     <HStack w={"100%"} justify="space-between" mb={4}>
       <Heading size="lg">
         <a href="/">Vibe Planning</a>
       </Heading>
-      {user ? (
-        <UserMenu />
-      ) : (
-        <HStack gap={3}>
-          <Link href="/auth" passHref>
-            <Button variant="outline" size="md">
-              ログイン
-            </Button>
-          </Link>
-          <Link href="/auth?mode=signup" passHref>
-            <Button colorScheme="purple" size="md">
-              アカウント作成
-            </Button>
-          </Link>
-        </HStack>
-      )}
     </HStack>
   );
 };

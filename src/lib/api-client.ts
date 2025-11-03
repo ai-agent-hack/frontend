@@ -26,13 +26,11 @@ type GetInitialRecommendedSpotsOutput = {
 export const apiClient = {
   async registerPlanInfo(
     input: RegisterPlanInfoInput,
-    userToken: string,
   ): Promise<PlanInfo> {
     const response = await fetch(`${getBaseUrl()}/api/plan-info/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userToken}`,
       },
       body: JSON.stringify(input),
     });
@@ -46,14 +44,13 @@ export const apiClient = {
     return result;
   },
 
-  async getPlanInfo(planInfoId: string, userToken: string): Promise<PlanInfo> {
+  async getPlanInfo(planInfoId: string): Promise<PlanInfo> {
     const response = await fetch(
       `${getBaseUrl()}/api/plan-info/${planInfoId}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`,
         },
       },
     );
@@ -69,7 +66,6 @@ export const apiClient = {
 
   async getInitialRecommendedSpots(
     input: GetInitialRecommendedSpotsInput,
-    userToken: string,
   ): Promise<GetInitialRecommendedSpotsOutput> {
     const response = await fetch(
       `${getBaseUrl()}/api/plan/recommended-spots`,
@@ -77,7 +73,6 @@ export const apiClient = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`,
         },
         body: JSON.stringify(input),
       },
@@ -95,13 +90,11 @@ export const apiClient = {
   async saveTrip(
     planId: string,
     spots: RecommendedSpots,
-    userToken: string,
   ): Promise<{ success: boolean; planId: string }> {
     const response = await fetch(`${getBaseUrl()}/api/trip/${planId}/save`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userToken}`,
       },
       body: JSON.stringify({ recommend_spots: spots }),
     });
@@ -115,12 +108,11 @@ export const apiClient = {
     return result;
   },
 
-  async getMyTrips(userToken: string): Promise<Trip[]> {
+  async getMyTrips(): Promise<Trip[]> {
     const response = await fetch(`${getBaseUrl()}/api/my-trips`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${userToken}`,
       },
     });
 

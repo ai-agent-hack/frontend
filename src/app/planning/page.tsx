@@ -9,9 +9,8 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { getAuth } from "firebase/auth";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 import GoogleMap, { type MapPin } from "@/components/google-map";
 import TutorialPopover, {
@@ -24,7 +23,7 @@ import ChatPane from "./chat-pane";
 import DetailPane from "./detail-pane";
 import RouteDetail from "./route-detail";
 
-export default function Planning() {
+function PlanningContent() {
   const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
   const [mapPins, setMapPins] = useState<MapPin[]>([]);
   const [initialMessage, setInitialMessage] = useState<string>("");
@@ -43,13 +42,6 @@ export default function Planning() {
   const [routeGenerationAttempted, setRouteGenerationAttempted] =
     useState<boolean>(false);
   const planInfoId = useSearchParams().get("plan_info_id");
-  const auth = getAuth();
-
-  const user = auth.currentUser;
-
-  if (!user) {
-    throw new Error("ユーザーがログインしていません。");
-  }
 
   // Tutorial steps
   const tutorialSteps: TutorialStep[] = useMemo(
@@ -121,7 +113,7 @@ export default function Planning() {
       if (!planInfoId) return;
 
       try {
-        const planInfo = await apiClient.getPlanInfo(planInfoId, await user.getIdToken());
+        const planInfo = await apiClient.getPlanInfo(planInfoId);
 
         const message = `
 **こんにちは！**
@@ -132,25 +124,22 @@ export default function Planning() {
 
 ### 📋 いただいた旅行プラン
 
-**📍 旅行先**  
+**📍 旅行先**
 ${planInfo.region}
 
-**✨ 雰囲気**  
+**✨ 雰囲気**
 ${planInfo.atmosphere}な感じ
 
 ---
 
-**最高のスポット探してきますね〜** 🔍✨  
+**最高のスポット探してきますね〜** 🔍✨
 *少々お待ちください！*`;
 
         setInitialMessage(message);
 
-        const spots = await apiClient.getInitialRecommendedSpots(
-          {
-            plan_info_id: planInfoId,
-          },
-          await user.getIdToken(),
-        );
+        const spots = await apiClient.getInitialRecommendedSpots({
+          plan_info_id: planInfoId,
+        });
 
         const pins: MapPin[] = spots.recommend_spots.recommend_spots.flatMap(
           (timeSlot) =>
@@ -337,7 +326,7 @@ ${planInfo.atmosphere}な感じ
                 if (!recommendedSpots || !planId) return;
                 setIsSaving(true);
                 try {
-                  await apiClient.saveTrip(planId, recommendedSpots, await user.getIdToken());
+                  await apiClient.saveTrip(planId, recommendedSpots);
                   setTriggerMessage("旅行ルート作成を開始して");
                 } catch (error) {
                   console.error("Failed to save trip:", error);
@@ -490,5 +479,13 @@ ${planInfo.atmosphere}な感じ
         />
       )}
     </Box>
+  );
+}
+
+export default function Planning() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PlanningContent />
+    </Suspense>
   );
 }

@@ -3,21 +3,10 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const planInfoId = params.id;
-
-    // Get authorization header
-    const authHeader = req.headers.get("Authorization");
-    const userToken = authHeader?.replace("Bearer ", "");
-
-    if (!userToken) {
-      return NextResponse.json(
-        { error: "認証が必要です" },
-        { status: 401 }
-      );
-    }
+    const { id: planInfoId } = await params;
 
     // TODO: 実際のAPI呼び出しを実装
     // const response = await fetch(

@@ -12,7 +12,6 @@ import {
   Textarea,
   VStack,
 } from "@chakra-ui/react";
-import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import type React from "react";
 import { useState } from "react";
@@ -42,13 +41,6 @@ const RegisterPage: React.FC = () => {
   const [destination, setDestination] = useState<string>("");
   const [atmosphere, setAtmosphere] = useState<string>("");
   const router = useRouter();
-  const auth = getAuth();
-
-  const user = auth.currentUser;
-
-  if (!user) {
-    throw new Error("ユーザーがログインしていません。");
-  }
 
   const handleTagClick = (tagText: string) => {
     if (atmosphere) {
@@ -75,10 +67,7 @@ const RegisterPage: React.FC = () => {
         atmosphere: atmosphere,
       };
 
-      const planInfo = await apiClient.registerPlanInfo(
-        requestBody,
-        await user.getIdToken(),
-      );
+      const planInfo = await apiClient.registerPlanInfo(requestBody);
       if (!planInfo) {
         setError("旅行計画の登録に失敗しました。");
         return;

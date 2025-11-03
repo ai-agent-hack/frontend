@@ -14,17 +14,6 @@ export async function POST(req: Request) {
   try {
     const input: GetInitialRecommendedSpotsInput = await req.json();
 
-    // Get authorization header
-    const authHeader = req.headers.get("Authorization");
-    const userToken = authHeader?.replace("Bearer ", "");
-
-    if (!userToken) {
-      return NextResponse.json(
-        { error: "認証が必要です" },
-        { status: 401 }
-      );
-    }
-
     // TODO: 実際のAPI呼び出しを実装
     // モックデータをインポートして返す
     const mockResponse = await import(
