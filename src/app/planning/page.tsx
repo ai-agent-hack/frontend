@@ -305,6 +305,7 @@ ${decodedPlanInfo.atmosphere}な感じ
                 onSpotSelect={handleSpotSelect}
                 onPinClick={handlePinClick}
                 setSelectedPinId={setSelectedPinId}
+                selectedPinId={selectedPinId}
               />
             ) : (
               <Box p={6} textAlign="center">

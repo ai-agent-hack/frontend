@@ -7,6 +7,7 @@ interface DetailPaneProps {
   onSpotSelect: (spotId: string, isSelected: boolean) => void;
   onPinClick: (pinId: string) => void;
   setSelectedPinId: (pinId: string | null) => void;
+  selectedPinId: string | null;
 }
 
 const DetailPane = ({
@@ -14,6 +15,7 @@ const DetailPane = ({
   onSpotSelect,
   onPinClick,
   setSelectedPinId,
+  selectedPinId,
 }: DetailPaneProps) => {
   return (
     <Box width="100%" height="100%">
@@ -22,6 +24,7 @@ const DetailPane = ({
         onSpotSelect={onSpotSelect}
         onPinClick={onPinClick}
         setSelectedPinId={setSelectedPinId}
+        selectedPinId={selectedPinId}
       />
     </Box>
   );
