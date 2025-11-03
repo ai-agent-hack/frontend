@@ -74,15 +74,15 @@ export const manageRecommendSpotsTool = {
           };
         }
 
-        // スポットの選択状態を更新
+        // スポットのいいね状態を更新
         for (const spot of sharedRecommendSpots.spots) {
           if (spot.spot_id === spotId) {
-            spot.selected =
-              selected !== undefined ? selected : !spot.selected;
+            spot.liked =
+              selected !== undefined ? selected : !spot.liked;
             return {
               success: true,
               data: sharedRecommendSpots,
-              message: `スポット ${spot.details.name} の選択状態を更新しました`,
+              message: `スポット ${spot.details.name} のいいね状態を更新しました`,
             };
           }
         }

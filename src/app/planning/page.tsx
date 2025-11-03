@@ -90,7 +90,7 @@ function PlanningContent() {
 
   const selectedSpots =
     recommendedSpots?.spots
-      .filter((spot) => spot.selected)
+      .filter((spot) => spot.liked)
       .map((spot, index) => ({
         pinId: `${spot.spot_id}-${index}`,
         spotId: spot.spot_id,
@@ -143,7 +143,7 @@ ${decodedPlanInfo.atmosphere}な感じ
           description: spot.recommendation_reason,
           imageUrl: spot.google_map_image_url ?? undefined,
           websiteUrl: spot.website_url ?? undefined,
-          selected: spot.selected,
+          selected: spot.liked,
         }));
         setRecommendedSpots(spots.recommend_spots);
         const planId = spots.plan_id;
@@ -172,7 +172,7 @@ ${decodedPlanInfo.atmosphere}な感じ
         description: spot.recommendation_reason,
         imageUrl: spot.google_map_image_url ?? undefined,
         websiteUrl: spot.website_url ?? undefined,
-        selected: spot.selected,
+        selected: spot.liked,
       }));
       setMapPins(pins);
     },
@@ -187,7 +187,7 @@ ${decodedPlanInfo.atmosphere}な感じ
       updatedSpots.spots = updatedSpots.spots.map((spot, index) => {
         const pinId = `${spot.spot_id}-${index}`;
         if (pinId === spotId) {
-          return { ...spot, selected: isSelected };
+          return { ...spot, liked: isSelected };
         }
         return spot;
       });
@@ -201,7 +201,7 @@ ${decodedPlanInfo.atmosphere}な感じ
         description: spot.recommendation_reason,
         imageUrl: spot.google_map_image_url ?? undefined,
         websiteUrl: spot.website_url ?? undefined,
-        selected: spot.selected,
+        selected: spot.liked,
       }));
       setMapPins(pins);
     },

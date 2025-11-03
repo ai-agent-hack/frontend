@@ -1,10 +1,9 @@
-import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Box, HStack, Text, VStack } from "@chakra-ui/react";
 import type { RecommendedSpots } from "@/types/mastra";
 
 interface SpotDetailProps {
   recommendedSpots: RecommendedSpots;
-  onSpotSelect: (spotId: string, isSelected: boolean) => void;
+  onSpotSelect: (spotId: string, isLiked: boolean) => void;
   onPinClick: (pinId: string) => void;
   setSelectedPinId: (pinId: string | null) => void;
 }
@@ -80,45 +79,37 @@ const SpotDetail = ({
             <Box
               key={pin.spot_id}
               p={4}
-              bg={pin.selected ? "purple.50" : "white"}
+              bg={pin.liked ? "pink.50" : "white"}
               borderRadius="xl"
               border="2px solid"
-              borderColor={pin.selected ? "purple.200" : "gray.100"}
+              borderColor={pin.liked ? "pink.200" : "gray.100"}
               cursor="pointer"
               transition="all 0.2s"
               width="100%"
               _hover={{
                 boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)",
-                borderColor: pin.selected ? "purple.300" : "gray.200",
+                borderColor: pin.liked ? "pink.300" : "gray.200",
                 transform: "translateY(-1px)",
               }}
               onClick={() => onPinClick(pin.pinId)}
             >
               <HStack justify="space-between" align="start" mb={2}>
-                <HStack gap={3} flex="1">
-                  <Box onClick={(e) => e.stopPropagation()}>
-                    <Checkbox
-                      checked={pin.selected}
-                      onCheckedChange={(checked) => {
-                        onSpotSelect(pin.pinId, checked === true);
-                      }}
-                    />
-                  </Box>
-                  <Text fontWeight="bold" fontSize="md" color="gray.800">
-                    {pin.details.name}
-                  </Text>
-                </HStack>
-                {pin.selected && (
+                <Text fontWeight="bold" fontSize="md" color="gray.800">
+                  {pin.details.name}
+                </Text>
+                {pin.liked && (
                   <Box
-                    bg="purple.500"
+                    bg="pink.500"
                     color="white"
                     px={2}
                     py={1}
                     borderRadius="full"
                     fontSize="xs"
                     fontWeight="bold"
+                    whiteSpace="nowrap"
+                    flexShrink={0}
                   >
-                    選択済み
+                    いいね！
                   </Box>
                 )}
               </HStack>

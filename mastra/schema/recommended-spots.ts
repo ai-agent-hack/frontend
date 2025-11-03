@@ -22,7 +22,7 @@ export const spotItemSchema = z.object({
   latitude: z.number(),
   longitude: z.number(),
   recommendation_reason: z.string(),
-  selected: z.boolean(),
+  liked: z.boolean(),
   spot_id: z.string(),
   details: spotDetailsSchema,
   google_map_image_url: z.string().nullable().optional(),

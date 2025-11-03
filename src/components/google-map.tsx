@@ -4,6 +4,7 @@ import {
   Box,
   Center,
   CloseButton,
+  HStack,
   Image,
   Link,
   Stack,
@@ -20,6 +21,8 @@ import {
   useMap,
 } from "@vis.gl/react-google-maps";
 import { useCallback, useEffect, useState } from "react";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { BsChatDots } from "react-icons/bs";
 import { LuExternalLink } from "react-icons/lu";
 
 export type MapPin = {
@@ -32,7 +35,7 @@ export type MapPin = {
   description: string;
   imageUrl?: string;
   websiteUrl?: string;
-  selected: boolean;
+  selected: boolean; // kept for backward compatibility with existing code
 };
 
 interface GoogleMapProps {
@@ -67,7 +70,7 @@ const RoutePolyline = ({
     const routePolyline = new window.google.maps.Polyline({
       path,
       geodesic: true,
-      strokeColor: "#4F46E5",
+      strokeColor: "#EC4899",
       strokeOpacity: 0.8,
       strokeWeight: 4,
     });
@@ -337,8 +340,8 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                   onClick={() => handleMarkerClick(pin)}
                 >
                   <Pin
-                    background="#4F46E5"
-                    borderColor="#3730A3"
+                    background="#EC4899"
+                    borderColor="#DB2777"
                     glyphColor="#FFFFFF"
                   />
                 </AdvancedMarker>
@@ -487,93 +490,112 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
                   </Box>
                 )}
 
-                {setTriggerMessage && selectedPin.id && (
-                  <Box
-                    as="button"
-                    width="100%"
-                    bg="purple.50"
-                    color="purple.700"
-                    border="1px solid"
-                    borderColor="purple.200"
-                    borderRadius="xl"
-                    p={3}
-                    transition="all 0.2s"
-                    _hover={{
-                      bg: "purple.100",
-                      borderColor: "purple.300",
-                      transform: "translateY(-1px)",
-                    }}
-                    onClick={() =>
-                      setTriggerMessage(
-                        `「${selectedPin.title}」について教えて\n${selectedPin.id ? ` (place_id: ${selectedPin.id})` : ""}`,
-                      )
-                    }
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    gap={2}
-                  >
-                    <Text fontSize="sm" fontWeight="medium">
-                      この場所について教えて
-                    </Text>
-                  </Box>
-                )}
-
-                {onSpotSelect && (
+                {(setTriggerMessage !== undefined || onSpotSelect !== undefined) && (
                   <Box pt={2} borderTop="1px solid" borderColor="border">
-                    <Box
-                      as="button"
-                      width="100%"
-                      bg={selectedPin.selected ? "blue.500" : "white"}
-                      color={selectedPin.selected ? "white" : "gray.700"}
-                      border="2px solid"
-                      borderColor={selectedPin.selected ? "blue.500" : "border"}
-                      borderRadius="xl"
-                      p={3}
-                      transition="all 0.2s"
-                      _hover={{
-                        bg: selectedPin.selected ? "blue.600" : "gray.50",
-                        borderColor: selectedPin.selected
-                          ? "blue.600"
-                          : "border",
-                        transform: "translateY(-1px)",
-                      }}
-                      onClick={() =>
-                        onSpotSelect(selectedPin.id, !selectedPin.selected)
-                      }
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      gap={2}
-                    >
-                      <Box
-                        width="20px"
-                        height="20px"
-                        borderRadius="md"
-                        border="2px solid"
-                        borderColor={selectedPin.selected ? "white" : "border"}
-                        bg={selectedPin.selected ? "white" : "transparent"}
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        transition="all 0.2s"
-                      >
-                        {selectedPin.selected && (
-                          <Text
-                            fontSize="sm"
-                            color="blue.500"
-                            fontWeight="bold"
+                    <HStack gap={2} width="100%">
+                      {onSpotSelect !== undefined && (
+                        <Box flex="1" position="relative">
+                          <Box
+                            position="absolute"
+                            top="-10px"
+                            right="8px"
+                            bg="white"
+                            borderRadius="full"
+                            p={1}
+                            border="2px solid"
+                            borderColor={selectedPin.selected ? "pink.500" : "gray.300"}
+                            zIndex={1}
                           >
-                            ✓
-                          </Text>
-                        )}
-                      </Box>
-                      <Text fontSize="sm" fontWeight="medium">
-                        {selectedPin.selected
-                          ? "選択済み"
-                          : "このスポットに行く"}
-                      </Text>
-                    </Box>
+                            <BsChatDots
+                              size={12}
+                              color={selectedPin.selected ? "#ec4899" : "#9ca3af"}
+                            />
+                          </Box>
+                          <Box
+                            as="button"
+                            width="100%"
+                            bg={selectedPin.selected ? "pink.500" : "white"}
+                            color={selectedPin.selected ? "white" : "gray.700"}
+                            border="2px solid"
+                            borderColor={
+                              selectedPin.selected ? "pink.500" : "border"
+                            }
+                            borderRadius="xl"
+                            p={3}
+                            transition="all 0.2s"
+                            _hover={{
+                              bg: selectedPin.selected ? "pink.600" : "gray.50",
+                              borderColor: selectedPin.selected
+                                ? "pink.600"
+                                : "border",
+                              transform: "translateY(-1px)",
+                            }}
+                            onClick={() =>
+                              onSpotSelect(selectedPin.id, !selectedPin.selected)
+                            }
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            gap={1}
+                          >
+                            {selectedPin.selected ? (
+                              <FaHeart size={16} color="white" />
+                            ) : (
+                              <FaRegHeart size={16} color="#9ca3af" />
+                            )}
+                            <Text fontSize="xs" fontWeight="medium">
+                              {selectedPin.selected ? "いいね済" : "いいね"}
+                            </Text>
+                          </Box>
+                        </Box>
+                      )}
+                      {setTriggerMessage !== undefined && selectedPin.id && (
+                        <Box flex="1" position="relative">
+                          <Box
+                            position="absolute"
+                            top="-10px"
+                            right="8px"
+                            bg="white"
+                            borderRadius="full"
+                            p={1}
+                            border="2px solid"
+                            borderColor="purple.300"
+                            zIndex={1}
+                          >
+                            <BsChatDots size={12} color="#7c3aed" />
+                          </Box>
+                          <Box
+                            as="button"
+                            width="100%"
+                            bg="purple.50"
+                            color="purple.700"
+                            border="2px solid"
+                            borderColor="purple.200"
+                            borderRadius="xl"
+                            p={3}
+                            transition="all 0.2s"
+                            _hover={{
+                              bg: "purple.100",
+                              borderColor: "purple.300",
+                              transform: "translateY(-1px)",
+                            }}
+                            onClick={() =>
+                              setTriggerMessage(
+                                `「${selectedPin.title}」について教えて\n${selectedPin.id ? ` (place_id: ${selectedPin.id})` : ""}`,
+                              )
+                            }
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            gap={1}
+                          >
+                            <Text fontSize="xs" fontWeight="medium">
+                              詳細を聞く
+                            </Text>
+                          </Box>
+                        </Box>
+                      )}
+                    </HStack>
                   </Box>
                 )}
               </VStack>
